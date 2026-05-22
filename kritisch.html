@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex">
+  <title>Kritisch bekeken — 4deklas · Demo op 4deklas.nl</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;700;800&family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Space Grotesk', system-ui, sans-serif; background: #f8fafc; color: #1a202c; }
+
+    .demo-bar { background: #0f0c29; color: rgba(255,255,255,.7); text-align: center; padding: 8px 16px; font-size: 12px; display: flex; align-items: center; justify-content: center; gap: 10px; }
+    .demo-bar strong { color: white; }
+    .demo-bar a { color: #60a5fa; text-decoration: none; }
+
+    header { background: #1e3a8a; color: white; padding: 14px 32px; display: flex; align-items: center; justify-content: space-between; }
+    .header-left { display: flex; align-items: center; gap: 14px; }
+    .school-logo { width: 44px; height: 44px; background: white; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 24px; flex-shrink: 0; }
+    .school-name { font-family: 'Archivo', sans-serif; font-size: 19px; font-weight: 800; }
+    .school-sub { font-size: 12px; opacity: .65; margin-top: 2px; }
+
+    nav { background: #1e40af; }
+    nav ul { display: flex; list-style: none; padding: 0 32px; flex-wrap: wrap; }
+    nav ul li a { display: block; padding: 12px 18px; color: rgba(255,255,255,.75); text-decoration: none; font-size: 14px; transition: color .15s; }
+    nav ul li a:hover, nav ul li a.active { color: white; }
+    nav ul li.cta a { color: white; font-weight: 700; }
+
+    .hero { background: linear-gradient(135deg, #1e3a8a 0%, #3730a3 100%); color: white; padding: 64px 32px; text-align: center; }
+    .hero-label { display: inline-block; background: rgba(255,255,255,.15); border-radius: 99px; padding: 5px 16px; font-size: 12px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; margin-bottom: 18px; }
+    .hero h1 { font-family: 'Archivo', sans-serif; font-size: clamp(26px, 4vw, 40px); font-weight: 800; line-height: 1.2; margin-bottom: 14px; }
+    .hero p { font-size: 17px; opacity: .85; max-width: 600px; margin: 0 auto; line-height: 1.7; }
+
+    .content { max-width: 860px; margin: 0 auto; padding: 56px 32px; }
+
+    .lead { font-size: 18px; line-height: 1.8; color: #334155; margin-bottom: 48px; border-left: 4px solid #dc2626; padding-left: 20px; }
+
+    .section { margin-bottom: 52px; }
+    .section-label { font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: #dc2626; margin-bottom: 8px; }
+    .section h2 { font-family: 'Archivo', sans-serif; font-size: 24px; font-weight: 800; margin-bottom: 16px; color: #1e293b; }
+    .section p { font-size: 15px; color: #475569; line-height: 1.8; margin-bottom: 14px; }
+
+    .qa-list { display: flex; flex-direction: column; gap: 16px; margin-top: 8px; }
+    .qa-item { background: white; border-radius: 14px; box-shadow: 0 2px 8px rgba(0,0,0,.06); overflow: hidden; }
+    .qa-question { padding: 18px 22px; background: #fff5f5; border-bottom: 1px solid #fecaca; font-weight: 700; font-size: 15px; color: #991b1b; display: flex; align-items: flex-start; gap: 10px; }
+    .qa-question::before { content: "!"; background: #dc2626; color: white; width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 800; flex-shrink: 0; margin-top: 1px; }
+    .qa-answer { padding: 18px 22px; font-size: 14px; color: #475569; line-height: 1.75; display: flex; align-items: flex-start; gap: 10px; }
+    .qa-answer::before { content: "✓"; background: #16a34a; color: white; width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 800; flex-shrink: 0; margin-top: 1px; }
+    .qa-item.honest .qa-answer::before { content: "~"; background: #d97706; }
+
+    .highlight-box { background: linear-gradient(135deg, #fff7ed, #fef3c7); border: 2px solid #fbbf24; border-radius: 18px; padding: 36px; margin-bottom: 52px; }
+    .highlight-box h3 { font-family: 'Archivo', sans-serif; font-size: 20px; font-weight: 800; color: #92400e; margin-bottom: 12px; }
+    .highlight-box p { font-size: 15px; color: #78350f; line-height: 1.75; margin-bottom: 12px; }
+    .highlight-box p:last-child { margin-bottom: 0; }
+    .highlight-box .quote { font-size: 16px; font-style: italic; color: #92400e; font-weight: 600; border-left: 3px solid #f59e0b; padding-left: 16px; margin: 16px 0; }
+
+    .cta-section { background: linear-gradient(135deg, #1e3a8a, #3730a3); color: white; border-radius: 20px; padding: 48px 40px; text-align: center; margin-bottom: 8px; }
+    .cta-section h2 { font-family: 'Archivo', sans-serif; font-size: 26px; font-weight: 800; margin-bottom: 12px; }
+    .cta-section p { font-size: 15px; opacity: .85; max-width: 480px; margin: 0 auto 28px; line-height: 1.65; }
+    .cta-btn { display: inline-flex; align-items: center; gap: 8px; background: white; color: #1e3a8a; padding: 14px 28px; border-radius: 50px; font-size: 15px; font-weight: 700; text-decoration: none; font-family: 'Archivo', sans-serif; box-shadow: 0 6px 20px rgba(0,0,0,.3); transition: transform .2s, box-shadow .2s; }
+    .cta-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 28px rgba(0,0,0,.35); }
+
+    footer { background: #1e293b; color: rgba(255,255,255,.4); text-align: center; padding: 24px; font-size: 12px; margin-top: 40px; }
+    footer strong { color: rgba(255,255,255,.7); }
+  </style>
+</head>
+<body>
+
+<div class="demo-bar">
+  <strong>🎯 4deklas Demo</strong> · Stap 1: <a href="/doneren">Doneer als ouder →</a> · Stap 2: <a href="/dashboard">Log in als directeur →</a>
+</div>
+
+<header>
+  <div class="header-left">
+    <div class="school-logo">🌈</div>
+    <div>
+      <div class="school-name">De Regenboogschool</div>
+      <div class="school-sub">Basisschool · Amsterdam-Noord</div>
+    </div>
+  </div>
+  <div style="font-size:13px;color:rgba(255,255,255,.55)">☎ 020-123 45 67</div>
+</header>
+
+<nav>
+  <ul>
+    <li><a href="/">Home</a></li>
+    <li><a href="#">Over ons</a></li>
+    <li><a href="#">Onderwijs</a></li>
+    <li><a href="#">Nieuws</a></li>
+    <li><a href="/verhaal">Ons verhaal</a></li>
+    <li><a href="/kritisch" class="active">Kritisch bekeken</a></li>
+    <li class="cta"><a href="/doneren">❤️ Doneren</a></li>
+  </ul>
+</nav>
+
+<div class="hero">
+  <div class="hero-label">Eerlijk antwoord</div>
+  <h1>We kennen de bezwaren.<br>Hier zijn onze antwoorden.</h1>
+  <p>4deklas is geen perfect systeem. Maar we geloven dat transparantie over de nadelen meer vertrouwen geeft dan ze wegmoffelen.</p>
+</div>
+
+<div class="content">
+
+  <div class="section">
+    <div class="section-label">De harde vragen</div>
+    <h2>10 redenen waarom ouders, scholen of sponsors kunnen afhaken</h2>
+    <div class="qa-list">
+
+      <div class="qa-item">
+        <div class="qa-question">"Waarom moet ik extra betalen voor iets wat de school of overheid hoort te regelen?"</div>
+        <div class="qa-answer">Dat klopt — in een ideale wereld financiert de overheid alles. Maar die ruimte is er nu niet. 4deklas vult een concreet gat dat anders leeg blijft. Meedoen is volledig vrijwillig; niemand wordt verplicht of verwacht.</div>
+      </div>
+
+      <div class="qa-item">
+        <div class="qa-question">"Mijn kind wordt indirect benadeeld als ik niet doneer."</div>
+        <div class="qa-answer">Nee. Anoniem doneren is altijd mogelijk. Alle projecten komen de hele school ten goede — er is geen zichtbaar onderscheid tussen donerende en niet-donerende ouders. De school bepaalt zelf hoe ze communiceert over projecten.</div>
+      </div>
+
+      <div class="qa-item">
+        <div class="qa-question">"Dit voelt als geld verdienen over de rug van kinderen."</div>
+        <div class="qa-answer">Een platformvergoeding dekt infrastructuurkosten, betalingsverwerking en onderhoud — niet anders dan elke andere betaaldienst of crowdfunding-platform. De vergoeding staat altijd transparant vermeld vóór de donatie, zodat donateurs precies weten wat ze betalen.</div>
+      </div>
+
+      <div class="qa-item">
+        <div class="qa-question">"Waarom gaat niet 100% naar de school?"</div>
+        <div class="qa-answer">Omdat betalingsverwerking, hosting en beheer kosten maken. De platformvergoeding van 2% ligt lager dan veel vergelijkbare crowdfunding-platforms (die doorgaans 5–10% plus transactiekosten rekenen). De school ziet het nettobedrag exact en communiceert dat naar donateurs.</div>
+      </div>
+
+      <div class="qa-item">
+        <div class="qa-question">"Wordt dit geen sponsorcircus?"</div>
+        <div class="qa-answer">Bedrijfsvermeldingen zijn volledig optioneel. De school beslist zelf of, hoe en waar ze sponsors noemt. Er verschijnen geen logo's in klassen en er zijn geen verplichte reclame-uitingen. Sponsors worden vermeld als ze dat willen — niet andersom.</div>
+      </div>
+
+      <div class="qa-item honest">
+        <div class="qa-question">"Rijke scholen halen meer op dan arme scholen. Vergroot dit de kansenongelijkheid?"</div>
+        <div class="qa-answer">Dit is een geldige en moeilijke vraag — en we hebben geen kant-en-klare oplossing. Scholen in sterkere buurten hebben meer draagkrachtige donateurs. We maken dit probleem zichtbaar en denken na over compensatiemechanismen, maar eerlijk zijn: dit blijft een spanningsveld dat vraagt om een bredere maatschappelijke discussie.</div>
+      </div>
+
+      <div class="qa-item">
+        <div class="qa-question">"Is dit wel veilig met betalingen en mijn privacy?"</div>
+        <div class="qa-answer">Betalingen verlopen via iDEAL (Mollie), een gecertificeerde betaaldienst met bankbeveiliging. Anoniem doneren is standaard mogelijk. We slaan geen persoonlijke data op buiten wat noodzakelijk is voor de transactieverwerking — en dat staat helder beschreven in de privacyverklaring.</div>
+      </div>
+
+      <div class="qa-item">
+        <div class="qa-question">"De school heeft hier geen tijd voor."</div>
+        <div class="qa-answer">Setup duurt minder dan 5 minuten: één link op de schoolwebsite plaatsen en één project aanmaken in het dashboard. Daarna is het beheer minimaal. De school hoeft alleen af en toe de voortgang te controleren — alles loopt verder automatisch.</div>
+      </div>
+
+      <div class="qa-item">
+        <div class="qa-question">"Wat gebeurt er als het doel niet wordt gehaald?"</div>
+        <div class="qa-answer">Het geld gaat altijd naar de school, ook als het doelbedrag niet volledig bereikt is. De directeur communiceert zelf naar donateurs wat er met het opgehaalde bedrag gebeurt. Transparantie is hier de verantwoordelijkheid van de school — 4deklas biedt het platform en de rapportage daarvoor.</div>
+      </div>
+
+      <div class="qa-item">
+        <div class="qa-question">"Waarom zou ik dit via jullie platform doen en niet gewoon via de ouderraad of een Tikkie?"</div>
+        <div class="qa-answer">Een Tikkie heeft geen voortgangsbalk, geen projectbeheer, geen transparantie over bestemming van het geld, geen jaarrapportage en geen optie voor maandelijkse donaties. 4deklas biedt dat allemaal — met minder werk voor de ouderraad. Je hoeft niets te ontwikkelen; het is er al.</div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="cta-section">
+    <h2>Overtuigd genoeg om te kijken?</h2>
+    <p>Bekijk de live demo of neem contact op als u nog vragen heeft.</p>
+    <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap">
+      <a href="/doneren" class="cta-btn">❤️ Bekijk de demo →</a>
+      <a href="mailto:guidoboone@gmail.com" style="display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.15);color:white;border:2px solid rgba(255,255,255,.4);padding:14px 28px;border-radius:50px;font-size:15px;font-weight:700;text-decoration:none;font-family:'Archivo',sans-serif;transition:background .2s" onmouseover="this.style.background='rgba(255,255,255,.25)'" onmouseout="this.style.background='rgba(255,255,255,.15)'">Neem contact op →</a>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <p>© 2025 <strong>De Regenboogschool</strong> · Donaties verwerkt via 4deklas · <em>Demo op 4deklas.nl — geen echte betalingen</em></p>
+</footer>
+
+</body>
+</html>

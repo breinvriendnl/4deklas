@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex">
+  <title>Doneren — De Regenboogschool · 4deklas Demo</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;700;800&family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Space Grotesk', system-ui, sans-serif; background: #f1f5f9; color: #1a202c; }
+
+    .demo-bar { background: #0f0c29; color: rgba(255,255,255,.7); text-align: center; padding: 8px 16px; font-size: 12px; display: flex; align-items: center; justify-content: center; gap: 10px; }
+    .demo-bar strong { color: white; }
+    .demo-bar a { color: #60a5fa; text-decoration: none; }
+
+    .topbar { background: #1e3a8a; color: white; padding: 14px 32px; display: flex; align-items: center; justify-content: space-between; }
+    .topbar-left { display: flex; align-items: center; gap: 12px; }
+    .school-logo { width: 38px; height: 38px; background: white; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 20px; }
+    .school-name { font-family: 'Archivo', sans-serif; font-size: 17px; font-weight: 800; }
+    .school-sub { font-size: 12px; opacity: .6; }
+    .back-link { color: rgba(255,255,255,.7); text-decoration: none; font-size: 13px; transition: color .15s; }
+    .back-link:hover { color: white; }
+
+    nav { background: #1e40af; }
+    nav ul { display: flex; list-style: none; padding: 0 32px; flex-wrap: wrap; }
+    nav ul li a { display: block; padding: 11px 16px; color: rgba(255,255,255,.75); text-decoration: none; font-size: 14px; transition: color .15s; }
+    nav ul li a:hover { color: white; }
+    nav ul li.cta a { color: white; font-weight: 700; }
+
+    .page-header { background: linear-gradient(135deg, #1e3a8a, #3730a3); color: white; padding: 44px 32px; text-align: center; }
+    .page-header h1 { font-family: 'Archivo', sans-serif; font-size: 30px; font-weight: 800; margin-bottom: 8px; }
+    .page-header p { font-size: 15px; opacity: .85; max-width: 500px; margin: 0 auto; line-height: 1.6; }
+    .school-tag { display: inline-flex; align-items: center; gap: 8px; background: rgba(255,255,255,.15); border-radius: 99px; padding: 5px 14px; font-size: 12px; margin-bottom: 14px; }
+
+    .stats-bar { background: white; border-bottom: 1px solid #e2e8f0; }
+    .stats-bar-inner { max-width: 920px; margin: 0 auto; padding: 18px 32px; display: flex; gap: 36px; align-items: center; flex-wrap: wrap; }
+    .stat-val { font-family: 'Archivo', sans-serif; font-size: 20px; font-weight: 800; }
+    .stat-val.blue { color: #2563eb; }
+    .stat-val.green { color: #16a34a; }
+    .stat-lbl { font-size: 11px; color: #94a3b8; margin-top: 1px; }
+    .divider { width: 1px; height: 36px; background: #e2e8f0; }
+
+    .main { max-width: 920px; margin: 0 auto; padding: 36px 32px; }
+
+    .projects-label { font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: #4f6ef7; margin-bottom: 6px; }
+    .projects-title { font-family: 'Archivo', sans-serif; font-size: 20px; font-weight: 800; margin-bottom: 4px; }
+    .projects-sub { font-size: 14px; color: #64748b; margin-bottom: 28px; }
+
+    /* Project card */
+    .project-card { background: white; border-radius: 16px; box-shadow: 0 2px 10px rgba(0,0,0,.07); margin-bottom: 20px; overflow: hidden; }
+    .project-body { padding: 26px 28px; }
+    .project-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; margin-bottom: 14px; }
+    .project-title { font-family: 'Archivo', sans-serif; font-size: 18px; font-weight: 800; }
+    .project-desc  { font-size: 14px; color: #64748b; line-height: 1.6; margin-top: 5px; }
+
+    .badge { display: inline-block; padding: 4px 12px; border-radius: 99px; font-size: 12px; font-weight: 700; white-space: nowrap; }
+    .badge-active   { background: #dcfce7; color: #15803d; }
+    .badge-achieved { background: #dbeafe; color: #1d4ed8; }
+    .badge-closed   { background: #f1f5f9; color: #64748b; }
+
+    .progress-track { background: #e2e8f0; border-radius: 99px; height: 12px; overflow: hidden; margin: 16px 0 10px; }
+    .progress-fill  { background: linear-gradient(90deg, #4f6ef7, #7c3aed); height: 100%; border-radius: 99px; transition: width 1s ease; }
+    .progress-meta  { display: flex; justify-content: space-between; align-items: flex-end; }
+    .progress-collected { font-family: 'Archivo', sans-serif; font-size: 20px; font-weight: 800; color: #4f6ef7; }
+    .progress-goal  { font-size: 13px; color: #94a3b8; }
+    .progress-pct   { font-size: 13px; font-weight: 600; color: #64748b; }
+
+    /* Gesloten/bereikt melding */
+    .status-notice { padding: 20px 28px; border-top: 1px solid #e2e8f0; display: flex; align-items: flex-start; gap: 14px; }
+    .status-notice.achieved { background: #f0f9ff; }
+    .status-notice.closed   { background: #f8fafc; }
+    .status-notice .icon { font-size: 28px; flex-shrink: 0; }
+    .status-notice h4 { font-weight: 700; font-size: 15px; margin-bottom: 4px; }
+    .status-notice p { font-size: 13px; color: #64748b; line-height: 1.5; }
+
+    /* Doneer formulier toggle */
+    .donate-toggle { display: flex; align-items: center; justify-content: space-between; padding: 18px 28px; background: #f8fafc; border-top: 1px solid #e2e8f0; cursor: pointer; user-select: none; transition: background .15s; }
+    .donate-toggle:hover { background: #f1f5f9; }
+    .donate-toggle-text { font-size: 14px; font-weight: 700; color: #1e3a8a; display: flex; align-items: center; gap: 8px; }
+    .toggle-arrow { color: #94a3b8; transition: transform .2s; font-size: 14px; }
+    .toggle-arrow.open { transform: rotate(180deg); }
+
+    .donate-form-wrap { display: none; padding: 24px 28px; border-top: 1px solid #e2e8f0; }
+    .donate-form-wrap.open { display: block; }
+
+    /* Bedragknoppen */
+    .amount-row { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+    .amt-btn { padding: 9px 18px; border: 2px solid #e2e8f0; border-radius: 10px; background: white; font-size: 14px; font-weight: 700; cursor: pointer; transition: all .15s; font-family: 'Archivo', sans-serif; }
+    .amt-btn:hover  { border-color: #4f6ef7; color: #4f6ef7; }
+    .amt-btn.active { border-color: #4f6ef7; background: #eef1ff; color: #4f6ef7; }
+
+    /* Zichtbaarheidsblok */
+    .visibility-block { margin-bottom: 16px; }
+    .visibility-label { font-size: 11px; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: .06em; margin-bottom: 8px; display: block; }
+    .visibility-options { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; }
+    .vis-btn { padding: 7px 14px; border: 2px solid #e2e8f0; border-radius: 8px; background: white; font-size: 13px; font-weight: 600; cursor: pointer; transition: all .15s; font-family: 'Space Grotesk', sans-serif; }
+    .vis-btn:hover  { border-color: #4f6ef7; }
+    .vis-btn.active { border-color: #4f6ef7; background: #eef1ff; color: #4f6ef7; }
+
+    /* Formulier rijen */
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+    .form-group { display: flex; flex-direction: column; gap: 4px; }
+    .form-group label { font-size: 11px; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: .05em; }
+    .form-group input { padding: 10px 12px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 14px; font-family: 'Space Grotesk', sans-serif; transition: border-color .15s; }
+    .form-group input:focus { outline: none; border-color: #4f6ef7; }
+    .form-group.hidden { display: none; }
+
+    .donate-submit { width: 100%; padding: 13px; background: linear-gradient(135deg, #4f6ef7, #7c3aed); color: white; border: none; border-radius: 10px; font-size: 15px; font-weight: 700; cursor: pointer; margin-top: 12px; transition: opacity .15s, transform .15s; font-family: 'Archivo', sans-serif; }
+    .donate-submit:hover { opacity: .9; transform: translateY(-1px); }
+    .donate-submit:disabled { opacity: .6; transform: none; cursor: default; }
+    .donate-disclaimer { font-size: 11px; color: #94a3b8; text-align: center; margin-top: 8px; }
+
+    /* Bedankmelding */
+    .thank-you { padding: 32px 28px; text-align: center; border-top: 1px solid #e2e8f0; }
+    .thank-you .check { font-size: 44px; margin-bottom: 10px; }
+    .thank-you h3 { font-family: 'Archivo', sans-serif; font-size: 20px; font-weight: 800; color: #16a34a; margin-bottom: 6px; }
+    .thank-you p { font-size: 14px; color: #64748b; }
+    .thank-you .highlight { font-weight: 700; color: #1a202c; }
+
+    /* Altijd-doneerknop sectie */
+    .general-donate { background: white; border-radius: 16px; box-shadow: 0 2px 10px rgba(0,0,0,.07); margin-top: 32px; overflow: hidden; }
+    .general-donate-header { padding: 26px 28px 20px; border-bottom: 1px solid #f1f5f9; }
+    .general-donate-header h3 { font-family: 'Archivo', sans-serif; font-size: 17px; font-weight: 800; margin-bottom: 4px; }
+    .general-donate-header p { font-size: 14px; color: #64748b; line-height: 1.5; }
+    .general-donate-body { padding: 24px 28px; }
+
+    footer { background: #1e293b; color: rgba(255,255,255,.4); text-align: center; padding: 22px; font-size: 12px; margin-top: 40px; }
+  </style>
+</head>
+<body>
+
+<div class="demo-bar">
+  <strong>🎯 4deklas Demo</strong> · Stap 1: <a href="/doneren">Doneer als ouder →</a> · Stap 2: <a href="/dashboard">Log in als directeur →</a>
+</div>
+
+<div class="topbar">
+  <div class="topbar-left">
+    <div class="school-logo">🌈</div>
+    <div>
+      <div class="school-name">De Regenboogschool</div>
+      <div class="school-sub">Donatiepagina</div>
+    </div>
+  </div>
+  <a href="/" class="back-link">← Terug naar schoolwebsite</a>
+</div>
+
+<nav>
+  <ul>
+    <li><a href="/">Home</a></li>
+    <li><a href="#">Over ons</a></li>
+    <li><a href="#">Onderwijs</a></li>
+    <li><a href="#">Nieuws</a></li>
+    <li><a href="/verhaal">Ons verhaal</a></li>
+    <li><a href="/kritisch">Kritisch bekeken</a></li>
+    <li class="cta"><a href="/doneren">❤️ Doneren</a></li>
+  </ul>
+</nav>
+
+<div class="page-header">
+  <div class="school-tag">❤️ Steun onze school</div>
+  <h1>Help ons onze doelen te bereiken</h1>
+  <p>Kies een project en doneer direct. Elke bijdrage is zichtbaar op de voortgangsbalk en gaat rechtstreeks naar de school.</p>
+  <a href="/verhaal" style="display:inline-block;margin-top:16px;color:rgba(255,255,255,.7);font-size:13px;text-decoration:none;border-bottom:1px solid rgba(255,255,255,.35);padding-bottom:1px;transition:color .15s" onmouseover="this.style.color='white'" onmouseout="this.style.color='rgba(255,255,255,.7)'">Nieuw hier? Lees waarom scholen hiervan profiteren →</a>
+</div>
+
+<div class="stats-bar">
+  <div class="stats-bar-inner" id="stats-bar"></div>
+</div>
+
+<div class="main">
+  <div class="projects-label">Actieve projecten</div>
+  <div class="projects-title">Waarvoor kunt u doneren?</div>
+  <div class="projects-sub">Klik op "Ik wil doneren" onder een project om uw bijdrage te doen.</div>
+  <div id="projects-container"></div>
+
+  <!-- Altijd-doneerknop -->
+  <div class="general-donate" id="general-donate-section">
+    <div class="general-donate-header">
+      <h3>🎁 Algemene bijdrage aan de school</h3>
+      <p>Wilt u doneren zonder specifiek project te kiezen? Uw bijdrage gaat naar het fonds voor toekomstige projecten van de school.</p>
+    </div>
+    <div class="general-donate-body" id="general-form-body"></div>
+  </div>
+</div>
+
+<footer>
+  <p>Demo op 4deklas.nl · Geen echte betalingen · Data verdwijnt als u de browsercache wist</p>
+</footer>
+
+<script src="/sf-state.js"></script>
+<script>
+  const selectedAmounts = {};
+  const selectedVisibility = {};
+  const selectedFrequency = {};
+
+  function renderStats() {
+    const s = SF.get();
+    const activeProjects = s.projects.filter(p => p.status === 'active');
+    const total = activeProjects.reduce((a, p) => a + p.collected, 0);
+    const goal  = activeProjects.reduce((a, p) => a + p.goal, 0);
+    document.getElementById('stats-bar').innerHTML = `
+      <div><div class="stat-val blue">${SF.euro(total)}</div><div class="stat-lbl">opgehaald voor actieve projecten</div></div>
+      <div class="divider"></div>
+      <div><div class="stat-val">${SF.euro(goal)}</div><div class="stat-lbl">totaaldoel actieve projecten</div></div>
+      <div class="divider"></div>
+      <div><div class="stat-val green">${SF.pct(total, goal || 1)}%</div><div class="stat-lbl">van het doel bereikt</div></div>
+      <div class="divider"></div>
+      <div><div class="stat-val">${activeProjects.length}</div><div class="stat-lbl">actieve projecten</div></div>
+    `;
+  }
+
+  function visibilityBlock(pid) {
+    const vis = selectedVisibility[pid] || 'named';
+    return `
+      <div class="visibility-block">
+        <span class="visibility-label">Hoe wilt u vermeld worden?</span>
+        <div class="visibility-options">
+          <button class="vis-btn ${vis==='named'?'active':''}"   onclick="setVis(${pid},'named',this)">Op naam</button>
+          <button class="vis-btn ${vis==='company'?'active':''}" onclick="setVis(${pid},'company',this)">Als bedrijf</button>
+          <button class="vis-btn ${vis==='anonymous'?'active':''}" onclick="setVis(${pid},'anonymous',this)">Anoniem</button>
+          <button class="vis-btn ${vis==='hidden'?'active':''}"  onclick="setVis(${pid},'hidden',this)">Geen vermelding</button>
+        </div>
+        <div class="form-row">
+          <div class="form-group" id="name-group-${pid}" style="${(vis==='anonymous'||vis==='hidden')?'display:none':''}" >
+            <label>Uw naam</label>
+            <input type="text" id="name-${pid}" placeholder="Jan de Vries">
+          </div>
+          <div class="form-group" id="company-group-${pid}" style="${vis==='company'?'':'display:none'}">
+            <label>Bedrijfsnaam</label>
+            <input type="text" id="company-${pid}" placeholder="Mijn BV">
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  function setVis(pid, vis, btn) {
+    selectedVisibility[pid] = vis;
+    const wrap = btn.closest('.visibility-block') || btn.closest('.general-donate-body');
+    wrap.querySelectorAll('.vis-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const nameGroup    = document.getElementById(`name-group-${pid}`);
+    const companyGroup = document.getElementById(`company-group-${pid}`);
+    if (nameGroup)    nameGroup.style.display    = (vis==='anonymous'||vis==='hidden') ? 'none' : '';
+    if (companyGroup) companyGroup.style.display = vis === 'company' ? '' : 'none';
+  }
+
+  function setFreq(pid, freq, btn) {
+    selectedFrequency[pid] = freq;
+    document.querySelectorAll(`#freq-opts-${pid} .vis-btn`).forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const note = document.getElementById(`freq-note-${pid}`);
+    if (note) note.style.display = freq === 'monthly' ? 'block' : 'none';
+    const submitBtn = document.getElementById(`btn-${pid}`);
+    if (submitBtn) {
+      const isGen = submitBtn.dataset.general === 'true';
+      submitBtn.innerHTML = freq === 'monthly'
+        ? '🔄 Maandelijks doneren instellen'
+        : (isGen ? '💳 Algemene donatie doen' : '💳 Doneer via iDEAL');
+    }
+  }
+
+  function donateForm(pid, isGeneral) {
+    return `
+      <div class="visibility-block" style="margin-bottom:16px">
+        <span class="visibility-label">Frequentie</span>
+        <div class="visibility-options" id="freq-opts-${pid}">
+          <button class="vis-btn active" onclick="setFreq(${pid},'once',this)">Eenmalig</button>
+          <button class="vis-btn" onclick="setFreq(${pid},'monthly',this)">🔄 Maandelijks</button>
+        </div>
+        <div id="freq-note-${pid}" style="display:none;font-size:12px;color:#4f6ef7;margin-top:6px;padding:8px 10px;background:#eef1ff;border-radius:8px;line-height:1.5">
+          Uw donatie wordt elke maand automatisch herhaald. Stopzetten is altijd mogelijk via uw bank of de school.
+        </div>
+      </div>
+      <div class="amount-row" id="amts-${pid}">
+        ${[5,10,25,50,100].map(a => `<button class="amt-btn" onclick="selectAmt(${pid},${a},this)">€${a}</button>`).join('')}
+      </div>
+      <div class="form-group" style="margin-bottom:12px">
+        <label>Eigen bedrag (€)</label>
+        <input type="number" id="custom-${pid}" placeholder="bijv. 30" min="1" style="max-width:180px" oninput="clearAmts(${pid})">
+      </div>
+      ${visibilityBlock(pid)}
+      <div class="form-group" style="margin-bottom:14px">
+        <label>Berichtje aan de school (optioneel)</label>
+        <input type="text" id="msg-${pid}" placeholder="Succes met het project!">
+      </div>
+      <button class="donate-submit" id="btn-${pid}" data-general="${isGeneral}" onclick="donate(${pid})">
+        💳 ${isGeneral ? 'Algemene donatie doen' : 'Doneer via iDEAL'}
+      </button>
+      <div class="donate-disclaimer">Demo · 2% platformvergoeding · Geen echte betaling</div>
+    `;
+  }
+
+  function renderProjects() {
+    const s = SF.get();
+    const container = document.getElementById('projects-container');
+
+    container.innerHTML = s.projects.map(p => {
+      const isClosed   = p.status === 'closed';
+      const isAchieved = p.status === 'achieved';
+      const pct = SF.pct(p.collected, p.goal);
+
+      let statusBadge = '<span class="badge badge-active">Actief</span>';
+      if (isAchieved) statusBadge = '<span class="badge badge-achieved">Doel bereikt 🎉</span>';
+      if (isClosed)   statusBadge = '<span class="badge badge-closed">Gesloten</span>';
+
+      let bottomSection = '';
+      if (isAchieved) {
+        bottomSection = `<div class="status-notice achieved">
+          <div class="icon">🎉</div>
+          <div>
+            <h4>Dit project is volledig gefinancierd!</h4>
+            <p>Dankzij alle donateurs is het doel bereikt. Scroll naar beneden voor een algemene donatie aan de school.</p>
+          </div>
+        </div>`;
+      } else if (isClosed) {
+        bottomSection = `<div class="status-notice closed">
+          <div class="icon">🔒</div>
+          <div>
+            <h4>Dit project is gesloten</h4>
+            <p>De school heeft dit project afgesloten. U kunt een algemene donatie doen onderaan de pagina.</p>
+          </div>
+        </div>`;
+      } else {
+        bottomSection = `
+          <div class="donate-toggle" onclick="toggleForm(${p.id})">
+            <div class="donate-toggle-text">❤ Ik wil doneren aan dit project</div>
+            <div class="toggle-arrow" id="arrow-${p.id}">▼</div>
+          </div>
+          <div class="donate-form-wrap" id="form-${p.id}">
+            ${donateForm(p.id, false)}
+          </div>
+          <div class="thank-you" id="thanks-${p.id}" style="display:none"></div>
+        `;
+      }
+
+      return `<div class="project-card" id="card-${p.id}">
+        <div class="project-body">
+          <div class="project-top">
+            <div>
+              <div class="project-title">${p.title}</div>
+              <div class="project-desc">${p.description}</div>
+            </div>
+            ${statusBadge}
+          </div>
+          <div class="progress-track">
+            <div class="progress-fill" id="bar-${p.id}" style="width:${pct}%"></div>
+          </div>
+          <div class="progress-meta">
+            <div>
+              <div class="progress-collected" id="collected-${p.id}">${SF.euro(p.collected)}</div>
+              <div class="progress-goal">van ${SF.euro(p.goal)}</div>
+            </div>
+            <div class="progress-pct" id="pct-${p.id}">${pct}% bereikt</div>
+          </div>
+        </div>
+        ${bottomSection}
+      </div>`;
+    }).join('');
+
+    // Algemene donatie sectie
+    document.getElementById('general-form-body').innerHTML = donateForm(0, true);
+    document.getElementById('thanks-0') || document.getElementById('general-form-body').insertAdjacentHTML('beforeend', '<div id="thanks-0" style="display:none"></div>');
+  }
+
+  function toggleForm(id) {
+    const form  = document.getElementById(`form-${id}`);
+    const arrow = document.getElementById(`arrow-${id}`);
+    const open  = form.classList.toggle('open');
+    arrow.classList.toggle('open', open);
+  }
+
+  function selectAmt(pid, amount, btn) {
+    selectedAmounts[pid] = amount;
+    document.getElementById(`custom-${pid}`).value = '';
+    document.querySelectorAll(`#amts-${pid} .amt-btn`).forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+  }
+
+  function clearAmts(pid) {
+    selectedAmounts[pid] = null;
+    document.querySelectorAll(`#amts-${pid} .amt-btn`).forEach(b => b.classList.remove('active'));
+  }
+
+  function donate(projectId) {
+    const custom = parseFloat(document.getElementById(`custom-${projectId}`).value);
+    const amount = custom || selectedAmounts[projectId];
+    if (!amount || amount < 1) { alert('Kies of voer een bedrag in.'); return; }
+
+    const vis  = selectedVisibility[projectId] || 'named';
+    const freq = selectedFrequency[projectId] || 'once';
+    const name    = (document.getElementById(`name-${projectId}`) || {}).value?.trim() || '';
+    const company = (document.getElementById(`company-${projectId}`) || {}).value?.trim() || '';
+    const msg     = (document.getElementById(`msg-${projectId}`) || {}).value?.trim() || '';
+
+    const btn = document.getElementById(`btn-${projectId}`);
+    btn.textContent = 'Verwerken…';
+    btn.disabled = true;
+
+    setTimeout(() => {
+      const result = SF.donate(projectId, amount, name, company, msg, vis, freq);
+
+      if (result.error) {
+        const isGen = btn.dataset.general === 'true';
+        btn.innerHTML = freq === 'monthly' ? '🔄 Maandelijks doneren instellen' : (isGen ? '💳 Algemene donatie doen' : '💳 Doneer via iDEAL');
+        btn.disabled = false;
+        alert(result.error);
+        return;
+      }
+
+      // Verberg formulier, toon bedankt
+      if (projectId === 0) {
+        document.getElementById('general-form-body').style.display = 'none';
+      } else {
+        document.getElementById(`form-${projectId}`).style.display = 'none';
+        document.querySelector(`#card-${projectId} .donate-toggle`).style.display = 'none';
+      }
+
+      // Update meter (alleen voor projectdonaties)
+      if (result.project) {
+        const p = result.project;
+        document.getElementById(`bar-${projectId}`).style.width = SF.pct(p.collected, p.goal) + '%';
+        document.getElementById(`collected-${projectId}`).textContent = SF.euro(p.collected);
+        document.getElementById(`pct-${projectId}`).textContent = SF.pct(p.collected, p.goal) + '% bereikt';
+      }
+
+      const isMonthly = freq === 'monthly';
+      const thanks = document.getElementById(`thanks-${projectId}`);
+      thanks.style.display = 'block';
+      thanks.innerHTML = `
+        <div class="check">${isMonthly ? '🔄' : '🎉'}</div>
+        <h3>${isMonthly ? 'Maandelijkse donatie geregistreerd!' : 'Hartelijk dank!'}</h3>
+        <p>Uw ${isMonthly ? 'maandelijkse ' : ''}${projectId === 0 ? 'algemene ' : ''}donatie van <span class="highlight">${SF.euro(result.donation.amount)}${isMonthly ? ' per maand' : ''}</span> is ${isMonthly ? 'geregistreerd' : 'ontvangen'}.</p>
+        <p style="margin-top:6px">De school ontvangt <strong>${SF.euro(result.donation.net_amount)}</strong>${isMonthly ? ' per maand' : ''} (na ${SF.euro(result.donation.platform_fee)} platformvergoeding).</p>
+        ${result.project ? `<p style="margin-top:14px;color:#4f6ef7;font-weight:700">Project staat nu op ${SF.pct(result.project.collected, result.project.goal)}% 🙌</p>` : ''}
+        ${isMonthly ? '<p style="margin-top:8px;font-size:12px;color:#94a3b8">Elke maand wordt dit bedrag herhaald. Stopzetten kan altijd via uw bank of de school.</p>' : ''}
+        <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:20px">
+          <a href="/" style="display:inline-flex;align-items:center;gap:6px;padding:9px 18px;background:#f1f5f9;border-radius:8px;font-size:13px;font-weight:700;color:#1e293b;text-decoration:none">← Terug naar schoolwebsite</a>
+          <a href="/verhaal" style="display:inline-flex;align-items:center;gap:6px;padding:9px 18px;background:#eef1ff;border-radius:8px;font-size:13px;font-weight:700;color:#4f6ef7;text-decoration:none">Lees ons verhaal →</a>
+        </div>
+      `;
+
+      renderStats();
+    }, 700);
+  }
+
+  renderStats();
+  renderProjects();
+
+  // Selecteer standaard €10 voor betere demo-ervaring
+  setTimeout(() => {
+    document.querySelectorAll('.amt-btn').forEach(btn => {
+      if (btn.textContent === '€10') btn.click();
+    });
+  }, 150);
+</script>
+</body>
+</html>

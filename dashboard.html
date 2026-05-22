@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex">
+  <title>Admin Dashboard — 4deklas Demo</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;700;800&family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Space Grotesk', system-ui, sans-serif; background: #f1f5f9; color: #1a202c; }
+
+    /* ── Login ── */
+    .login-screen { min-height: 100vh; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #0f0c29, #1e3a8a); }
+    .login-box { background: white; border-radius: 20px; padding: 44px 36px; width: 380px; box-shadow: 0 20px 60px rgba(0,0,0,.4); text-align: center; }
+    .login-logo { font-size: 32px; margin-bottom: 6px; }
+    .login-brand { font-family: 'Archivo', sans-serif; font-size: 22px; font-weight: 800; color: #1e3a8a; margin-bottom: 4px; }
+    .login-brand span { color: #4f6ef7; }
+    .login-sub { font-size: 13px; color: #94a3b8; margin-bottom: 24px; }
+    .login-label { display: block; text-align: left; font-size: 11px; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: .06em; margin-bottom: 5px; }
+    .login-input { width: 100%; padding: 11px 14px; border: 2px solid #e2e8f0; border-radius: 10px; font-size: 14px; margin-bottom: 12px; font-family: 'Space Grotesk', sans-serif; transition: border-color .15s; }
+    .login-input:focus { outline: none; border-color: #4f6ef7; }
+    .login-btn { width: 100%; padding: 12px; background: linear-gradient(135deg, #4f6ef7, #7c3aed); color: white; border: none; border-radius: 10px; font-size: 15px; font-weight: 700; cursor: pointer; font-family: 'Archivo', sans-serif; }
+    .login-error { color: #dc2626; font-size: 13px; margin-top: 10px; display: none; }
+    .login-hint { margin-top: 16px; font-size: 12px; color: #cbd5e1; line-height: 1.6; text-align: left; background: #f8fafc; border-radius: 8px; padding: 10px 14px; }
+    .login-hint strong { color: #64748b; }
+
+    /* ── Dashboard shell ── */
+    .dashboard { display: none; }
+    .topbar { background: #0f172a; color: white; padding: 0 24px; display: flex; align-items: center; justify-content: space-between; height: 54px; }
+    .topbar-brand { font-family: 'Archivo', sans-serif; font-size: 17px; font-weight: 800; }
+    .topbar-brand span { color: #60a5fa; }
+    .topbar-right { display: flex; align-items: center; gap: 14px; }
+    .role-badge { font-size: 10px; font-weight: 700; padding: 3px 8px; border-radius: 4px; }
+    .role-badge.director { background: #dc2626; color: white; }
+    .role-badge.user     { background: #2563eb; color: white; }
+    .demo-badge { background: rgba(255,255,255,.1); color: rgba(255,255,255,.6); font-size: 10px; font-weight: 700; padding: 3px 7px; border-radius: 4px; }
+    .current-user-name { font-size: 13px; color: rgba(255,255,255,.65); }
+    .logout-btn { background: none; border: 1px solid rgba(255,255,255,.2); color: rgba(255,255,255,.65); padding: 5px 12px; border-radius: 6px; font-size: 12px; cursor: pointer; transition: all .15s; }
+    .logout-btn:hover { border-color: rgba(255,255,255,.5); color: white; }
+    .refresh-note { font-size: 11px; color: rgba(255,255,255,.35); }
+
+    /* ── Layout ── */
+    .layout { display: flex; min-height: calc(100vh - 54px); }
+    .sidebar { width: 210px; background: #1e293b; padding: 20px 0; flex-shrink: 0; }
+    .sidebar-section { font-size: 10px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: #475569; padding: 14px 18px 5px; }
+    .sidebar nav a { display: flex; align-items: center; gap: 9px; padding: 10px 18px; color: #94a3b8; text-decoration: none; font-size: 13px; border-left: 3px solid transparent; transition: all .15s; }
+    .sidebar nav a:hover { background: #334155; color: #e2e8f0; }
+    .sidebar nav a.active { background: #1e3a8a; color: white; border-left-color: #60a5fa; }
+    .sidebar nav a.danger { color: #f87171; }
+    .sidebar hr { border: none; border-top: 1px solid #334155; margin: 10px 0; }
+
+    .main { flex: 1; padding: 28px; overflow: auto; }
+    .page-title { font-family: 'Archivo', sans-serif; font-size: 22px; font-weight: 800; margin-bottom: 4px; }
+    .page-sub { font-size: 13px; color: #64748b; margin-bottom: 24px; }
+
+    /* ── Stat cards ── */
+    .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 24px; }
+    .stats-grid.two-col { grid-template-columns: repeat(2, 1fr); }
+    .stat-card { background: white; border-radius: 12px; padding: 20px; box-shadow: 0 1px 4px rgba(0,0,0,.06); border-left: 4px solid transparent; }
+    .stat-card.blue   { border-left-color: #3b82f6; }
+    .stat-card.green  { border-left-color: #22c55e; }
+    .stat-card.purple { border-left-color: #a855f7; }
+    .stat-card.orange { border-left-color: #f97316; }
+    .stat-lbl { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .07em; color: #94a3b8; margin-bottom: 8px; }
+    .stat-val { font-family: 'Archivo', sans-serif; font-size: 26px; font-weight: 800; }
+    .stat-card.blue   .stat-val { color: #2563eb; }
+    .stat-card.green  .stat-val { color: #16a34a; }
+    .stat-card.purple .stat-val { color: #9333ea; }
+    .stat-card.orange .stat-val { color: #ea580c; }
+    .stat-sub { font-size: 11px; color: #94a3b8; margin-top: 5px; }
+
+    /* ── Cards / tabellen ── */
+    .card { background: white; border-radius: 12px; box-shadow: 0 1px 4px rgba(0,0,0,.06); margin-bottom: 20px; overflow: hidden; }
+    .card-header { padding: 16px 22px; border-bottom: 1px solid #f1f5f9; }
+    .card-title { font-weight: 700; font-size: 14px; }
+    .card-sub { font-size: 12px; color: #94a3b8; margin-top: 2px; }
+
+    table { width: 100%; border-collapse: collapse; }
+    th { background: #f8fafc; padding: 10px 14px; text-align: left; font-size: 10px; color: #64748b; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; border-bottom: 1px solid #e2e8f0; white-space: nowrap; }
+    td { padding: 11px 14px; font-size: 13px; border-bottom: 1px solid #f8fafc; vertical-align: middle; }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: #fafbff; }
+    .amount { font-weight: 700; }
+    .green-t  { color: #16a34a; }
+    .blue-t   { color: #2563eb; }
+    .purple-t { color: #9333ea; }
+    .muted { color: #94a3b8; font-size: 12px; }
+
+    /* ── Badges ── */
+    .badge { display: inline-block; padding: 3px 9px; border-radius: 99px; font-size: 11px; font-weight: 700; white-space: nowrap; }
+    .badge-active   { background: #dcfce7; color: #15803d; }
+    .badge-achieved { background: #dbeafe; color: #1d4ed8; }
+    .badge-closed   { background: #f1f5f9; color: #64748b; }
+    .badge-expired  { background: #ffedd5; color: #c2410c; }
+    .badge-neutral  { background: #f1f5f9; color: #475569; }
+    .badge-monthly  { background: #eef1ff; color: #4f6ef7; }
+    .badge-director { background: #fee2e2; color: #dc2626; }
+    .badge-user     { background: #dbeafe; color: #1d4ed8; }
+
+    /* ── Actieknoppen ── */
+    .action-btns { display: flex; gap: 6px; flex-wrap: wrap; }
+    .btn-sm { padding: 4px 10px; border-radius: 6px; font-size: 11px; font-weight: 700; cursor: pointer; border: none; transition: all .15s; white-space: nowrap; font-family: 'Space Grotesk', sans-serif; }
+    .btn-close  { background: #f1f5f9; color: #475569; }
+    .btn-close:hover  { background: #e2e8f0; }
+    .btn-reopen { background: #dcfce7; color: #15803d; }
+    .btn-reopen:hover { background: #bbf7d0; }
+    .btn-delete { background: #fee2e2; color: #dc2626; }
+    .btn-delete:hover { background: #fecaca; }
+
+    /* ── Mini voortgangsbalk ── */
+    .mini-bar { display: inline-flex; align-items: center; gap: 6px; }
+    .mini-track { background: #e2e8f0; border-radius: 99px; height: 6px; width: 72px; overflow: hidden; display: inline-block; }
+    .mini-fill  { background: linear-gradient(90deg, #4f6ef7, #7c3aed); height: 100%; border-radius: 99px; }
+    .mini-pct   { font-size: 12px; font-weight: 700; color: #4f6ef7; }
+
+    /* ── Formulieren ── */
+    .form-grid { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 10px; padding: 20px 22px 10px; }
+    .form-grid.three { grid-template-columns: repeat(3, 1fr); }
+    .form-group { display: flex; flex-direction: column; gap: 4px; }
+    .form-group.full { grid-column: 1/-1; }
+    .form-group label { font-size: 10px; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: .06em; }
+    .form-group input, .form-group textarea { padding: 8px 12px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 13px; font-family: 'Space Grotesk', sans-serif; transition: border-color .15s; }
+    .form-group input:focus, .form-group textarea:focus { outline: none; border-color: #4f6ef7; }
+    .form-group textarea { resize: vertical; min-height: 60px; }
+    .form-group input:disabled { background: #f8fafc; color: #94a3b8; cursor: not-allowed; }
+    .form-actions { padding: 12px 22px 20px; display: flex; align-items: center; gap: 10px; }
+    .btn-primary { background: linear-gradient(135deg, #4f6ef7, #7c3aed); color: white; border: none; border-radius: 8px; padding: 9px 20px; font-size: 13px; font-weight: 700; cursor: pointer; font-family: 'Archivo', sans-serif; transition: opacity .15s; }
+    .btn-primary:hover { opacity: .9; }
+    .btn-primary:disabled { opacity: .5; cursor: not-allowed; }
+    .form-feedback { font-size: 12px; }
+
+    /* ── Gebruikerslimiet indicator ── */
+    .user-limit { display: flex; align-items: center; gap: 8px; padding: 10px 22px; font-size: 13px; color: #64748b; border-top: 1px solid #f1f5f9; }
+    .user-limit-bar { flex: 1; background: #e2e8f0; border-radius: 99px; height: 6px; overflow: hidden; max-width: 120px; }
+    .user-limit-fill { background: #4f6ef7; height: 100%; border-radius: 99px; transition: width .3s; }
+    .user-limit.full .user-limit-fill { background: #dc2626; }
+
+    /* ── Embed ── */
+    .embed-box { background: #0f172a; color: #e2e8f0; border-radius: 8px; padding: 14px 18px; font-family: monospace; font-size: 12px; line-height: 1.7; margin: 0 22px 20px; }
+    .embed-box .comment { color: #475569; }
+    .embed-note { padding: 0 22px 20px; font-size: 12px; color: #64748b; line-height: 1.6; }
+  </style>
+</head>
+<body>
+
+<!-- ── Login ── -->
+<div class="login-screen" id="login-screen">
+  <div class="login-box">
+    <div class="login-logo">🏫</div>
+    <div class="login-brand">School<span>Fund</span></div>
+    <div class="login-sub">Schoolbeheer · voer uw wachtwoord in</div>
+
+    <div style="background:#fef9c3;border:2px solid #fbbf24;border-radius:10px;padding:14px 18px;margin-bottom:20px;text-align:left">
+      <div style="font-weight:800;font-size:13px;color:#92400e;margin-bottom:6px">⭐ Demo-inloggegevens</div>
+      <div style="font-size:15px;color:#78350f">Directeur: <strong style="font-family:monospace;font-size:17px;letter-spacing:.03em">admin2025</strong></div>
+    </div>
+
+    <label class="login-label">Wachtwoord</label>
+    <input type="password" class="login-input" id="login-pw" placeholder="admin2025"
+           onkeydown="if(event.key==='Enter') tryLogin()">
+
+    <button class="login-btn" onclick="tryLogin()">Inloggen als directeur</button>
+    <div class="login-error" id="login-error">Ongeldig wachtwoord.</div>
+  </div>
+</div>
+
+<!-- ── Dashboard ── -->
+<div class="dashboard" id="dashboard">
+  <div class="topbar">
+    <div class="topbar-brand">School<span>Fund</span></div>
+    <div class="topbar-right">
+      <span class="role-badge" id="role-badge">–</span>
+      <span class="demo-badge">DEMO</span>
+      <span class="current-user-name" id="topbar-username"></span>
+      <span class="refresh-note" id="last-refresh"></span>
+      <button class="logout-btn" onclick="logout()">Uitloggen</button>
+    </div>
+  </div>
+
+  <div class="layout">
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <div class="sidebar-section">Beheer</div>
+      <nav id="sidebar-nav">
+        <!-- gevuld door JS op basis van rol -->
+      </nav>
+      <hr>
+      <nav>
+        <a href="/" target="_blank">🏫 Schoolwebsite</a>
+        <a href="/doneren" target="_blank">👁️ Donateurspagina</a>
+        <a href="/verhaal" target="_blank">📖 Ons verhaal</a>
+        <a href="/kritisch" target="_blank">🧐 Kritisch bekeken</a>
+      </nav>
+    </div>
+
+    <!-- Hoofd inhoud -->
+    <div class="main">
+      <div class="page-title" id="page-title">Financieel overzicht</div>
+      <div class="page-sub" id="page-sub">De Regenboogschool</div>
+
+      <!-- Stats -->
+      <div class="stats-grid" id="stats-grid"></div>
+
+      <!-- Projecten -->
+      <div class="card" id="projecten">
+        <div class="card-header">
+          <div class="card-title">Projecten</div>
+          <div class="card-sub" id="projects-card-sub">Beheer status — sluit af, heropen of verwijder</div>
+        </div>
+        <table>
+          <thead><tr id="projects-thead"></tr></thead>
+          <tbody id="projects-tbody"></tbody>
+        </table>
+      </div>
+
+      <!-- Donaties -->
+      <div class="card" id="donaties">
+        <div class="card-header">
+          <div class="card-title">Donaties</div>
+          <div class="card-sub" id="donations-card-sub">Overzicht van ontvangen donaties</div>
+        </div>
+        <table>
+          <thead><tr id="donations-thead"></tr></thead>
+          <tbody id="donations-tbody"></tbody>
+        </table>
+      </div>
+
+      <!-- Nieuw project -->
+      <div class="card" id="nieuw">
+        <div class="card-header"><div class="card-title">Nieuw project aanmaken</div></div>
+        <div class="form-grid">
+          <div class="form-group full">
+            <label>Projectnaam</label>
+            <input type="text" id="new-title" placeholder="bijv. Nieuwe gymkleding">
+          </div>
+          <div class="form-group full">
+            <label>Omschrijving</label>
+            <textarea id="new-desc" placeholder="Waarvoor is het geld?"></textarea>
+          </div>
+          <div class="form-group">
+            <label>Doelbedrag (€)</label>
+            <input type="number" id="new-goal" placeholder="bijv. 5000" min="1">
+          </div>
+          <div class="form-group">
+            <label>Sluitingsdatum (optioneel)</label>
+            <input type="date" id="new-enddate">
+          </div>
+        </div>
+        <div class="form-actions">
+          <button class="btn-primary" onclick="createProject()">Project aanmaken</button>
+          <span class="form-feedback" id="create-feedback"></span>
+        </div>
+      </div>
+
+      <!-- Gebruikersbeheer (alleen directeur) -->
+      <div class="card" id="gebruikers" style="display:none">
+        <div class="card-header">
+          <div class="card-title">👥 Gebruikersbeheer</div>
+          <div class="card-sub">Medewerkers die toegang hebben tot dit dashboard</div>
+        </div>
+        <table>
+          <thead><tr>
+            <th>Naam</th><th>Gebruikersnaam</th><th>Rol</th><th>Actie</th>
+          </tr></thead>
+          <tbody id="users-tbody"></tbody>
+        </table>
+        <div class="user-limit" id="user-limit-bar-wrap">
+          <span id="user-limit-text"></span>
+          <div class="user-limit-bar"><div class="user-limit-fill" id="user-limit-fill"></div></div>
+        </div>
+        <div class="form-grid three" id="user-form">
+          <div class="form-group">
+            <label>Naam</label>
+            <input type="text" id="new-user-name" placeholder="bijv. Juf Lisa">
+          </div>
+          <div class="form-group">
+            <label>Gebruikersnaam</label>
+            <input type="text" id="new-user-username" placeholder="bijv. juf.lisa">
+          </div>
+          <div class="form-group">
+            <label>Wachtwoord</label>
+            <input type="text" id="new-user-password" placeholder="bijv. welkom01">
+          </div>
+        </div>
+        <div class="form-actions">
+          <button class="btn-primary" id="add-user-btn" onclick="createUser()">Gebruiker aanmaken</button>
+          <span class="form-feedback" id="user-feedback"></span>
+        </div>
+      </div>
+
+      <!-- Embed code -->
+      <div class="card" id="embed">
+        <div class="card-header">
+          <div class="card-title">Widget op schoolwebsite plaatsen</div>
+          <div class="card-sub">Kopieer naar de HTML van de schoolsite</div>
+        </div>
+        <div class="embed-box">
+          <span class="comment">&lt;!-- 4deklas widget — vervang PROJECT_ID --&gt;</span><br>
+          &lt;div data-schoolfund-project="<strong>PROJECT_ID</strong>"&gt;&lt;/div&gt;<br>
+          &lt;script src="https://schoolfund.nl/widget.js"&gt;&lt;/script&gt;
+        </div>
+        <div class="embed-note">
+          Project-ID's staan in de tabel hierboven.<br>
+          Directe donateurspagina: <code>https://4deklas.nl/doneren</code>
+        </div>
+      </div>
+
+      <!-- Reset (alleen directeur) -->
+      <div id="reset-section" style="display:none;margin-bottom:20px">
+        <button onclick="resetDemo()" style="background:none;border:1px solid #fca5a5;color:#dc2626;padding:8px 16px;border-radius:8px;font-size:13px;cursor:pointer">
+          🗑️ Demo resetten naar beginstand
+        </button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script src="/sf-state.js"></script>
+<script>
+  let currentUser = null;
+
+  // ── Auth ──
+  function tryLogin() {
+    const password = document.getElementById('login-pw').value;
+    const user = SF.authenticate(password);
+    if (user) {
+      currentUser = user;
+      document.getElementById('login-screen').style.display = 'none';
+      document.getElementById('dashboard').style.display = 'block';
+      setupRoleUI();
+      render();
+      setInterval(render, 15000);
+    } else {
+      document.getElementById('login-error').style.display = 'block';
+      document.getElementById('login-pw').value = '';
+    }
+  }
+
+  function logout() {
+    currentUser = null;
+    document.getElementById('dashboard').style.display = 'none';
+    document.getElementById('login-screen').style.display = 'flex';
+    document.getElementById('login-pw').value = '';
+    document.getElementById('login-error').style.display = 'none';
+  }
+
+  const isDirector = () => currentUser && currentUser.role === 'director';
+
+  // ── Rol-gebaseerde UI ──
+  function setupRoleUI() {
+    const badge = document.getElementById('role-badge');
+    badge.textContent = isDirector() ? 'DIRECTEUR' : 'MEDEWERKER';
+    badge.className   = 'role-badge ' + (isDirector() ? 'director' : 'user');
+    document.getElementById('topbar-username').textContent = currentUser.name;
+
+    // Sidebar
+    const nav = document.getElementById('sidebar-nav');
+    nav.innerHTML = `
+      <a href="#projecten" class="active">📊 Overzicht</a>
+      <a href="#projecten">🎯 Projecten</a>
+      <a href="#donaties">💚 Donaties</a>
+      <a href="#nieuw">➕ Nieuw project</a>
+      ${isDirector() ? '<a href="#gebruikers">👥 Gebruikers</a>' : ''}
+      <a href="#embed">🔗 Widget code</a>
+    `;
+
+    // Kaarten zichtbaarheid
+    document.getElementById('gebruikers').style.display    = isDirector() ? 'block' : 'none';
+    document.getElementById('reset-section').style.display = isDirector() ? 'block' : 'none';
+
+    // Tabelkoppen afhankelijk van rol
+    document.getElementById('projects-card-sub').textContent = isDirector()
+      ? 'Beheer status — sluit af, heropen of verwijder'
+      : 'Bekijk projecten en sluit ze af';
+
+    document.getElementById('donations-card-sub').textContent = isDirector()
+      ? 'Inclusief financiële details en zichtbaarheidsvoorkeur donateur'
+      : 'Overzicht van donaties (zonder financiële details)';
+
+    // Tabelkoppen projecten
+    document.getElementById('projects-thead').innerHTML = [
+      '<th>ID</th><th>Project</th><th>Status</th><th>Einddatum</th>',
+      '<th>Voortgang</th><th>Opgehaald</th><th>Doel</th><th>Donaties</th>',
+      isDirector() ? '<th>School ontvangt</th><th>Platform fee</th>' : '',
+      '<th>Acties</th>'
+    ].join('');
+
+    // Tabelkoppen donaties
+    document.getElementById('donations-thead').innerHTML = isDirector()
+      ? '<th>#</th><th>Donateur</th><th>Bedrijf</th><th>Zichtbaarheid</th><th>Project</th><th>Bedrag</th><th>School ontvangt</th><th>Platform fee</th><th>Type</th><th>Berichtje</th><th>Tijdstip</th>'
+      : '<th>#</th><th>Donateur</th><th>Project</th><th>Type</th><th>Berichtje</th><th>Tijdstip</th>';
+  }
+
+  // ── Status badge ──
+  function statusBadge(p) {
+    if (p.status === 'achieved') return '<span class="badge badge-achieved">Doel bereikt ✓</span>';
+    if (p.status === 'closed')   return '<span class="badge badge-closed">Gesloten</span>';
+    const today = new Date().toISOString().split('T')[0];
+    if (p.end_date && p.end_date < today) return '<span class="badge badge-expired">Verlopen</span>';
+    return '<span class="badge badge-active">Actief</span>';
+  }
+
+  function actionBtns(p) {
+    const closeBtn  = p.status === 'active'
+      ? `<button class="btn-sm btn-close" onclick="doClose(${p.id})">Sluiten</button>` : '';
+    const reopenBtn = isDirector() && p.status !== 'active'
+      ? `<button class="btn-sm btn-reopen" onclick="doReopen(${p.id})">Heropenen</button>` : '';
+    const deleteBtn = isDirector()
+      ? `<button class="btn-sm btn-delete" onclick="doDelete(${p.id})">Verwijderen</button>` : '';
+    return `<div class="action-btns">${closeBtn}${reopenBtn}${deleteBtn}</div>`;
+  }
+
+  // ── Project acties ──
+  function doClose(id) {
+    if (confirm('Dit project sluiten? Donateurs kunnen daarna niet meer doneren.')) {
+      SF.closeProject(id); render();
+    }
+  }
+  function doReopen(id) { SF.reopenProject(id); render(); }
+  function doDelete(id) {
+    const result = SF.deleteProject(id);
+    if (result.error === 'has_donations') {
+      if (confirm(`⚠️ Er is al ${SF.euro(result.collected)} opgehaald voor dit project.\n\nVerwijderen betekent dat het project uit het overzicht verdwijnt. De donatiebedragen blijven wel in de totaalstatistieken.\n\nWeet u het zeker?`)) {
+        SF.forceDeleteProject(id); render();
+      }
+    } else if (result.success) { render(); }
+  }
+
+  // ── Render ──
+  function render() {
+    if (!currentUser) return;
+    const s = SF.get();
+    const totalCollected  = s.projects.reduce((a, p) => a + p.collected, 0);
+    const totalFees       = s.donations.reduce((a, d) => a + d.platform_fee, 0);
+    const activeCount     = s.projects.filter(p => p.status === 'active').length;
+    const monthlyAmount   = s.donations.filter(d => d.frequency === 'monthly').reduce((a, d) => a + d.amount, 0);
+    const monthlyCount    = s.donations.filter(d => d.frequency === 'monthly').length;
+
+    // Stats
+    if (isDirector()) {
+      document.getElementById('stats-grid').className = 'stats-grid';
+      document.getElementById('stats-grid').style.gridTemplateColumns = 'repeat(auto-fill, minmax(160px, 1fr))';
+      document.getElementById('stats-grid').innerHTML = `
+        <div class="stat-card blue"><div class="stat-lbl">Totaal ontvangen</div><div class="stat-val">${SF.euro(totalCollected)}</div><div class="stat-sub">bruto donaties</div></div>
+        <div class="stat-card green"><div class="stat-lbl">Uitbetaling school</div><div class="stat-val">${SF.euro(totalCollected - totalFees)}</div><div class="stat-sub">na 2% vergoeding</div></div>
+        <div class="stat-card purple"><div class="stat-lbl">Platforminkomsten</div><div class="stat-val">${SF.euro(totalFees)}</div><div class="stat-sub">2% commissie</div></div>
+        <div class="stat-card orange"><div class="stat-lbl">Actieve projecten</div><div class="stat-val">${activeCount}</div><div class="stat-sub">${s.donations.length} donaties totaal</div></div>
+        <div class="stat-card blue"><div class="stat-lbl">Maandelijks terugkerend</div><div class="stat-val">${SF.euro(monthlyAmount)}</div><div class="stat-sub">${monthlyCount} abonnement${monthlyCount !== 1 ? 'en' : ''} · per maand</div></div>
+      `;
+    } else {
+      document.getElementById('stats-grid').className = 'stats-grid two-col';
+      document.getElementById('stats-grid').innerHTML = `
+        <div class="stat-card orange"><div class="stat-lbl">Actieve projecten</div><div class="stat-val">${activeCount}</div><div class="stat-sub">van ${s.projects.length} totaal</div></div>
+        <div class="stat-card blue"><div class="stat-lbl">Aantal donaties</div><div class="stat-val">${s.donations.length}</div><div class="stat-sub">over alle projecten</div></div>
+      `;
+    }
+
+    // Projecten tabel
+    const projMap = Object.fromEntries(s.projects.map(p => [p.id, p.title]));
+    document.getElementById('projects-tbody').innerHTML = s.projects.length === 0
+      ? `<tr><td colspan="12" style="text-align:center;color:#94a3b8;padding:20px">Geen projecten — maak er een aan hieronder</td></tr>`
+      : s.projects.map(p => {
+          const fees  = s.donations.filter(d => d.project_id === p.id).reduce((a, d) => a + d.platform_fee, 0);
+          const count = s.donations.filter(d => d.project_id === p.id).length;
+          const pct   = SF.pct(p.collected, p.goal);
+          const finCols = isDirector()
+            ? `<td class="amount green-t">${SF.euro(p.collected - fees)}</td><td class="amount purple-t">${SF.euro(fees)}</td>`
+            : '';
+          return `<tr>
+            <td class="muted">${p.id}</td>
+            <td style="font-weight:700;max-width:200px">${p.title}</td>
+            <td>${statusBadge(p)}</td>
+            <td class="muted">${p.end_date ? new Date(p.end_date).toLocaleDateString('nl-NL') : '–'}</td>
+            <td><div class="mini-bar"><div class="mini-track"><div class="mini-fill" style="width:${pct}%"></div></div><span class="mini-pct">${pct}%</span></div></td>
+            <td class="amount blue-t">${SF.euro(p.collected)}</td>
+            <td class="muted">${SF.euro(p.goal)}</td>
+            <td class="muted">${count}</td>
+            ${finCols}
+            <td>${actionBtns(p)}</td>
+          </tr>`;
+        }).join('');
+
+    // Donaties tabel
+    const sorted = [...s.donations].sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+    document.getElementById('donations-tbody').innerHTML = sorted.length === 0
+      ? `<tr><td colspan="10" style="text-align:center;color:#94a3b8;padding:20px">Nog geen donaties</td></tr>`
+      : sorted.map(d => {
+          const donorDisplay = d.visibility === 'hidden'    ? '<span class="muted">—</span>'
+                             : d.visibility === 'anonymous' ? '<em class="muted">Anoniem</em>'
+                             : d.donor_name || '<span class="muted">–</span>';
+          const projName = d.project_id === 0
+            ? '<em class="muted">Algemeen</em>'
+            : `<span style="font-size:12px;color:#64748b">${projMap[d.project_id] || '–'}</span>`;
+
+          const freqBadge = d.frequency === 'monthly'
+            ? '<span class="badge badge-monthly">🔄 Maandelijks</span>'
+            : '<span class="badge badge-neutral">Eenmalig</span>';
+
+          if (isDirector()) {
+            return `<tr>
+              <td class="muted">${d.id}</td>
+              <td>${donorDisplay}</td>
+              <td>${d.company_name ? `<strong>${d.company_name}</strong>` : '<span class="muted">–</span>'}</td>
+              <td><span class="badge badge-neutral">${SF.visibilityLabel(d.visibility)}</span></td>
+              <td>${projName}</td>
+              <td class="amount blue-t">${SF.euro(d.amount)}</td>
+              <td class="amount green-t">${SF.euro(d.net_amount)}</td>
+              <td class="amount purple-t">${SF.euro(d.platform_fee)}</td>
+              <td>${freqBadge}</td>
+              <td class="muted">${d.message || '–'}</td>
+              <td class="muted">${SF.timeAgo(d.created_at)}</td>
+            </tr>`;
+          } else {
+            return `<tr>
+              <td class="muted">${d.id}</td>
+              <td>${donorDisplay}</td>
+              <td>${projName}</td>
+              <td>${freqBadge}</td>
+              <td class="muted">${d.message || '–'}</td>
+              <td class="muted">${SF.timeAgo(d.created_at)}</td>
+            </tr>`;
+          }
+        }).join('');
+
+    // Gebruikers (directeur)
+    if (isDirector()) {
+      const users = SF.getUsers();
+      const nonDirectors = users.filter(u => u.role !== 'director');
+      const count = nonDirectors.length;
+      const pct = Math.round((count / 5) * 100);
+      const isFull = count >= 5;
+
+      document.getElementById('users-tbody').innerHTML = users.map(u => `<tr>
+        <td style="font-weight:700">${u.name}</td>
+        <td class="muted"><code>${u.username}</code></td>
+        <td><span class="badge ${u.role === 'director' ? 'badge-director' : 'badge-user'}">${u.role === 'director' ? 'Directeur' : 'Medewerker'}</span></td>
+        <td>${u.role !== 'director'
+          ? `<button class="btn-sm btn-delete" onclick="deleteUser(${u.id})">Verwijderen</button>`
+          : '<span class="muted">–</span>'}</td>
+      </tr>`).join('');
+
+      const wrap = document.getElementById('user-limit-bar-wrap');
+      wrap.className = 'user-limit' + (isFull ? ' full' : '');
+      document.getElementById('user-limit-text').textContent = `${count} van 5 medewerkers aangemaakt`;
+      document.getElementById('user-limit-fill').style.width = pct + '%';
+
+      const addBtn = document.getElementById('add-user-btn');
+      addBtn.disabled = isFull;
+      ['new-user-name','new-user-username','new-user-password'].forEach(id => {
+        document.getElementById(id).disabled = isFull;
+      });
+      if (isFull) {
+        document.getElementById('user-feedback').style.color = '#dc2626';
+        document.getElementById('user-feedback').textContent = 'Maximum van 5 medewerkers bereikt.';
+      }
+    }
+
+    document.getElementById('last-refresh').textContent = new Date().toLocaleTimeString('nl-NL');
+  }
+
+  // ── Project aanmaken ──
+  function createProject() {
+    const title   = document.getElementById('new-title').value.trim();
+    const goal    = parseFloat(document.getElementById('new-goal').value);
+    const desc    = document.getElementById('new-desc').value.trim();
+    const endDate = document.getElementById('new-enddate').value || null;
+    const fb      = document.getElementById('create-feedback');
+    if (!title || !goal || goal < 1) { fb.style.color = '#dc2626'; fb.textContent = 'Vul een naam en doelbedrag in.'; return; }
+    const p = SF.addProject(title, desc, goal, endDate);
+    fb.style.color = '#16a34a';
+    fb.textContent = `"${p.title}" aangemaakt (ID: ${p.id})`;
+    document.getElementById('new-title').value   = '';
+    document.getElementById('new-goal').value    = '';
+    document.getElementById('new-desc').value    = '';
+    document.getElementById('new-enddate').value = '';
+    render();
+  }
+
+  // ── Gebruiker aanmaken / verwijderen ──
+  function createUser() {
+    const name     = document.getElementById('new-user-name').value.trim();
+    const username = document.getElementById('new-user-username').value.trim();
+    const password = document.getElementById('new-user-password').value.trim();
+    const fb       = document.getElementById('user-feedback');
+    if (!name || !username || !password) { fb.style.color = '#dc2626'; fb.textContent = 'Vul alle velden in.'; return; }
+    const result = SF.addUser(name, username, password);
+    if (result.error) { fb.style.color = '#dc2626'; fb.textContent = result.error; return; }
+    fb.style.color = '#16a34a';
+    fb.textContent = `"${result.user.name}" aangemaakt.`;
+    document.getElementById('new-user-name').value     = '';
+    document.getElementById('new-user-username').value = '';
+    document.getElementById('new-user-password').value = '';
+    render();
+  }
+
+  function deleteUser(id) {
+    if (confirm('Deze medewerker verwijderen? Ze kunnen daarna niet meer inloggen.')) {
+      SF.deleteUser(id); render();
+    }
+  }
+
+  function resetDemo() {
+    if (confirm('Alle demo-data wissen en terugzetten naar de beginstand? U wordt daarna uitgelogd.')) {
+      SF.reset(); logout();
+    }
+  }
+</script>
+</body>
+</html>

@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex">
+  <title>De Regenboogschool — Basisschool Amsterdam-Noord</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;700;800&family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Space Grotesk', system-ui, sans-serif; background: #f8fafc; color: #1a202c; }
+
+    /* Demo-bar */
+    .demo-bar { background: #0f0c29; color: rgba(255,255,255,.7); text-align: center; padding: 8px 16px; font-size: 12px; display: flex; align-items: center; justify-content: center; gap: 10px; flex-wrap: wrap; }
+    .demo-bar strong { color: white; }
+    .demo-bar a { color: #60a5fa; text-decoration: none; }
+
+    /* Topbar met contactinfo */
+    .topbar-info { background: #1e3a8a; color: rgba(255,255,255,.65); padding: 7px 32px; display: flex; align-items: center; justify-content: space-between; font-size: 12px; gap: 16px; flex-wrap: wrap; }
+    .topbar-info a { color: rgba(255,255,255,.65); text-decoration: none; }
+    .topbar-info a:hover { color: white; }
+    .topbar-contact { display: flex; gap: 20px; flex-wrap: wrap; }
+
+    /* Header */
+    header { background: white; border-bottom: 3px solid #1e3a8a; padding: 16px 32px; display: flex; align-items: center; justify-content: space-between; }
+    .header-left { display: flex; align-items: center; gap: 16px; }
+    .school-logo { width: 56px; height: 56px; background: linear-gradient(135deg, #1e3a8a, #3730a3); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 28px; flex-shrink: 0; }
+    .school-name { font-family: 'Archivo', sans-serif; font-size: 22px; font-weight: 800; color: #1e3a8a; line-height: 1.1; }
+    .school-sub { font-size: 13px; color: #64748b; margin-top: 2px; }
+    .header-cta { display: inline-flex; align-items: center; gap: 8px; background: #1e3a8a; color: white; padding: 10px 20px; border-radius: 8px; text-decoration: none; font-size: 13px; font-weight: 700; transition: background .15s; }
+    .header-cta:hover { background: #1e40af; }
+
+    /* Nav */
+    nav { background: #f8fafc; border-bottom: 1px solid #e2e8f0; }
+    nav ul { display: flex; list-style: none; padding: 0 32px; flex-wrap: wrap; max-width: 1200px; margin: 0; }
+    nav ul li a { display: block; padding: 13px 16px; color: #475569; text-decoration: none; font-size: 14px; font-weight: 600; border-bottom: 3px solid transparent; transition: all .15s; }
+    nav ul li a:hover { color: #1e3a8a; border-bottom-color: #c7d2fe; }
+    nav ul li a.active { color: #1e3a8a; border-bottom-color: #1e3a8a; }
+    nav ul li.donate-item a { color: #dc2626; }
+    nav ul li.donate-item a:hover { color: #b91c1c; border-bottom-color: #fca5a5; }
+
+    /* Hero */
+    .hero { background: linear-gradient(135deg, #1e3a8a 0%, #3730a3 60%, #4f46e5 100%); color: white; padding: 72px 32px; position: relative; overflow: hidden; }
+    .hero::before { content: ''; position: absolute; top: -60px; right: -60px; width: 400px; height: 400px; background: rgba(255,255,255,.05); border-radius: 50%; }
+    .hero::after { content: ''; position: absolute; bottom: -80px; left: 10%; width: 300px; height: 300px; background: rgba(255,255,255,.04); border-radius: 50%; }
+    .hero-inner { max-width: 760px; position: relative; z-index: 1; }
+    .hero-tag { display: inline-block; background: rgba(255,255,255,.15); border-radius: 99px; padding: 5px 14px; font-size: 12px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; margin-bottom: 18px; }
+    .hero h1 { font-family: 'Archivo', sans-serif; font-size: clamp(30px, 5vw, 48px); font-weight: 800; line-height: 1.15; margin-bottom: 16px; }
+    .hero p { font-size: 17px; opacity: .85; max-width: 560px; line-height: 1.7; margin-bottom: 32px; }
+    .hero-btns { display: flex; gap: 12px; flex-wrap: wrap; }
+    .btn-hero-primary { display: inline-flex; align-items: center; gap: 8px; background: white; color: #1e3a8a; padding: 13px 26px; border-radius: 8px; font-size: 15px; font-weight: 700; text-decoration: none; transition: transform .2s, box-shadow .2s; font-family: 'Archivo', sans-serif; box-shadow: 0 4px 16px rgba(0,0,0,.2); }
+    .btn-hero-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,.25); }
+    .btn-hero-outline { display: inline-flex; align-items: center; gap: 8px; background: transparent; color: white; border: 2px solid rgba(255,255,255,.5); padding: 13px 26px; border-radius: 8px; font-size: 15px; font-weight: 700; text-decoration: none; transition: all .2s; font-family: 'Archivo', sans-serif; }
+    .btn-hero-outline:hover { border-color: white; background: rgba(255,255,255,.1); }
+    .hero-stats { display: flex; gap: 32px; margin-top: 40px; flex-wrap: wrap; }
+    .hero-stat-val { font-family: 'Archivo', sans-serif; font-size: 28px; font-weight: 800; }
+    .hero-stat-lbl { font-size: 12px; opacity: .7; margin-top: 2px; }
+
+    /* Snellinks */
+    .quicklinks { background: white; border-bottom: 1px solid #e2e8f0; }
+    .quicklinks-inner { max-width: 1060px; margin: 0 auto; padding: 0 32px; display: grid; grid-template-columns: repeat(4, 1fr); }
+    .qlink { display: flex; align-items: center; gap: 12px; padding: 20px 16px; text-decoration: none; color: #1a202c; border-right: 1px solid #f1f5f9; transition: background .15s; }
+    .qlink:hover { background: #f8fafc; }
+    .qlink:last-child { border-right: none; }
+    .qlink-icon { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; }
+    .qlink-text { font-weight: 700; font-size: 13px; line-height: 1.3; }
+    .qlink-sub { font-size: 11px; color: #94a3b8; margin-top: 1px; }
+    @media (max-width: 640px) { .quicklinks-inner { grid-template-columns: repeat(2, 1fr); } .qlink { border-right: none; border-bottom: 1px solid #f1f5f9; } }
+
+    /* Content */
+    .content { max-width: 1060px; margin: 0 auto; padding: 52px 32px; }
+    .section-label { font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: #4f6ef7; margin-bottom: 6px; }
+    .section-title { font-family: 'Archivo', sans-serif; font-size: 24px; font-weight: 800; margin-bottom: 8px; }
+    .section-sub { color: #64748b; font-size: 15px; margin-bottom: 28px; line-height: 1.6; }
+
+    /* Welkomst */
+    .welkom-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; margin-bottom: 56px; }
+    .welkom-text p { font-size: 15px; color: #475569; line-height: 1.8; margin-bottom: 14px; }
+    .welkom-text p:last-child { margin-bottom: 0; }
+    .waarden-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .waarde-card { background: white; border-radius: 12px; padding: 18px; box-shadow: 0 1px 6px rgba(0,0,0,.06); border-left: 4px solid #4f6ef7; }
+    .waarde-card .icon { font-size: 22px; margin-bottom: 8px; }
+    .waarde-card h4 { font-weight: 700; font-size: 14px; color: #1e3a8a; margin-bottom: 4px; }
+    .waarde-card p { font-size: 12px; color: #64748b; line-height: 1.5; }
+    @media (max-width: 760px) { .welkom-grid { grid-template-columns: 1fr; } }
+
+    /* Nieuws */
+    .news-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 18px; margin-bottom: 52px; }
+    .news-card { background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 1px 6px rgba(0,0,0,.07); transition: transform .2s, box-shadow .2s; text-decoration: none; color: inherit; display: block; }
+    .news-card:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,.1); }
+    .news-img { height: 110px; display: flex; align-items: center; justify-content: center; font-size: 44px; }
+    .news-body { padding: 16px; }
+    .news-date { font-size: 11px; color: #94a3b8; margin-bottom: 5px; }
+    .news-title { font-weight: 700; font-size: 14px; margin-bottom: 5px; line-height: 1.35; }
+    .news-text { font-size: 13px; color: #64748b; line-height: 1.5; }
+
+    /* Agenda */
+    .agenda-list { display: flex; flex-direction: column; gap: 1px; background: #e2e8f0; border-radius: 12px; overflow: hidden; margin-bottom: 52px; }
+    .agenda-item { background: white; padding: 14px 20px; display: flex; align-items: center; gap: 16px; }
+    .agenda-date { width: 48px; text-align: center; flex-shrink: 0; }
+    .agenda-day { font-family: 'Archivo', sans-serif; font-size: 22px; font-weight: 800; color: #1e3a8a; line-height: 1; }
+    .agenda-month { font-size: 11px; color: #94a3b8; text-transform: uppercase; letter-spacing: .05em; }
+    .agenda-title { font-weight: 700; font-size: 14px; }
+    .agenda-sub { font-size: 12px; color: #64748b; margin-top: 2px; }
+    .agenda-tag { margin-left: auto; background: #eef2ff; color: #4f6ef7; font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 99px; white-space: nowrap; flex-shrink: 0; }
+
+    /* Directeur */
+    .directeur-block { background: linear-gradient(135deg, #f8fafc, #eef2ff); border: 1px solid #c7d2fe; border-radius: 16px; padding: 32px; display: flex; gap: 24px; align-items: flex-start; margin-bottom: 52px; flex-wrap: wrap; }
+    .dir-avatar { width: 64px; height: 64px; background: linear-gradient(135deg, #1e3a8a, #4f6ef7); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 28px; flex-shrink: 0; }
+    .dir-text h3 { font-family: 'Archivo', sans-serif; font-weight: 800; font-size: 17px; color: #1e3a8a; margin-bottom: 8px; }
+    .dir-text p { font-size: 14px; color: #475569; line-height: 1.75; margin-bottom: 10px; }
+    .dir-name { font-size: 13px; color: #64748b; }
+    .dir-name strong { color: #1e3a8a; }
+
+    /* Doneer-met-een-glimlach knop */
+    .dmg-btn { display: inline-flex; align-items: center; gap: 14px; background: rgba(255,255,255,.08); backdrop-filter: blur(8px); border: 2px solid rgba(255,215,80,.55); border-radius: 99px; padding: 8px 28px 8px 8px; text-decoration: none; box-shadow: 0 0 24px rgba(255,200,50,.25), inset 0 0 16px rgba(255,215,80,.08); transition: all .3s; cursor: pointer; }
+    .dmg-btn:hover { border-color: rgba(255,215,80,.9); box-shadow: 0 0 36px rgba(255,200,50,.45), inset 0 0 20px rgba(255,215,80,.15); transform: translateY(-2px); }
+    .dmg-circle { width: 58px; height: 58px; border-radius: 50%; border: 1.5px solid rgba(255,215,80,.5); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1px; flex-shrink: 0; }
+    .dmg-circle span { font-size: 9.5px; font-weight: 800; color: rgba(255,215,80,.9); text-transform: uppercase; letter-spacing: .04em; line-height: 1.2; text-align: center; }
+    .dmg-circle .heart { font-size: 14px; line-height: 1; }
+    .dmg-right { display: flex; flex-direction: column; line-height: 1.1; }
+    .dmg-right .line1 { font-size: 11px; font-weight: 700; color: rgba(255,215,80,.75); text-transform: uppercase; letter-spacing: .1em; margin-bottom: 1px; }
+    .dmg-right .line2 { font-family: 'Archivo', sans-serif; font-size: 21px; font-weight: 800; color: rgba(255,215,80,.95); letter-spacing: .03em; text-shadow: 0 0 12px rgba(255,200,50,.5); }
+
+    /* Doneerblok */
+    .donate-strip { background: #1e3a8a; color: white; border-radius: 16px; padding: 28px 32px; display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; margin-bottom: 8px; }
+    .donate-strip h3 { font-family: 'Archivo', sans-serif; font-size: 18px; font-weight: 800; margin-bottom: 4px; }
+    .donate-strip p { font-size: 14px; opacity: .8; }
+    .donate-strip-btn { display: inline-flex; align-items: center; gap: 8px; background: white; color: #1e3a8a; padding: 12px 24px; border-radius: 8px; font-size: 14px; font-weight: 700; text-decoration: none; white-space: nowrap; flex-shrink: 0; font-family: 'Archivo', sans-serif; transition: transform .15s; }
+    .donate-strip-btn:hover { transform: translateY(-1px); }
+
+    footer { background: #1e293b; color: rgba(255,255,255,.5); padding: 32px; font-size: 13px; margin-top: 0; }
+    .footer-inner { max-width: 1060px; margin: 0 auto; display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 32px; flex-wrap: wrap; }
+    .footer-brand { font-family: 'Archivo', sans-serif; font-size: 17px; font-weight: 800; color: white; margin-bottom: 8px; }
+    .footer-sub { line-height: 1.7; font-size: 12px; }
+    .footer-col h4 { color: white; font-weight: 700; font-size: 13px; margin-bottom: 10px; }
+    .footer-col ul { list-style: none; }
+    .footer-col ul li { margin-bottom: 6px; }
+    .footer-col ul li a { color: rgba(255,255,255,.5); text-decoration: none; font-size: 12px; transition: color .15s; }
+    .footer-col ul li a:hover { color: white; }
+    .footer-bottom { max-width: 1060px; margin: 24px auto 0; padding-top: 20px; border-top: 1px solid rgba(255,255,255,.1); font-size: 12px; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
+    @media (max-width: 640px) { .footer-inner { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+
+<div class="demo-bar">
+  <strong>🎯 4deklas Demo</strong> · Stap 1: <a href="/doneren">Doneer als ouder →</a> · Stap 2: <a href="/dashboard">Log in als directeur →</a>
+</div>
+
+<div class="topbar-info">
+  <div class="topbar-contact">
+    <span>📍 Regenboogstraat 12, Amsterdam-Noord</span>
+    <a href="tel:0201234567">☎ 020-123 45 67</a>
+    <a href="mailto:info@regenboogschool.nl">✉ info@regenboogschool.nl</a>
+  </div>
+  <div>Directeur: Marianne de Vries</div>
+</div>
+
+<header>
+  <div class="header-left">
+    <div class="school-logo">🌈</div>
+    <div>
+      <div class="school-name">De Regenboogschool</div>
+      <div class="school-sub">Openbare basisschool · Amsterdam-Noord</div>
+    </div>
+  </div>
+  <a href="#contact" class="header-cta">📍 Plan een bezoek</a>
+</header>
+
+<nav>
+  <ul>
+    <li><a href="/" class="active">Home</a></li>
+    <li><a href="#">Onze school</a></li>
+    <li><a href="#">Onderwijs</a></li>
+    <li><a href="#">Nieuws &amp; Agenda</a></li>
+    <li><a href="#">Ouders</a></li>
+    <li><a href="#">Contact</a></li>
+    <li class="donate-item"><a href="/doneren">❤️ Doneer</a></li>
+  </ul>
+</nav>
+
+<div class="quicklinks">
+  <div class="quicklinks-inner">
+    <a href="#welkom" class="qlink">
+      <div class="qlink-icon" style="background:#eef2ff">🏫</div>
+      <div><div class="qlink-text">Onze visie</div><div class="qlink-sub">Wie zijn wij?</div></div>
+    </a>
+    <a href="#" class="qlink">
+      <div class="qlink-icon" style="background:#dcfce7">📋</div>
+      <div><div class="qlink-text">Aanmelden</div><div class="qlink-sub">Nieuwe leerling</div></div>
+    </a>
+    <a href="#agenda" class="qlink">
+      <div class="qlink-icon" style="background:#fef9c3">📅</div>
+      <div><div class="qlink-text">Agenda</div><div class="qlink-sub">Komende activiteiten</div></div>
+    </a>
+    <a href="#contact" class="qlink">
+      <div class="qlink-icon" style="background:#ffe4e6">📍</div>
+      <div><div class="qlink-text">Contact &amp; route</div><div class="qlink-sub">Amsterdam-Noord</div></div>
+    </a>
+  </div>
+</div>
+
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-tag">Welkom</div>
+    <h1>Samen leren,<br>samen groeien</h1>
+    <p>Bij De Regenboogschool staat elk kind centraal. We bieden een veilige, uitdagende omgeving waar talent zich vrijuit kan ontwikkelen — in het hart van Amsterdam-Noord.</p>
+    <div class="hero-btns">
+      <a href="#welkom" class="btn-hero-primary">Lees meer over ons →</a>
+      <a href="#contact" class="btn-hero-outline">Plan een bezoek</a>
+    </div>
+
+    <div style="margin-top:28px">
+      <a href="/doneren" class="dmg-btn">
+        <div class="dmg-circle">
+          <span>Doneer</span>
+          <span>met een</span>
+          <span class="heart">❤️</span>
+          <span>Glimlach</span>
+        </div>
+        <div class="dmg-right">
+          <span class="line1">voor</span>
+          <span class="line2">DE KLAS</span>
+        </div>
+      </a>
+    </div>
+    <div class="hero-stats">
+      <div><div class="hero-stat-val">320</div><div class="hero-stat-lbl">leerlingen</div></div>
+      <div><div class="hero-stat-val">28</div><div class="hero-stat-lbl">medewerkers</div></div>
+      <div><div class="hero-stat-val">12</div><div class="hero-stat-lbl">groepen</div></div>
+      <div><div class="hero-stat-val">1987</div><div class="hero-stat-lbl">opgericht</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="content">
+
+  <!-- Welkomst -->
+  <div id="welkom" class="welkom-grid" style="margin-top:8px">
+    <div class="welkom-text">
+      <div class="section-label">Over ons</div>
+      <div class="section-title">Een school waar elk kind zichzelf kan zijn</div>
+      <p>De Regenboogschool is een openbare basisschool in Amsterdam-Noord. We geloven dat goed onderwijs begint bij een veilig gevoel. Pas als kinderen zich veilig voelen, durven ze te leren, te vragen en te groeien.</p>
+      <p>We werken met kleine groepen, betrokken leerkrachten en een actieve ouderraad. Onze school is een plek waar diversiteit wordt gevierd en waar kinderen met uiteenlopende achtergronden samen de wereld leren kennen.</p>
+      <p>Nieuwsgierig? We geven graag een rondleiding. Neem contact op met onze directeur Marianne de Vries.</p>
+    </div>
+    <div class="waarden-grid">
+      <div class="waarde-card">
+        <div class="icon">🛡️</div>
+        <h4>Veilig &amp; vertrouwd</h4>
+        <p>Een fijne, veilige sfeer is de basis voor al het leren dat daarna volgt.</p>
+      </div>
+      <div class="waarde-card" style="border-left-color:#16a34a">
+        <div class="icon">🌱</div>
+        <h4>Talentgericht</h4>
+        <p>We kijken naar wat een kind kan en wil, niet alleen naar wat het moet.</p>
+      </div>
+      <div class="waarde-card" style="border-left-color:#7c3aed">
+        <div class="icon">🌍</div>
+        <h4>Divers &amp; inclusief</h4>
+        <p>Onze school weerspiegelt de rijkdom van Amsterdam-Noord.</p>
+      </div>
+      <div class="waarde-card" style="border-left-color:#f59e0b">
+        <div class="icon">🤝</div>
+        <h4>Ouders betrokken</h4>
+        <p>Goede samenwerking met ouders maakt het verschil voor elk kind.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Directeur -->
+  <div class="directeur-block">
+    <div class="dir-avatar">👩‍💼</div>
+    <div class="dir-text">
+      <h3>"Wij geloven in de kracht van elk kind"</h3>
+      <p>Als directeur van De Regenboogschool ben ik trots op wat we hier elke dag samen bereiken. Onze leerkrachten gaan elke ochtend met plezier de klas in, en onze kinderen komen met plezier naar school. Dat is niet vanzelfsprekend — dat bouw je samen met ouders, leerlingen en een betrokken buurt.</p>
+      <div class="dir-name"><strong>Marianne de Vries</strong> — Directeur De Regenboogschool</div>
+    </div>
+  </div>
+
+  <!-- Nieuws -->
+  <div class="section-label">Nieuws</div>
+  <div class="section-title">Wat speelt er op school?</div>
+  <div class="section-sub">Blijf op de hoogte van alles wat er bij ons gebeurt.</div>
+
+  <div class="news-grid">
+    <a href="#" class="news-card">
+      <div class="news-img" style="background:#fef9c3">🎨</div>
+      <div class="news-body">
+        <div class="news-date">15 mei 2025</div>
+        <div class="news-title">Kunstproject "Kleuren van de wereld" van start</div>
+        <div class="news-text">Alle groepen doen mee aan ons jaarlijkse kunstproject rondom diversiteit.</div>
+      </div>
+    </a>
+    <a href="#" class="news-card">
+      <div class="news-img" style="background:#dcfce7">⚽</div>
+      <div class="news-body">
+        <div class="news-date">10 mei 2025</div>
+        <div class="news-title">Schoolkampioenschap voetbal: wij worden 2e!</div>
+        <div class="news-text">Groep 7 en 8 behaalden een geweldige tweede plek in het stadstoernooi.</div>
+      </div>
+    </a>
+    <a href="#" class="news-card">
+      <div class="news-img" style="background:#ede9fe">🎤</div>
+      <div class="news-body">
+        <div class="news-date">3 mei 2025</div>
+        <div class="news-title">Schoolmusical "Avontuur in de ruimte" op 20 juni</div>
+        <div class="news-text">Alle ouders zijn van harte welkom. Kaarten via de meester of juf.</div>
+      </div>
+    </a>
+  </div>
+
+  <!-- Agenda -->
+  <div id="agenda" class="section-label">Agenda</div>
+  <div class="section-title" style="margin-bottom:20px">Komende activiteiten</div>
+
+  <div class="agenda-list" style="margin-bottom:52px">
+    <div class="agenda-item">
+      <div class="agenda-date"><div class="agenda-day">20</div><div class="agenda-month">jun</div></div>
+      <div><div class="agenda-title">Schoolmusical "Avontuur in de ruimte"</div><div class="agenda-sub">19:00 uur · Gymzaal De Regenboogschool · Alle ouders welkom</div></div>
+      <div class="agenda-tag">Musical</div>
+    </div>
+    <div class="agenda-item">
+      <div class="agenda-date"><div class="agenda-day">25</div><div class="agenda-month">jun</div></div>
+      <div><div class="agenda-title">Rapporten mee naar huis</div><div class="agenda-sub">Groep 1 t/m 8 · Ouders worden per mail geïnformeerd</div></div>
+      <div class="agenda-tag">Rapporten</div>
+    </div>
+    <div class="agenda-item">
+      <div class="agenda-date"><div class="agenda-day">4</div><div class="agenda-month">jul</div></div>
+      <div><div class="agenda-title">Laatste schooldag + zomerfeest</div><div class="agenda-sub">12:00 uur · schoolplein · Voor leerlingen en ouders</div></div>
+      <div class="agenda-tag">Feest</div>
+    </div>
+    <div class="agenda-item">
+      <div class="agenda-date"><div class="agenda-day">21</div><div class="agenda-month">aug</div></div>
+      <div><div class="agenda-title">Eerste schooldag nieuw schooljaar</div><div class="agenda-sub">Groep 1-2 start om 8:30 · groep 3-8 om 8:45 uur</div></div>
+      <div class="agenda-tag">Nieuw jaar</div>
+    </div>
+  </div>
+
+  <!-- Doneerblok (klein, secundair) -->
+  <div class="donate-strip">
+    <div>
+      <h3>❤️ Steun onze school</h3>
+      <p>Help ons nieuwe laptops, een groener schoolplein en muziekinstrumenten te bekostigen. Elke bijdrage telt.</p>
+    </div>
+    <a href="/doneren" class="dmg-btn">
+      <div class="dmg-circle">
+        <span>Doneer</span>
+        <span>met een</span>
+        <span class="heart">❤️</span>
+        <span>Glimlach</span>
+      </div>
+      <div class="dmg-right">
+        <span class="line1">voor</span>
+        <span class="line2">DE KLAS</span>
+      </div>
+    </a>
+  </div>
+
+</div>
+
+<!-- Contact -->
+<div id="contact" style="background:white;border-top:1px solid #e2e8f0;padding:48px 32px">
+  <div style="max-width:1060px;margin:0 auto">
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:32px;flex-wrap:wrap">
+      <div>
+        <div class="section-label" style="margin-bottom:10px">Contact</div>
+        <div style="font-size:14px;line-height:2;color:#475569">
+          <div>📍 Regenboogstraat 12</div>
+          <div>1034 AB Amsterdam-Noord</div>
+          <div style="margin-top:8px"><a href="tel:0201234567" style="color:#1e3a8a;text-decoration:none">☎ 020-123 45 67</a></div>
+          <div><a href="mailto:info@regenboogschool.nl" style="color:#1e3a8a;text-decoration:none">✉ info@regenboogschool.nl</a></div>
+        </div>
+      </div>
+      <div>
+        <div class="section-label" style="margin-bottom:10px">Openingstijden</div>
+        <div style="font-size:14px;line-height:2;color:#475569">
+          <div>Ma–vr: 08:30 – 14:30</div>
+          <div>Woensdag: 08:30 – 12:30</div>
+          <div style="margin-top:8px;font-size:12px;color:#94a3b8">Buitenschoolse opvang via Kinderopvang Noord</div>
+        </div>
+      </div>
+      <div>
+        <div class="section-label" style="margin-bottom:10px">Schoolteam</div>
+        <div style="font-size:14px;line-height:2;color:#475569">
+          <div><strong style="color:#1a202c">Marianne de Vries</strong><br>Directeur</div>
+          <div style="margin-top:8px"><strong style="color:#1a202c">Peter Jansen</strong><br>Intern begeleider</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <div>
+      <div class="footer-brand">🌈 De Regenboogschool</div>
+      <div class="footer-sub">Openbare basisschool in Amsterdam-Noord.<br>Samen leren, samen groeien.</div>
+    </div>
+    <div class="footer-col">
+      <h4>Navigatie</h4>
+      <ul>
+        <li><a href="/">Home</a></li>
+        <li><a href="#">Onze school</a></li>
+        <li><a href="#">Nieuws</a></li>
+        <li><a href="#">Ouders</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>4deklas</h4>
+      <ul>
+        <li><a href="/verhaal">Ons verhaal</a></li>
+        <li><a href="/kritisch">Kritisch bekeken</a></li>
+        <li><a href="/doneren">❤️ Doneer</a></li>
+        <li><a href="/dashboard">Dashboard</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2025 De Regenboogschool · Demo op 4deklas.nl — geen echte betalingen</span>
+    <span>Donaties via 4deklas · 2% platformvergoeding</span>
+  </div>
+</footer>
+
+<script src="/sf-state.js"></script>
+<script>
+  const state = SF.get()
+  const active = state.projects.filter(p => p.status === 'active')
+  const total = active.reduce((s, p) => s + p.collected, 0)
+  const goal  = active.reduce((s, p) => s + p.goal, 0)
+</script>
+
+</body>
+</html>
