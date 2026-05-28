@@ -11,74 +11,538 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: 'Space Grotesk', system-ui, sans-serif; background: #f1f5f9; color: #1a202c; min-height: 100vh; }
 
-    /* Wachtwoordscherm */
-    .lock-screen { min-height: 100vh; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #0f0c29, #1e3a8a); }
-    .lock-box { background: white; border-radius: 20px; padding: 44px 36px; width: 360px; text-align: center; box-shadow: 0 20px 60px rgba(0,0,0,.4); }
-    .lock-box .icon { font-size: 36px; margin-bottom: 12px; }
-    .lock-box h1 { font-family: 'Archivo', sans-serif; font-size: 22px; font-weight: 800; color: #1e3a8a; margin-bottom: 4px; }
-    .lock-box p { font-size: 13px; color: #94a3b8; margin-bottom: 24px; }
-    .lock-box input { width: 100%; padding: 12px 14px; border: 2px solid #e2e8f0; border-radius: 10px; font-size: 15px; font-family: 'Space Grotesk', sans-serif; margin-bottom: 12px; transition: border-color .15s; text-align: center; letter-spacing: .1em; }
-    .lock-box input:focus { outline: none; border-color: #4f6ef7; }
-    .lock-box button { width: 100%; padding: 12px; background: linear-gradient(135deg, #1e3a8a, #4f6ef7); color: white; border: none; border-radius: 10px; font-size: 15px; font-weight: 700; cursor: pointer; font-family: 'Archivo', sans-serif; transition: opacity .15s; }
-    .lock-box button:hover { opacity: .9; }
-    .lock-error { color: #dc2626; font-size: 13px; margin-top: 8px; display: none; }
+    /* ── Lock screen ── */
+    .lock-screen {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #0f0c29 0%, #1e3a8a 60%, #312e81 100%);
+      position: relative;
+      overflow: hidden;
+    }
+    .lock-screen::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse at 25% 55%, rgba(79,110,247,.18) 0%, transparent 55%),
+        radial-gradient(ellipse at 78% 20%, rgba(124,58,237,.12) 0%, transparent 50%);
+      pointer-events: none;
+    }
+    .lock-box {
+      background: white;
+      border-radius: 24px;
+      padding: 48px 40px 40px;
+      width: 380px;
+      text-align: center;
+      box-shadow: 0 32px 80px rgba(0,0,0,.5), 0 0 0 1px rgba(255,255,255,.06);
+      position: relative;
+    }
+    .lock-icon {
+      width: 56px;
+      height: 56px;
+      background: linear-gradient(135deg, #1e3a8a, #4f6ef7);
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 26px;
+      margin: 0 auto 20px;
+      box-shadow: 0 8px 24px rgba(79,110,247,.35);
+    }
+    .lock-box h1 {
+      font-family: 'Archivo', sans-serif;
+      font-size: 24px;
+      font-weight: 800;
+      color: #0f172a;
+      margin-bottom: 6px;
+    }
+    .lock-box p { font-size: 13px; color: #94a3b8; margin-bottom: 32px; }
+    .lock-box input {
+      width: 100%;
+      padding: 13px 16px;
+      border: 2px solid #e2e8f0;
+      border-radius: 12px;
+      font-size: 16px;
+      font-family: 'Space Grotesk', sans-serif;
+      margin-bottom: 12px;
+      transition: border-color .15s, box-shadow .15s;
+      text-align: center;
+      letter-spacing: .15em;
+      background: #f8fafc;
+      color: #0f172a;
+    }
+    .lock-box input:focus {
+      outline: none;
+      border-color: #4f6ef7;
+      box-shadow: 0 0 0 4px rgba(79,110,247,.12);
+      background: white;
+    }
+    .lock-box button {
+      width: 100%;
+      padding: 13px;
+      background: linear-gradient(135deg, #1e3a8a, #4f6ef7);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: 'Archivo', sans-serif;
+      transition: opacity .15s, transform .1s, box-shadow .15s;
+      box-shadow: 0 4px 16px rgba(79,110,247,.3);
+    }
+    .lock-box button:hover { opacity: .92; box-shadow: 0 6px 20px rgba(79,110,247,.4); }
+    .lock-box button:active { transform: scale(.98); }
+    .lock-error { color: #dc2626; font-size: 13px; margin-top: 10px; display: none; font-weight: 500; }
 
-    /* App */
+    /* ── App shell ── */
     .app { display: none; }
-    .topbar { background: #1e3a8a; color: white; padding: 14px 28px; display: flex; align-items: center; justify-content: space-between; }
-    .topbar-brand { font-family: 'Archivo', sans-serif; font-size: 17px; font-weight: 800; }
+    .topbar {
+      background: linear-gradient(90deg, #1a3580, #1e3a8a);
+      color: white;
+      padding: 0 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 52px;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      box-shadow: 0 1px 0 rgba(255,255,255,.07), 0 2px 16px rgba(0,0,0,.25);
+    }
+    .topbar-left { display: flex; align-items: center; gap: 18px; }
+    .topbar-brand { font-family: 'Archivo', sans-serif; font-size: 16px; font-weight: 800; letter-spacing: -.01em; }
     .topbar-brand span { color: #93c5fd; }
-    .topbar-right { display: flex; align-items: center; gap: 12px; }
-    .name-badge { background: rgba(255,255,255,.15); padding: 4px 12px; border-radius: 99px; font-size: 12px; }
-    .logout-btn { background: none; border: 1px solid rgba(255,255,255,.3); color: rgba(255,255,255,.7); padding: 4px 12px; border-radius: 6px; font-size: 12px; cursor: pointer; transition: all .15s; }
-    .logout-btn:hover { border-color: white; color: white; }
+    .topbar-divider { width: 1px; height: 18px; background: rgba(255,255,255,.15); }
+    .topbar-site-link {
+      font-size: 12px;
+      color: rgba(255,255,255,.5);
+      text-decoration: none;
+      transition: color .15s;
+    }
+    .topbar-site-link:hover { color: rgba(255,255,255,.9); }
+    .topbar-right { display: flex; align-items: center; gap: 8px; }
+    .name-badge {
+      background: rgba(255,255,255,.12);
+      border: 1px solid rgba(255,255,255,.12);
+      padding: 4px 12px;
+      border-radius: 99px;
+      font-size: 12px;
+      font-weight: 500;
+    }
+    .logout-btn {
+      background: none;
+      border: 1px solid rgba(255,255,255,.25);
+      color: rgba(255,255,255,.65);
+      padding: 4px 12px;
+      border-radius: 6px;
+      font-size: 12px;
+      cursor: pointer;
+      transition: all .15s;
+      font-family: 'Space Grotesk', sans-serif;
+    }
+    .logout-btn:hover { border-color: white; color: white; background: rgba(255,255,255,.07); }
 
-    .main { max-width: 900px; margin: 0 auto; padding: 32px 24px; }
+    .main { max-width: 900px; margin: 0 auto; padding: 32px 24px 80px; }
 
-    /* Filter + header */
-    .page-header { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; margin-bottom: 20px; }
-    .page-title { font-family: 'Archivo', sans-serif; font-size: 22px; font-weight: 800; }
-    .filters { display: flex; gap: 8px; flex-wrap: wrap; }
-    .filter-btn { padding: 6px 14px; border-radius: 99px; font-size: 13px; font-weight: 600; cursor: pointer; border: 2px solid #e2e8f0; background: white; transition: all .15s; }
+    /* ── Stats strip ── */
+    .stats-strip {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-bottom: 28px;
+    }
+    .stat-card {
+      background: white;
+      border-radius: 14px;
+      padding: 18px 20px;
+      box-shadow: 0 1px 4px rgba(0,0,0,.06);
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      position: relative;
+      overflow: hidden;
+      transition: box-shadow .15s, transform .15s;
+    }
+    .stat-card:hover { box-shadow: 0 4px 14px rgba(0,0,0,.1); transform: translateY(-1px); }
+    .stat-card::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 4px;
+    }
+    .stat-card.open-card::before  { background: #dc2626; }
+    .stat-card.bezig-card::before { background: #d97706; }
+    .stat-card.klaar-card::before { background: #16a34a; }
+    .stat-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 17px;
+      flex-shrink: 0;
+    }
+    .open-card  .stat-icon { background: #fee2e2; }
+    .bezig-card .stat-icon { background: #fef3c7; }
+    .klaar-card .stat-icon { background: #dcfce7; }
+    .stat-count { font-family: 'Archivo', sans-serif; font-size: 28px; font-weight: 800; line-height: 1; color: #0f172a; }
+    .stat-label { font-size: 11px; color: #94a3b8; margin-top: 3px; font-weight: 600; text-transform: uppercase; letter-spacing: .05em; }
+
+    /* ── Page header ── */
+    .page-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+    .page-title { font-family: 'Archivo', sans-serif; font-size: 22px; font-weight: 800; color: #0f172a; }
+    .page-subtitle { font-size: 12px; color: #94a3b8; margin-top: 3px; }
+    .header-right { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+    .filters { display: flex; gap: 6px; flex-wrap: wrap; }
+    .filter-btn {
+      padding: 6px 14px;
+      border-radius: 99px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      border: 1.5px solid #e2e8f0;
+      background: white;
+      color: #64748b;
+      transition: all .15s;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-family: 'Space Grotesk', sans-serif;
+    }
+    .filter-btn .count {
+      background: #f1f5f9;
+      color: #64748b;
+      border-radius: 99px;
+      font-size: 10px;
+      font-weight: 700;
+      padding: 1px 6px;
+      min-width: 18px;
+      text-align: center;
+      transition: all .15s;
+    }
     .filter-btn.active { background: #1e3a8a; color: white; border-color: #1e3a8a; }
+    .filter-btn.active .count { background: rgba(255,255,255,.2); color: white; }
+    .filter-btn:hover:not(.active) { border-color: #c7d2fe; color: #1e3a8a; background: #eef1ff; }
 
-    /* Nieuw item formulier */
-    .add-form { background: white; border-radius: 14px; padding: 20px; margin-bottom: 20px; box-shadow: 0 1px 6px rgba(0,0,0,.06); display: none; }
-    .add-form.open { display: block; }
-    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
-    .form-group { display: flex; flex-direction: column; gap: 4px; }
-    .form-group label { font-size: 11px; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: .06em; }
-    .form-group input, .form-group select, .form-group textarea { padding: 9px 12px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 14px; font-family: 'Space Grotesk', sans-serif; transition: border-color .15s; }
-    .form-group input:focus, .form-group select:focus, .form-group textarea:focus { outline: none; border-color: #4f6ef7; }
-    .form-group textarea { resize: none; height: 64px; }
-    .form-actions { display: flex; gap: 8px; margin-top: 12px; }
-    .btn-primary { padding: 9px 20px; background: linear-gradient(135deg, #4f6ef7, #7c3aed); color: white; border: none; border-radius: 8px; font-size: 14px; font-weight: 700; cursor: pointer; font-family: 'Archivo', sans-serif; transition: opacity .15s; }
-    .btn-primary:hover { opacity: .9; }
-    .btn-secondary { padding: 9px 16px; background: #f1f5f9; color: #64748b; border: none; border-radius: 8px; font-size: 14px; cursor: pointer; transition: background .15s; }
-    .btn-secondary:hover { background: #e2e8f0; }
-    .btn-add-toggle { padding: 9px 20px; background: white; color: #1e3a8a; border: 2px solid #c7d2fe; border-radius: 10px; font-size: 14px; font-weight: 700; cursor: pointer; font-family: 'Archivo', sans-serif; transition: all .15s; }
-    .btn-add-toggle:hover { background: #eef1ff; }
+    /* ── Add form ── */
+    .add-form {
+      background: white;
+      border-radius: 16px;
+      padding: 0 22px;
+      margin-bottom: 20px;
+      box-shadow: 0 1px 6px rgba(0,0,0,.06);
+      overflow: hidden;
+      max-height: 0;
+      transition: max-height .35s cubic-bezier(.4,0,.2,1), padding .35s cubic-bezier(.4,0,.2,1);
+      border: 1px solid #eaeff6;
+    }
+    .add-form.open {
+      max-height: 460px;
+      padding: 22px;
+    }
+    .form-title {
+      font-family: 'Archivo', sans-serif;
+      font-size: 14px;
+      font-weight: 800;
+      color: #0f172a;
+      margin-bottom: 16px;
+      padding-bottom: 14px;
+      border-bottom: 1px solid #f1f5f9;
+    }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+    .form-group { display: flex; flex-direction: column; gap: 5px; }
+    .form-group label {
+      font-size: 11px;
+      font-weight: 700;
+      color: #64748b;
+      text-transform: uppercase;
+      letter-spacing: .07em;
+    }
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      padding: 9px 12px;
+      border: 1.5px solid #e2e8f0;
+      border-radius: 9px;
+      font-size: 14px;
+      font-family: 'Space Grotesk', sans-serif;
+      transition: border-color .15s, box-shadow .15s;
+      background: #f8fafc;
+      color: #0f172a;
+    }
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      outline: none;
+      border-color: #4f6ef7;
+      box-shadow: 0 0 0 3px rgba(79,110,247,.1);
+      background: white;
+    }
+    .form-group textarea { resize: none; height: 68px; }
+    .form-actions { display: flex; gap: 8px; margin-top: 14px; }
 
-    /* Items */
-    .items-list { display: flex; flex-direction: column; gap: 10px; }
-    .item-card { background: white; border-radius: 12px; padding: 18px 20px; box-shadow: 0 1px 6px rgba(0,0,0,.06); display: flex; align-items: flex-start; gap: 14px; }
+    .btn-primary {
+      padding: 9px 22px;
+      background: linear-gradient(135deg, #1e3a8a, #4f6ef7);
+      color: white;
+      border: none;
+      border-radius: 9px;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: 'Archivo', sans-serif;
+      transition: opacity .15s, transform .1s, box-shadow .15s;
+      box-shadow: 0 2px 8px rgba(79,110,247,.25);
+    }
+    .btn-primary:hover { opacity: .92; box-shadow: 0 4px 14px rgba(79,110,247,.35); }
+    .btn-primary:active { transform: scale(.97); }
+    .btn-secondary {
+      padding: 9px 16px;
+      background: #f1f5f9;
+      color: #64748b;
+      border: 1.5px solid #e2e8f0;
+      border-radius: 9px;
+      font-size: 14px;
+      cursor: pointer;
+      font-family: 'Space Grotesk', sans-serif;
+      transition: background .15s, border-color .15s;
+    }
+    .btn-secondary:hover { background: #e2e8f0; border-color: #cbd5e1; }
+    .btn-add-toggle {
+      padding: 8px 18px;
+      background: #eef1ff;
+      color: #1e3a8a;
+      border: 1.5px solid #c7d2fe;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: 'Archivo', sans-serif;
+      transition: all .15s;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .btn-add-toggle:hover { background: #e0e7ff; border-color: #a5b4fc; }
+
+    /* ── Item cards ── */
+    .items-list { display: flex; flex-direction: column; gap: 6px; }
+    .item-card {
+      background: white;
+      border-radius: 12px;
+      padding: 14px 16px 14px 18px;
+      box-shadow: 0 1px 3px rgba(0,0,0,.05);
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      border: 1px solid #eef2f8;
+      border-left-width: 3px;
+      border-left-color: transparent;
+      transition: box-shadow .15s, transform .1s;
+    }
+    .item-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,.09); transform: translateY(-1px); }
+    .item-card.status-open  { border-left-color: #dc2626; }
+    .item-card.status-bezig { border-left-color: #d97706; }
+    .item-card.status-klaar { border-left-color: #16a34a; opacity: .72; }
+    .item-card.status-klaar:hover { opacity: 1; }
     .item-body { flex: 1; min-width: 0; }
-    .item-title { font-weight: 700; font-size: 15px; margin-bottom: 3px; }
-    .item-desc { font-size: 13px; color: #64748b; line-height: 1.5; margin-bottom: 6px; }
-    .item-meta { font-size: 11px; color: #94a3b8; display: flex; gap: 12px; flex-wrap: wrap; }
+    .item-title { font-weight: 700; font-size: 14px; margin-bottom: 4px; color: #0f172a; line-height: 1.35; }
+    .item-desc { font-size: 13px; color: #64748b; line-height: 1.55; margin-bottom: 8px; }
+    .item-meta { font-size: 11px; color: #94a3b8; display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+    .meta-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      background: #f8fafc;
+      border: 1px solid #eaeff6;
+      border-radius: 6px;
+      padding: 2px 8px;
+      font-size: 11px;
+      font-weight: 500;
+      color: #64748b;
+    }
 
-    .badge { display: inline-block; padding: 3px 10px; border-radius: 99px; font-size: 11px; font-weight: 700; white-space: nowrap; cursor: pointer; transition: opacity .15s; }
-    .badge:hover { opacity: .8; }
-    .badge-open  { background: #fee2e2; color: #dc2626; }
-    .badge-bezig { background: #fef9c3; color: #92400e; }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 5px 11px;
+      border-radius: 99px;
+      font-size: 11px;
+      font-weight: 700;
+      white-space: nowrap;
+      cursor: pointer;
+      transition: opacity .15s, transform .1s;
+      user-select: none;
+      letter-spacing: .02em;
+    }
+    .badge:hover { opacity: .8; transform: scale(.96); }
+    .badge:active { transform: scale(.92); }
+    .badge-open  { background: #fee2e2; color: #b91c1c; }
+    .badge-bezig { background: #fef3c7; color: #b45309; }
     .badge-klaar { background: #dcfce7; color: #15803d; }
 
-    .item-actions { display: flex; flex-direction: column; gap: 6px; align-items: flex-end; flex-shrink: 0; }
-    .btn-delete { background: none; border: none; color: #cbd5e1; cursor: pointer; font-size: 14px; transition: color .15s; }
-    .btn-delete:hover { color: #dc2626; }
+    .item-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      align-items: flex-end;
+      flex-shrink: 0;
+    }
+    .btn-delete {
+      background: none;
+      border: none;
+      color: #dde3ec;
+      cursor: pointer;
+      font-size: 13px;
+      transition: color .15s, background .15s;
+      padding: 3px 5px;
+      border-radius: 6px;
+    }
+    .btn-delete:hover { color: #dc2626; background: #fee2e2; }
 
-    .empty { text-align: center; padding: 48px; color: #94a3b8; font-size: 14px; }
-    .loading { text-align: center; padding: 32px; color: #94a3b8; }
+    /* ── Empty / loading ── */
+    .empty {
+      text-align: center;
+      padding: 64px 24px;
+      color: #94a3b8;
+    }
+    .empty-icon { font-size: 40px; margin-bottom: 12px; opacity: .65; }
+    .empty-text { font-size: 14px; font-weight: 600; color: #94a3b8; }
+    .empty-sub { font-size: 13px; color: #cbd5e1; margin-top: 4px; }
+    .loading {
+      text-align: center;
+      padding: 48px;
+      color: #94a3b8;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+    .spinner {
+      width: 18px;
+      height: 18px;
+      border: 2.5px solid #e2e8f0;
+      border-top-color: #4f6ef7;
+      border-radius: 50%;
+      animation: spin .65s linear infinite;
+      flex-shrink: 0;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ── Toast ── */
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: #0f172a;
+      color: white;
+      padding: 11px 18px 11px 14px;
+      border-radius: 12px;
+      font-size: 13px;
+      font-weight: 600;
+      box-shadow: 0 8px 32px rgba(0,0,0,.35);
+      z-index: 999;
+      opacity: 0;
+      transform: translateY(10px) scale(.97);
+      transition: opacity .22s cubic-bezier(.4,0,.2,1), transform .22s cubic-bezier(.4,0,.2,1);
+      pointer-events: none;
+      border-left: 3px solid #4f6ef7;
+    }
+    .toast.show { opacity: 1; transform: translateY(0) scale(1); }
+
+    /* ── Kritische vragen ── */
+    .kritisch-wrapper {
+      margin-top: 48px;
+      border-top: 1px solid #eaeff6;
+      padding-top: 32px;
+    }
+    .kritisch-toggle {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-family: 'Archivo', sans-serif;
+      font-size: 16px;
+      font-weight: 800;
+      color: #0f172a;
+      padding: 0;
+      margin-bottom: 8px;
+      transition: color .15s;
+    }
+    .kritisch-toggle:hover { color: #1e3a8a; }
+    .kritisch-arrow-btn {
+      width: 24px;
+      height: 24px;
+      background: #eef1ff;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background .15s, transform .2s;
+      flex-shrink: 0;
+      font-size: 10px;
+      color: #1e3a8a;
+    }
+    .kritisch-arrow-btn.open { transform: rotate(90deg); background: #c7d2fe; }
+    .kritisch-desc { font-size: 13px; color: #94a3b8; line-height: 1.5; }
+    .kritisch-section {
+      overflow: hidden;
+      max-height: 0;
+      transition: max-height .5s cubic-bezier(.4,0,.2,1);
+    }
+    .kritisch-section.open { max-height: 9999px; }
+    .kritisch-list { display: flex; flex-direction: column; gap: 8px; margin-top: 24px; }
+    .kv-card {
+      background: white;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 1px 3px rgba(0,0,0,.05);
+      border: 1px solid #eef2f8;
+    }
+    .kv-q {
+      padding: 13px 18px;
+      font-weight: 700;
+      font-size: 13px;
+      line-height: 1.45;
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+    }
+    .kv-q-icon { flex-shrink: 0; margin-top: 1px; }
+    .kv-q.critical { background: #fff5f5; border-bottom: 1px solid #fecaca; color: #991b1b; }
+    .kv-q.neutral  { background: #fffbeb; border-bottom: 1px solid #fde68a; color: #92400e; }
+    .kv-a { padding: 13px 18px; font-size: 13px; color: #475569; line-height: 1.7; }
+
+    /* ── Responsive ── */
+    @media (max-width: 600px) {
+      .topbar { padding: 0 16px; height: 50px; }
+      .topbar-divider, .topbar-site-link { display: none; }
+      .main { padding: 20px 14px 60px; }
+      .stats-strip { gap: 8px; }
+      .stat-card { padding: 14px 14px 14px 18px; }
+      .stat-count { font-size: 22px; }
+      .stat-icon { width: 32px; height: 32px; font-size: 14px; }
+      .form-row { grid-template-columns: 1fr; }
+      .page-header { flex-direction: column; align-items: flex-start; }
+      .header-right { width: 100%; justify-content: space-between; }
+      .item-card { padding: 12px 12px 12px 14px; }
+      .lock-box { width: calc(100vw - 40px); padding: 40px 28px 32px; }
+    }
   </style>
 </head>
 <body>
@@ -86,7 +550,7 @@
 <!-- Wachtwoordscherm -->
 <div class="lock-screen" id="lock-screen">
   <div class="lock-box">
-    <div class="icon">🔒</div>
+    <div class="lock-icon">🔒</div>
     <h1>4deklas · Intern</h1>
     <p>Feedback en taken voor het team</p>
     <input type="password" id="pw-input" placeholder="Wachtwoord" onkeydown="if(event.key==='Enter')checkPw()">
@@ -98,29 +562,64 @@
 <!-- App -->
 <div class="app" id="app">
   <div class="topbar">
-    <div class="topbar-brand">4deklas · <span>Intern</span></div>
+    <div class="topbar-left">
+      <div class="topbar-brand">4deklas · <span>Intern</span></div>
+      <div class="topbar-divider"></div>
+      <a class="topbar-site-link" href="/">← Site</a>
+    </div>
     <div class="topbar-right">
+      <div class="name-badge" id="name-badge">👤 Guido</div>
       <button class="logout-btn" onclick="logout()">Uitloggen</button>
     </div>
   </div>
 
   <div class="main">
-    <div class="page-header">
-      <div>
-        <div class="page-title">Feedback & Taken</div>
-      </div>
-      <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
-        <div class="filters">
-          <button class="filter-btn active" onclick="setFilter('alle',this)">Alle</button>
-          <button class="filter-btn" onclick="setFilter('open',this)">🔴 Open</button>
-          <button class="filter-btn" onclick="setFilter('bezig',this)">🟡 Bezig</button>
-          <button class="filter-btn" onclick="setFilter('klaar',this)">🟢 Klaar</button>
+
+    <!-- Stats -->
+    <div class="stats-strip" id="stats-strip">
+      <div class="stat-card open-card">
+        <div class="stat-icon">🔴</div>
+        <div>
+          <div class="stat-count" id="stat-open">—</div>
+          <div class="stat-label">Open</div>
         </div>
-        <button class="btn-add-toggle" onclick="toggleForm()">+ Nieuw item</button>
+      </div>
+      <div class="stat-card bezig-card">
+        <div class="stat-icon">🟡</div>
+        <div>
+          <div class="stat-count" id="stat-bezig">—</div>
+          <div class="stat-label">Bezig</div>
+        </div>
+      </div>
+      <div class="stat-card klaar-card">
+        <div class="stat-icon">🟢</div>
+        <div>
+          <div class="stat-count" id="stat-klaar">—</div>
+          <div class="stat-label">Klaar</div>
+        </div>
       </div>
     </div>
 
+    <!-- Header + filters -->
+    <div class="page-header">
+      <div>
+        <div class="page-title">Feedback &amp; Taken</div>
+        <div class="page-subtitle">Klik op de status-badge om door te schakelen.</div>
+      </div>
+      <div class="header-right">
+        <div class="filters">
+          <button class="filter-btn active" onclick="setFilter('alle',this)">Alle <span class="count" id="fc-alle">0</span></button>
+          <button class="filter-btn" onclick="setFilter('open',this)">Open <span class="count" id="fc-open">0</span></button>
+          <button class="filter-btn" onclick="setFilter('bezig',this)">Bezig <span class="count" id="fc-bezig">0</span></button>
+          <button class="filter-btn" onclick="setFilter('klaar',this)">Klaar <span class="count" id="fc-klaar">0</span></button>
+        </div>
+        <button class="btn-add-toggle" id="add-toggle-btn" onclick="toggleForm()">+ Nieuw item</button>
+      </div>
+    </div>
+
+    <!-- Add form -->
     <div class="add-form" id="add-form">
+      <div class="form-title">Nieuw item toevoegen</div>
       <div class="form-row">
         <div class="form-group" style="grid-column:1/-1">
           <label>Titel *</label>
@@ -156,65 +655,66 @@
       </div>
     </div>
 
-    <div id="items-container"><div class="loading">Laden…</div></div>
+    <div id="items-container"><div class="loading"><div class="spinner"></div>Laden…</div></div>
 
-    <!-- Kritische vragen sectie -->
-    <div style="margin-top:40px;border-top:1px solid #e2e8f0;padding-top:24px">
-      <button onclick="toggleKritisch()" style="display:flex;align-items:center;gap:8px;background:none;border:none;cursor:pointer;font-family:'Space Grotesk',sans-serif;font-size:15px;font-weight:700;color:#1e3a8a;padding:0;margin-bottom:4px">
-        <span id="kritisch-arrow">▶</span> Kritische vragen &amp; antwoorden
+    <!-- Kritische vragen -->
+    <div class="kritisch-wrapper">
+      <button class="kritisch-toggle" onclick="toggleKritisch()">
+        <span class="kritisch-arrow-btn" id="kritisch-arrow">▶</span>
+        Kritische vragen &amp; antwoorden
       </button>
-      <p style="font-size:13px;color:#94a3b8;margin-bottom:0">10 bezwaren die scholen, ouders of sponsors kunnen hebben — met onze antwoorden.</p>
-      <div id="kritisch-section" style="display:none;margin-top:20px;display:none">
-        <div style="display:flex;flex-direction:column;gap:12px">
+      <p class="kritisch-desc">10 bezwaren die scholen, ouders of sponsors kunnen hebben — met onze antwoorden.</p>
+      <div class="kritisch-section" id="kritisch-section">
+        <div class="kritisch-list">
 
-          <div style="background:white;border-radius:12px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.06)">
-            <div style="padding:14px 18px;background:#fff5f5;border-bottom:1px solid #fecaca;font-weight:700;font-size:14px;color:#991b1b">❗ "Waarom moet ik extra betalen voor iets wat de overheid hoort te regelen?"</div>
-            <div style="padding:14px 18px;font-size:13px;color:#475569;line-height:1.7">4deklas vult een concreet gat dat anders leeg blijft. Meedoen is volledig vrijwillig; niemand wordt verplicht.</div>
+          <div class="kv-card">
+            <div class="kv-q critical"><span class="kv-q-icon">❗</span> "Waarom moet ik extra betalen voor iets wat de overheid hoort te regelen?"</div>
+            <div class="kv-a">4deklas vult een concreet gat dat anders leeg blijft. Meedoen is volledig vrijwillig; niemand wordt verplicht.</div>
           </div>
 
-          <div style="background:white;border-radius:12px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.06)">
-            <div style="padding:14px 18px;background:#fff5f5;border-bottom:1px solid #fecaca;font-weight:700;font-size:14px;color:#991b1b">❗ "Mijn kind wordt benadeeld als ik niet doneer."</div>
-            <div style="padding:14px 18px;font-size:13px;color:#475569;line-height:1.7">Anoniem doneren is altijd mogelijk. Alle projecten komen de hele school ten goede — geen zichtbaar onderscheid tussen donerende en niet-donerende ouders.</div>
+          <div class="kv-card">
+            <div class="kv-q critical"><span class="kv-q-icon">❗</span> "Mijn kind wordt benadeeld als ik niet doneer."</div>
+            <div class="kv-a">Anoniem doneren is altijd mogelijk. Alle projecten komen de hele school ten goede — geen zichtbaar onderscheid tussen donerende en niet-donerende ouders.</div>
           </div>
 
-          <div style="background:white;border-radius:12px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.06)">
-            <div style="padding:14px 18px;background:#fff5f5;border-bottom:1px solid #fecaca;font-weight:700;font-size:14px;color:#991b1b">❗ "Dit voelt als geld verdienen over de rug van kinderen."</div>
-            <div style="padding:14px 18px;font-size:13px;color:#475569;line-height:1.7">De vergoeding dekt infrastructuurkosten — niet anders dan elke betaaldienst. Ze staat altijd transparant vermeld vóór de donatie.</div>
+          <div class="kv-card">
+            <div class="kv-q critical"><span class="kv-q-icon">❗</span> "Dit voelt als geld verdienen over de rug van kinderen."</div>
+            <div class="kv-a">De vergoeding dekt infrastructuurkosten — niet anders dan elke betaaldienst. Ze staat altijd transparant vermeld vóór de donatie.</div>
           </div>
 
-          <div style="background:white;border-radius:12px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.06)">
-            <div style="padding:14px 18px;background:#fff5f5;border-bottom:1px solid #fecaca;font-weight:700;font-size:14px;color:#991b1b">❗ "Waarom gaat niet 100% naar de school?"</div>
-            <div style="padding:14px 18px;font-size:13px;color:#475569;line-height:1.7">2% ligt lager dan vergelijkbare platforms (5–10%). De school ziet het nettobedrag exact.</div>
+          <div class="kv-card">
+            <div class="kv-q critical"><span class="kv-q-icon">❗</span> "Waarom gaat niet 100% naar de school?"</div>
+            <div class="kv-a">2% ligt lager dan vergelijkbare platforms (5–10%). De school ziet het nettobedrag exact.</div>
           </div>
 
-          <div style="background:white;border-radius:12px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.06)">
-            <div style="padding:14px 18px;background:#fff5f5;border-bottom:1px solid #fecaca;font-weight:700;font-size:14px;color:#991b1b">❗ "Wordt dit geen sponsorcircus?"</div>
-            <div style="padding:14px 18px;font-size:13px;color:#475569;line-height:1.7">Vermeldingen zijn volledig optioneel. De school beslist zelf of en hoe sponsors worden genoemd.</div>
+          <div class="kv-card">
+            <div class="kv-q critical"><span class="kv-q-icon">❗</span> "Wordt dit geen sponsorcircus?"</div>
+            <div class="kv-a">Vermeldingen zijn volledig optioneel. De school beslist zelf of en hoe sponsors worden genoemd.</div>
           </div>
 
-          <div style="background:white;border-radius:12px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.06)">
-            <div style="padding:14px 18px;background:#fef3c7;border-bottom:1px solid #fde68a;font-weight:700;font-size:14px;color:#92400e">〜 "Rijke scholen halen meer op dan arme scholen."</div>
-            <div style="padding:14px 18px;font-size:13px;color:#475569;line-height:1.7">Geldige zorg zonder kant-en-klare oplossing. We maken dit probleem zichtbaar en denken na over compensatiemechanismen.</div>
+          <div class="kv-card">
+            <div class="kv-q neutral"><span class="kv-q-icon">〜</span> "Rijke scholen halen meer op dan arme scholen."</div>
+            <div class="kv-a">Geldige zorg zonder kant-en-klare oplossing. We maken dit probleem zichtbaar en denken na over compensatiemechanismen.</div>
           </div>
 
-          <div style="background:white;border-radius:12px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.06)">
-            <div style="padding:14px 18px;background:#fff5f5;border-bottom:1px solid #fecaca;font-weight:700;font-size:14px;color:#991b1b">❗ "Is dit veilig met betalingen en privacy?"</div>
-            <div style="padding:14px 18px;font-size:13px;color:#475569;line-height:1.7">iDEAL via Mollie. Anoniem doneren standaard. Geen data-opslag buiten wat noodzakelijk is.</div>
+          <div class="kv-card">
+            <div class="kv-q critical"><span class="kv-q-icon">❗</span> "Is dit veilig met betalingen en privacy?"</div>
+            <div class="kv-a">iDEAL via Mollie. Anoniem doneren standaard. Geen data-opslag buiten wat noodzakelijk is.</div>
           </div>
 
-          <div style="background:white;border-radius:12px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.06)">
-            <div style="padding:14px 18px;background:#fff5f5;border-bottom:1px solid #fecaca;font-weight:700;font-size:14px;color:#991b1b">❗ "De school heeft geen tijd voor een extra platform."</div>
-            <div style="padding:14px 18px;font-size:13px;color:#475569;line-height:1.7">Setup &lt;5 minuten. Één link plaatsen, één project aanmaken. Daarna minimaal beheer.</div>
+          <div class="kv-card">
+            <div class="kv-q critical"><span class="kv-q-icon">❗</span> "De school heeft geen tijd voor een extra platform."</div>
+            <div class="kv-a">Setup &lt;5 minuten. Één link plaatsen, één project aanmaken. Daarna minimaal beheer.</div>
           </div>
 
-          <div style="background:white;border-radius:12px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.06)">
-            <div style="padding:14px 18px;background:#fff5f5;border-bottom:1px solid #fecaca;font-weight:700;font-size:14px;color:#991b1b">❗ "Wat als het doel niet wordt gehaald?"</div>
-            <div style="padding:14px 18px;font-size:13px;color:#475569;line-height:1.7">Geld gaat altijd naar de school. De directeur communiceert zelf naar donateurs wat er mee gebeurt.</div>
+          <div class="kv-card">
+            <div class="kv-q critical"><span class="kv-q-icon">❗</span> "Wat als het doel niet wordt gehaald?"</div>
+            <div class="kv-a">Geld gaat altijd naar de school. De directeur communiceert zelf naar donateurs wat er mee gebeurt.</div>
           </div>
 
-          <div style="background:white;border-radius:12px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.06)">
-            <div style="padding:14px 18px;background:#fff5f5;border-bottom:1px solid #fecaca;font-weight:700;font-size:14px;color:#991b1b">❗ "Waarom niet gewoon een Tikkie via de ouderraad?"</div>
-            <div style="padding:14px 18px;font-size:13px;color:#475569;line-height:1.7">Tikkie heeft geen voortgangsbalk, projectbeheer, transparantie of maandelijkse optie. 4deklas heeft dat allemaal.</div>
+          <div class="kv-card">
+            <div class="kv-q critical"><span class="kv-q-icon">❗</span> "Waarom niet gewoon een Tikkie via de ouderraad?"</div>
+            <div class="kv-a">Tikkie heeft geen voortgangsbalk, projectbeheer, transparantie of maandelijkse optie. 4deklas heeft dat allemaal.</div>
           </div>
 
         </div>
@@ -224,16 +724,7 @@
   </div>
 </div>
 
-<script>
-function toggleKritisch() {
-  const s = document.getElementById('kritisch-section')
-  const a = document.getElementById('kritisch-arrow')
-  const open = s.style.display === 'none' || s.style.display === ''
-  s.style.display = open ? 'flex' : 'none'
-  s.style.flexDirection = 'column'
-  a.textContent = open ? '▼' : '▶'
-}
-</script>
+<div class="toast" id="toast"></div>
 
 <script>
   const PASSWORD = 'guido'
@@ -247,8 +738,11 @@ function toggleKritisch() {
       sessionStorage.setItem('4deklas_session', '1')
       showApp()
     } else {
-      document.getElementById('pw-error').style.display = 'block'
+      const err = document.getElementById('pw-error')
+      err.style.display = 'block'
       document.getElementById('pw-input').value = ''
+      document.getElementById('pw-input').focus()
+      setTimeout(() => { err.style.display = 'none' }, 3000)
     }
   }
 
@@ -273,17 +767,41 @@ function toggleKritisch() {
 
   function toggleForm() {
     const f = document.getElementById('add-form')
-    f.classList.toggle('open')
-    if (f.classList.contains('open')) document.getElementById('f-title').focus()
+    const btn = document.getElementById('add-toggle-btn')
+    const isOpen = f.classList.toggle('open')
+    btn.textContent = isOpen ? '✕ Sluiten' : '+ Nieuw item'
+    if (isOpen) document.getElementById('f-title').focus()
+  }
+
+  function showToast(msg) {
+    const t = document.getElementById('toast')
+    t.textContent = msg
+    t.classList.add('show')
+    setTimeout(() => t.classList.remove('show'), 2400)
+  }
+
+  function updateStats() {
+    const open  = allItems.filter(i => i.status === 'open').length
+    const bezig = allItems.filter(i => i.status === 'bezig').length
+    const klaar = allItems.filter(i => i.status === 'klaar').length
+    document.getElementById('stat-open').textContent  = open
+    document.getElementById('stat-bezig').textContent = bezig
+    document.getElementById('stat-klaar').textContent = klaar
+    document.getElementById('fc-alle').textContent  = allItems.length
+    document.getElementById('fc-open').textContent  = open
+    document.getElementById('fc-bezig').textContent = bezig
+    document.getElementById('fc-klaar').textContent = klaar
   }
 
   async function loadItems() {
     try {
       const res = await fetch('/api/feedback')
       allItems = await res.json()
+      updateStats()
       renderItems()
     } catch {
-      document.getElementById('items-container').innerHTML = '<div class="empty">Kon items niet laden.</div>'
+      document.getElementById('items-container').innerHTML =
+        '<div class="empty"><div class="empty-icon">⚠️</div><div class="empty-text">Kon items niet laden.</div><div class="empty-sub">Controleer de verbinding en ververs de pagina.</div></div>'
     }
   }
 
@@ -291,23 +809,23 @@ function toggleKritisch() {
     const items = currentFilter === 'alle' ? allItems : allItems.filter(i => i.status === currentFilter)
     const container = document.getElementById('items-container')
     if (items.length === 0) {
-      container.innerHTML = '<div class="empty">Geen items gevonden.</div>'
+      container.innerHTML = '<div class="empty"><div class="empty-icon">📋</div><div class="empty-text">Geen items gevonden.</div><div class="empty-sub">Pas het filter aan of voeg een nieuw item toe.</div></div>'
       return
     }
     container.innerHTML = '<div class="items-list">' + items.map(item => `
-      <div class="item-card" id="item-${item.id}">
+      <div class="item-card status-${item.status}" id="item-${item.id}">
         <div class="item-body">
           <div class="item-title">${item.title}</div>
           ${item.description ? `<div class="item-desc">${item.description}</div>` : ''}
           <div class="item-meta">
-            <span>📄 ${item.pagina}</span>
-            <span>👤 ${item.created_by}</span>
-            <span>🕐 ${new Date(item.created_at).toLocaleDateString('nl-NL', {day:'numeric',month:'short',year:'numeric'})}</span>
+            <span class="meta-chip">📄 ${item.pagina}</span>
+            <span class="meta-chip">👤 ${item.created_by}</span>
+            <span class="meta-chip">🗓 ${new Date(item.created_at).toLocaleDateString('nl-NL', {day:'numeric',month:'short',year:'numeric'})}</span>
           </div>
         </div>
         <div class="item-actions">
-          <span class="badge badge-${item.status}" onclick="cycleStatus(${item.id},'${item.status}')">
-            ${item.status === 'open' ? '🔴 Open' : item.status === 'bezig' ? '🟡 Bezig' : '🟢 Klaar'}
+          <span class="badge badge-${item.status}" onclick="cycleStatus(${item.id},'${item.status}')" title="Klik om status te wijzigen">
+            ${item.status === 'open' ? '● Open' : item.status === 'bezig' ? '● Bezig' : '● Klaar'}
           </span>
           <button class="btn-delete" onclick="deleteItem(${item.id})" title="Verwijderen">🗑</button>
         </div>
@@ -317,7 +835,7 @@ function toggleKritisch() {
 
   async function addItem() {
     const title = document.getElementById('f-title').value.trim()
-    if (!title) { alert('Titel is verplicht.'); return; }
+    if (!title) { document.getElementById('f-title').focus(); return; }
     const naam = document.getElementById('f-naam').value.trim()
     const body = {
       title,
@@ -328,23 +846,34 @@ function toggleKritisch() {
     await fetch('/api/feedback', { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify(body) })
     document.getElementById('f-title').value = ''
     document.getElementById('f-desc').value = ''
-    document.getElementById('add-form').classList.remove('open')
-    loadItems()
+    const form = document.getElementById('add-form')
+    form.classList.remove('open')
+    document.getElementById('add-toggle-btn').textContent = '+ Nieuw item'
+    await loadItems()
+    showToast('✓ Item toegevoegd')
   }
 
   async function cycleStatus(id, current) {
     const next = current === 'open' ? 'bezig' : current === 'bezig' ? 'klaar' : 'open'
     await fetch('/api/feedback', { method: 'PATCH', headers: {'Content-Type':'application/json'}, body: JSON.stringify({ id, status: next }) })
-    loadItems()
+    await loadItems()
+    showToast('Status bijgewerkt → ' + next)
   }
 
   async function deleteItem(id) {
     if (!confirm('Dit item verwijderen?')) return
     await fetch('/api/feedback', { method: 'DELETE', headers: {'Content-Type':'application/json'}, body: JSON.stringify({ id }) })
-    loadItems()
+    await loadItems()
+    showToast('Item verwijderd')
   }
 
-  // Sessie herstel
+  function toggleKritisch() {
+    const s = document.getElementById('kritisch-section')
+    const a = document.getElementById('kritisch-arrow')
+    const isOpen = s.classList.toggle('open')
+    a.classList.toggle('open', isOpen)
+  }
+
   if (sessionStorage.getItem('4deklas_session')) showApp()
 </script>
 </body>

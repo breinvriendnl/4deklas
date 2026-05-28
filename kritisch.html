@@ -7,63 +7,389 @@
   <title>Kritisch bekeken — 4deklas · Demo op 4deklas.nl</title>
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;700;800&family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
   <style>
+    :root {
+      --blue-900: #1e3a8a;
+      --blue-800: #1e40af;
+      --blue-700: #3730a3;
+      --red-600: #dc2626;
+      --red-700: #b91c1c;
+      --amber-600: #d97706;
+      --amber-500: #f59e0b;
+      --green-600: #16a34a;
+      --green-700: #15803d;
+      --slate-50: #f8fafc;
+      --slate-100: #f1f5f9;
+      --slate-200: #e2e8f0;
+      --slate-300: #cbd5e1;
+      --slate-400: #94a3b8;
+      --slate-500: #64748b;
+      --slate-600: #475569;
+      --slate-700: #334155;
+      --slate-800: #1e293b;
+      --ease-out: cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    html { scroll-behavior: smooth; scroll-padding-top: 60px; }
+
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: 'Space Grotesk', system-ui, sans-serif; background: #f8fafc; color: #1a202c; }
+    body { font-family: 'Space Grotesk', system-ui, sans-serif; background: var(--slate-50); color: #1a202c; }
 
-    .demo-bar { background: #0f0c29; color: rgba(255,255,255,.7); text-align: center; padding: 8px 16px; font-size: 12px; display: flex; align-items: center; justify-content: center; gap: 10px; }
+    :focus-visible { outline: 2px solid var(--blue-800); outline-offset: 2px; border-radius: 4px; }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { transition-duration: .01ms !important; animation-duration: .01ms !important; }
+    }
+
+    /* Demo bar */
+    .demo-bar { background: #0f0c29; color: rgba(255,255,255,.7); text-align: center; padding: 8px 16px; font-size: 12px; display: flex; align-items: center; justify-content: center; gap: 10px; flex-wrap: wrap; }
     .demo-bar strong { color: white; }
-    .demo-bar a { color: #60a5fa; text-decoration: none; }
+    .demo-bar a { color: #60a5fa; text-decoration: none; transition: color .15s; }
+    .demo-bar a:hover { color: #93c5fd; }
 
-    header { background: #1e3a8a; color: white; padding: 14px 32px; display: flex; align-items: center; justify-content: space-between; }
+    /* Header */
+    header { background: var(--blue-900); color: white; padding: 14px 32px; display: flex; align-items: center; justify-content: space-between; }
     .header-left { display: flex; align-items: center; gap: 14px; }
     .school-logo { width: 44px; height: 44px; background: white; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 24px; flex-shrink: 0; }
     .school-name { font-family: 'Archivo', sans-serif; font-size: 19px; font-weight: 800; }
     .school-sub { font-size: 12px; opacity: .65; margin-top: 2px; }
+    .header-phone { font-size: 13px; color: rgba(255,255,255,.55); }
 
-    nav { background: #1e40af; }
+    /* Nav */
+    nav { background: var(--blue-800); }
     nav ul { display: flex; list-style: none; padding: 0 32px; flex-wrap: wrap; }
-    nav ul li a { display: block; padding: 12px 18px; color: rgba(255,255,255,.75); text-decoration: none; font-size: 14px; transition: color .15s; }
-    nav ul li a:hover, nav ul li a.active { color: white; }
+    nav ul li a { display: block; padding: 12px 18px; color: rgba(255,255,255,.7); text-decoration: none; font-size: 14px; transition: color .15s; }
+    nav ul li a:hover { color: white; }
+    nav ul li a.active { color: white; font-weight: 600; box-shadow: inset 0 -3px 0 rgba(255,255,255,.6); }
     nav ul li.cta a { color: white; font-weight: 700; }
 
-    .hero { background: linear-gradient(135deg, #1e3a8a 0%, #3730a3 100%); color: white; padding: 64px 32px; text-align: center; }
-    .hero-label { display: inline-block; background: rgba(255,255,255,.15); border-radius: 99px; padding: 5px 16px; font-size: 12px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; margin-bottom: 18px; }
-    .hero h1 { font-family: 'Archivo', sans-serif; font-size: clamp(26px, 4vw, 40px); font-weight: 800; line-height: 1.2; margin-bottom: 14px; }
-    .hero p { font-size: 17px; opacity: .85; max-width: 600px; margin: 0 auto; line-height: 1.7; }
+    /* Hero */
+    .hero {
+      background: linear-gradient(145deg, #0f1f5c 0%, var(--blue-900) 38%, var(--blue-700) 100%);
+      color: white;
+      padding: 76px 32px 70px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: radial-gradient(circle, rgba(255,255,255,.06) 1px, transparent 1px);
+      background-size: 28px 28px;
+      pointer-events: none;
+    }
+    .hero::after {
+      content: '';
+      position: absolute;
+      bottom: -70px; left: 50%; transform: translateX(-50%);
+      width: 640px; height: 130px;
+      background: radial-gradient(ellipse, rgba(55,48,163,.38) 0%, transparent 72%);
+      pointer-events: none;
+    }
+    .hero > * { position: relative; z-index: 1; }
+    .hero-label {
+      display: inline-block;
+      background: rgba(255,255,255,.14);
+      border: 1px solid rgba(255,255,255,.25);
+      border-radius: 99px;
+      padding: 6px 18px;
+      font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
+      margin-bottom: 22px;
+      animation: heroFadeUp .5s .1s both ease-out;
+    }
+    .hero h1 {
+      font-family: 'Archivo', sans-serif;
+      font-size: clamp(28px, 4.5vw, 48px);
+      font-weight: 800;
+      line-height: 1.15;
+      margin-bottom: 18px;
+      letter-spacing: -.02em;
+      animation: heroFadeUp .5s .2s both ease-out;
+    }
+    .hero p {
+      font-size: 17px; opacity: .82; max-width: 580px; margin: 0 auto; line-height: 1.72;
+      animation: heroFadeUp .5s .3s both ease-out;
+    }
 
+    @keyframes heroFadeUp {
+      from { opacity: 0; transform: translateY(14px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Stats bar — sticky */
+    .stats-bar {
+      background: white;
+      border-bottom: 1px solid var(--slate-200);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 16px rgba(0,0,0,.08);
+    }
+    .stats-bar-inner { max-width: 860px; margin: 0 auto; padding: 0 32px; display: flex; }
+    .stat-item {
+      flex: 1; padding: 18px 16px; display: flex; align-items: center; gap: 14px;
+      border-right: 1px solid var(--slate-200);
+      transition: background .18s var(--ease-out);
+    }
+    .stat-item:last-child { border-right: none; }
+    .stat-item:hover { background: var(--slate-50); }
+    .stat-icon {
+      width: 44px; height: 44px; border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 20px; flex-shrink: 0; line-height: 1;
+      transition: transform .2s var(--ease-out);
+    }
+    .stat-item:hover .stat-icon { transform: scale(1.1); }
+    .stat-icon.icon-blue   { background: #eff6ff; }
+    .stat-icon.icon-yellow { background: #fffbeb; }
+    .stat-icon.icon-green  { background: #f0fdf4; }
+    .stat-icon.icon-purple { background: #f5f3ff; }
+    .stat-value { font-family: 'Archivo', sans-serif; font-size: 20px; font-weight: 800; color: var(--blue-900); line-height: 1.1; letter-spacing: -.01em; }
+    .stat-label { font-size: 11px; color: var(--slate-500); margin-top: 3px; font-weight: 500; }
+
+    /* Content */
     .content { max-width: 860px; margin: 0 auto; padding: 56px 32px; }
+    .lead {
+      font-size: 17px; line-height: 1.88; color: var(--slate-700); margin-bottom: 52px;
+      border-left: 4px solid var(--red-600); padding-left: 22px;
+    }
 
-    .lead { font-size: 18px; line-height: 1.8; color: #334155; margin-bottom: 48px; border-left: 4px solid #dc2626; padding-left: 20px; }
+    /* Section */
+    .section { margin-bottom: 56px; }
+    .section-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 20px; margin-bottom: 28px; }
+    .section-top-left { flex: 1; }
+    .section-label { font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--red-600); margin-bottom: 8px; }
+    .section h2 {
+      font-family: 'Archivo', sans-serif; font-size: 26px; font-weight: 800;
+      color: var(--slate-800); margin-bottom: 12px; line-height: 1.3; letter-spacing: -.01em;
+    }
+    .section-meta { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+    .section-hint { font-size: 13px; color: var(--slate-400); }
 
-    .section { margin-bottom: 52px; }
-    .section-label { font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: #dc2626; margin-bottom: 8px; }
-    .section h2 { font-family: 'Archivo', sans-serif; font-size: 24px; font-weight: 800; margin-bottom: 16px; color: #1e293b; }
-    .section p { font-size: 15px; color: #475569; line-height: 1.8; margin-bottom: 14px; }
+    .progress-counter {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-size: 12px; font-weight: 700; color: var(--blue-900);
+      background: #eff6ff; border: 1.5px solid #bfdbfe; border-radius: 99px; padding: 5px 12px;
+      transition: background .3s var(--ease-out), color .3s var(--ease-out), border-color .3s var(--ease-out);
+    }
+    .progress-counter.complete { background: #f0fdf4; color: var(--green-700); border-color: #86efac; }
+    .progress-fill {
+      display: inline-block; vertical-align: middle;
+      width: 48px; height: 4px; background: var(--slate-200); border-radius: 99px; overflow: hidden;
+    }
+    .progress-track {
+      display: block; height: 100%; background: var(--blue-900); border-radius: 99px;
+      width: 0%; transition: width .4s var(--ease-out), background .3s;
+    }
+    .progress-counter.complete .progress-track { background: var(--green-600); }
 
-    .qa-list { display: flex; flex-direction: column; gap: 16px; margin-top: 8px; }
-    .qa-item { background: white; border-radius: 14px; box-shadow: 0 2px 8px rgba(0,0,0,.06); overflow: hidden; }
-    .qa-question { padding: 18px 22px; background: #fff5f5; border-bottom: 1px solid #fecaca; font-weight: 700; font-size: 15px; color: #991b1b; display: flex; align-items: flex-start; gap: 10px; }
-    .qa-question::before { content: "!"; background: #dc2626; color: white; width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 800; flex-shrink: 0; margin-top: 1px; }
-    .qa-answer { padding: 18px 22px; font-size: 14px; color: #475569; line-height: 1.75; display: flex; align-items: flex-start; gap: 10px; }
-    .qa-answer::before { content: "✓"; background: #16a34a; color: white; width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 800; flex-shrink: 0; margin-top: 1px; }
-    .qa-item.honest .qa-answer::before { content: "~"; background: #d97706; }
+    .expand-all-btn {
+      flex-shrink: 0;
+      background: none; border: 1.5px solid var(--slate-200);
+      border-radius: 99px; padding: 8px 18px;
+      font-family: 'Space Grotesk', sans-serif; font-size: 13px; font-weight: 600; color: var(--slate-600);
+      cursor: pointer;
+      transition: border-color .18s, color .18s, background .18s, transform .18s var(--ease-out);
+      white-space: nowrap;
+    }
+    .expand-all-btn:hover { border-color: var(--blue-800); color: var(--blue-800); background: #eff6ff; transform: scale(1.02); }
+    .expand-all-btn:active { transform: scale(.97); }
 
-    .highlight-box { background: linear-gradient(135deg, #fff7ed, #fef3c7); border: 2px solid #fbbf24; border-radius: 18px; padding: 36px; margin-bottom: 52px; }
-    .highlight-box h3 { font-family: 'Archivo', sans-serif; font-size: 20px; font-weight: 800; color: #92400e; margin-bottom: 12px; }
-    .highlight-box p { font-size: 15px; color: #78350f; line-height: 1.75; margin-bottom: 12px; }
-    .highlight-box p:last-child { margin-bottom: 0; }
-    .highlight-box .quote { font-size: 16px; font-style: italic; color: #92400e; font-weight: 600; border-left: 3px solid #f59e0b; padding-left: 16px; margin: 16px 0; }
+    /* Q&A accordion */
+    .qa-list { display: flex; flex-direction: column; gap: 10px; }
 
-    .cta-section { background: linear-gradient(135deg, #1e3a8a, #3730a3); color: white; border-radius: 20px; padding: 48px 40px; text-align: center; margin-bottom: 8px; }
-    .cta-section h2 { font-family: 'Archivo', sans-serif; font-size: 26px; font-weight: 800; margin-bottom: 12px; }
-    .cta-section p { font-size: 15px; opacity: .85; max-width: 480px; margin: 0 auto 28px; line-height: 1.65; }
-    .cta-btn { display: inline-flex; align-items: center; gap: 8px; background: white; color: #1e3a8a; padding: 14px 28px; border-radius: 50px; font-size: 15px; font-weight: 700; text-decoration: none; font-family: 'Archivo', sans-serif; box-shadow: 0 6px 20px rgba(0,0,0,.3); transition: transform .2s, box-shadow .2s; }
-    .cta-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 28px rgba(0,0,0,.35); }
+    .qa-item {
+      background: white; border-radius: 16px; overflow: hidden;
+      border: 1px solid var(--slate-200);
+      box-shadow: 0 1px 4px rgba(0,0,0,.05);
+      transition: box-shadow .22s var(--ease-out), border-color .22s var(--ease-out), transform .22s var(--ease-out);
+      will-change: transform;
+      animation: itemSlideUp .38s both ease-out;
+    }
+    .qa-item:nth-child(1)  { animation-delay: .07s; }
+    .qa-item:nth-child(2)  { animation-delay: .12s; }
+    .qa-item:nth-child(3)  { animation-delay: .17s; }
+    .qa-item:nth-child(4)  { animation-delay: .22s; }
+    .qa-item:nth-child(5)  { animation-delay: .27s; }
+    .qa-item:nth-child(6)  { animation-delay: .32s; }
+    .qa-item:nth-child(7)  { animation-delay: .37s; }
+    .qa-item:nth-child(8)  { animation-delay: .42s; }
+    .qa-item:nth-child(9)  { animation-delay: .47s; }
+    .qa-item:nth-child(10) { animation-delay: .52s; }
 
-    footer { background: #1e293b; color: rgba(255,255,255,.4); text-align: center; padding: 24px; font-size: 12px; margin-top: 40px; }
+    @keyframes itemSlideUp {
+      from { opacity: 0; transform: translateY(12px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .qa-item:hover { box-shadow: 0 6px 24px rgba(0,0,0,.09), inset 3px 0 0 var(--slate-300); transform: translateY(-2px); }
+    .qa-item.open  { box-shadow: 0 6px 24px rgba(220,38,38,.12), inset 3px 0 0 var(--red-600); border-color: #fca5a5; transform: translateY(-1px); }
+
+    /* Honest items — amber left border always visible */
+    .qa-item.honest:not(.open) { box-shadow: 0 1px 4px rgba(0,0,0,.05), inset 3px 0 0 #fde68a; border-color: #fef3c7; }
+    .qa-item.honest:hover:not(.open) { box-shadow: 0 6px 24px rgba(217,119,6,.1), inset 3px 0 0 var(--amber-600); border-color: #fde68a; }
+    .qa-item.honest.open { box-shadow: 0 6px 24px rgba(217,119,6,.14), inset 3px 0 0 var(--amber-600); border-color: #fcd34d; }
+
+    /* Question button */
+    .qa-btn {
+      width: 100%; padding: 18px 22px; background: none; border: none; cursor: pointer;
+      display: flex; align-items: center; gap: 14px; text-align: left;
+      font-family: 'Space Grotesk', sans-serif; font-size: 15px; font-weight: 600; color: var(--slate-800);
+      transition: background .15s;
+    }
+    .qa-btn:hover { background: var(--slate-50); }
+    .qa-item.open .qa-btn { background: #fff5f5; }
+    .qa-item.honest.open .qa-btn { background: #fffbeb; }
+
+    .qa-num {
+      font-family: 'Archivo', sans-serif; font-size: 11px; font-weight: 800; letter-spacing: .05em;
+      color: var(--slate-400); background: var(--slate-100); border-radius: 7px; padding: 3px 8px;
+      flex-shrink: 0; min-width: 32px; text-align: center;
+      transition: background .2s, color .2s;
+    }
+    .qa-item.open .qa-num { background: #fee2e2; color: var(--red-600); }
+    .qa-item.honest.open .qa-num { background: #fef3c7; color: #b45309; }
+
+    .qa-btn-text { flex: 1; line-height: 1.5; }
+    .qa-item.open .qa-btn-text { color: #991b1b; }
+    .qa-item.honest.open .qa-btn-text { color: #92400e; }
+
+    .qa-badges { display: flex; gap: 6px; flex-shrink: 0; align-items: center; }
+    .badge-honest {
+      font-size: 10px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase;
+      background: #fef3c7; color: #92400e; border: 1px solid #fbbf24;
+      border-radius: 99px; padding: 3px 9px; white-space: nowrap;
+    }
+
+    .qa-chevron {
+      font-size: 22px; color: var(--slate-300); flex-shrink: 0; line-height: 1;
+      transition: transform .28s var(--ease-out), color .15s;
+    }
+    .qa-item.open .qa-chevron { transform: rotate(90deg); color: var(--red-600); }
+    .qa-item.honest.open .qa-chevron { color: var(--amber-600); }
+
+    /* Accordion reveal — CSS grid trick */
+    .qa-answer-wrapper {
+      display: grid;
+      grid-template-rows: 0fr;
+      transition: grid-template-rows .3s var(--ease-out);
+    }
+    .qa-item.open .qa-answer-wrapper { grid-template-rows: 1fr; }
+    .qa-answer-inner { overflow: hidden; }
+
+    .qa-answer {
+      padding: 18px 22px 24px 60px;
+      font-size: 15px; color: var(--slate-600); line-height: 1.82;
+      border-top: 1px solid #fecaca;
+      display: flex; align-items: flex-start; gap: 12px;
+    }
+    .qa-item.honest .qa-answer { border-top-color: #fde68a; }
+    .qa-item.open .qa-answer-inner .qa-answer {
+      animation: answerReveal .25s .04s both ease-out;
+    }
+    @keyframes answerReveal {
+      from { opacity: 0; transform: translateY(-4px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .qa-answer-icon {
+      width: 24px; height: 24px; border-radius: 50%; flex-shrink: 0; margin-top: 2px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 12px; font-weight: 800; background: var(--green-600); color: white;
+    }
+    .qa-item.honest .qa-answer-icon { background: var(--amber-600); }
+
+    /* Trust row in CTA */
+    .trust-row {
+      display: flex; justify-content: center; gap: 10px; flex-wrap: wrap;
+      margin-bottom: 26px;
+    }
+    .trust-item {
+      display: flex; align-items: center; gap: 6px;
+      font-size: 12px; color: rgba(255,255,255,.88); font-weight: 600;
+      background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.2);
+      border-radius: 99px; padding: 6px 14px;
+    }
+    .trust-item .trust-check { font-size: 12px; opacity: .9; }
+
+    /* CTA */
+    .cta-section {
+      background: linear-gradient(145deg, #0f1f5c 0%, var(--blue-900) 38%, var(--blue-700) 100%);
+      color: white; border-radius: 22px; padding: 52px 44px; text-align: center; margin-bottom: 8px;
+      position: relative; overflow: hidden;
+      box-shadow: 0 16px 48px rgba(30,58,138,.32);
+    }
+    .cta-section::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: radial-gradient(circle, rgba(255,255,255,.05) 1px, transparent 1px);
+      background-size: 24px 24px;
+      pointer-events: none;
+    }
+    .cta-section > * { position: relative; z-index: 1; }
+    .cta-section h2 {
+      font-family: 'Archivo', sans-serif; font-size: 28px; font-weight: 800;
+      margin-bottom: 12px; letter-spacing: -.02em;
+    }
+    .cta-section p { font-size: 15px; opacity: .82; max-width: 480px; margin: 0 auto 24px; line-height: 1.68; }
+    .cta-buttons { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+    .cta-btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: white; color: var(--blue-900);
+      padding: 15px 30px; border-radius: 50px;
+      font-size: 15px; font-weight: 700; text-decoration: none;
+      font-family: 'Archivo', sans-serif;
+      box-shadow: 0 6px 24px rgba(0,0,0,.28);
+      transition: transform .2s var(--ease-out), box-shadow .2s var(--ease-out);
+    }
+    .cta-btn:hover { transform: translateY(-2px); box-shadow: 0 12px 32px rgba(0,0,0,.34); }
+    .cta-btn:active { transform: translateY(0); }
+    .cta-btn-ghost {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(255,255,255,.1); color: white;
+      border: 1.5px solid rgba(255,255,255,.35);
+      padding: 15px 30px; border-radius: 50px;
+      font-size: 15px; font-weight: 700; text-decoration: none;
+      font-family: 'Archivo', sans-serif;
+      transition: background .2s, border-color .2s, transform .2s var(--ease-out);
+    }
+    .cta-btn-ghost:hover { background: rgba(255,255,255,.2); border-color: rgba(255,255,255,.6); transform: translateY(-2px); }
+    .cta-btn-ghost:active { transform: translateY(0); }
+
+    /* Footer */
+    footer {
+      background: var(--slate-800); color: rgba(255,255,255,.4);
+      text-align: center; padding: 28px 24px; font-size: 12px; margin-top: 40px;
+      letter-spacing: .01em;
+    }
     footer strong { color: rgba(255,255,255,.7); }
+
+    /* Responsive */
+    @media (max-width: 640px) {
+      header { padding: 12px 20px; }
+      .header-phone { display: none; }
+      nav ul { padding: 0 12px; }
+      nav ul li a { padding: 11px 12px; font-size: 13px; }
+      .stats-bar { position: relative; }
+      .stats-bar-inner { flex-wrap: wrap; padding: 0 16px; }
+      .stat-item { flex: 1 1 45%; border-right: none; border-bottom: 1px solid var(--slate-200); padding: 14px 12px; }
+      .stat-item:nth-child(3), .stat-item:nth-child(4) { border-bottom: none; }
+      .content { padding: 40px 20px; }
+      .hero { padding: 56px 20px 50px; }
+      .qa-answer { padding-left: 20px; font-size: 14px; }
+      .cta-section { padding: 36px 24px; }
+      .cta-section h2 { font-size: 22px; }
+      .badge-honest { font-size: 9px; padding: 2px 7px; }
+      .section-top { flex-direction: column; gap: 14px; }
+      .expand-all-btn { align-self: flex-start; }
+      .trust-row { gap: 8px; }
+      .trust-item { font-size: 11px; padding: 5px 11px; }
+    }
   </style>
 </head>
 <body>
@@ -80,7 +406,7 @@
       <div class="school-sub">Basisschool · Amsterdam-Noord</div>
     </div>
   </div>
-  <div style="font-size:13px;color:rgba(255,255,255,.55)">☎ 020-123 45 67</div>
+  <div class="header-phone">☎ 020-123 45 67</div>
 </header>
 
 <nav>
@@ -101,61 +427,222 @@
   <p>4deklas is geen perfect systeem. Maar we geloven dat transparantie over de nadelen meer vertrouwen geeft dan ze wegmoffelen.</p>
 </div>
 
+<div class="stats-bar">
+  <div class="stats-bar-inner">
+    <div class="stat-item">
+      <div class="stat-icon icon-blue">💶</div>
+      <div>
+        <div class="stat-value">2%</div>
+        <div class="stat-label">platformvergoeding</div>
+      </div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-icon icon-yellow">⚡</div>
+      <div>
+        <div class="stat-value">&lt; 5 min</div>
+        <div class="stat-label">setup voor de school</div>
+      </div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-icon icon-green">🔒</div>
+      <div>
+        <div class="stat-value">iDEAL</div>
+        <div class="stat-label">gecertificeerde betaling</div>
+      </div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-icon icon-purple">👤</div>
+      <div>
+        <div class="stat-value">Anoniem</div>
+        <div class="stat-label">doneren altijd mogelijk</div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div class="content">
 
+  <p class="lead">Twijfels zijn terecht. Hieronder staan de 10 meest gehoorde bezwaren van ouders, scholen en sponsors — met eerlijke antwoorden. Klik een vraag om het antwoord te lezen.</p>
+
   <div class="section">
-    <div class="section-label">De harde vragen</div>
-    <h2>10 redenen waarom ouders, scholen of sponsors kunnen afhaken</h2>
+    <div class="section-top">
+      <div class="section-top-left">
+        <div class="section-label">De harde vragen</div>
+        <h2>10 redenen waarom ouders, scholen of sponsors kunnen afhaken</h2>
+        <div class="section-meta">
+          <p class="section-hint">Klik een vraag om het antwoord te lezen.</p>
+          <span class="progress-counter" id="progress-counter">
+            <span class="progress-fill"><span class="progress-track" id="progress-track"></span></span>
+            <span id="progress-text">0 van 10 bekeken</span>
+          </span>
+        </div>
+      </div>
+      <button class="expand-all-btn" id="expand-all-btn" type="button">Alle uitklappen</button>
+    </div>
+
     <div class="qa-list">
 
-      <div class="qa-item">
-        <div class="qa-question">"Waarom moet ik extra betalen voor iets wat de school of overheid hoort te regelen?"</div>
-        <div class="qa-answer">Dat klopt — in een ideale wereld financiert de overheid alles. Maar die ruimte is er nu niet. 4deklas vult een concreet gat dat anders leeg blijft. Meedoen is volledig vrijwillig; niemand wordt verplicht of verwacht.</div>
+      <div class="qa-item" id="qa-1">
+        <button class="qa-btn" aria-expanded="false" aria-controls="qa-1-body">
+          <span class="qa-num">01</span>
+          <span class="qa-btn-text">"Waarom moet ik extra betalen voor iets wat de school of overheid hoort te regelen?"</span>
+          <span class="qa-chevron">›</span>
+        </button>
+        <div class="qa-answer-wrapper" id="qa-1-body" role="region">
+          <div class="qa-answer-inner">
+            <div class="qa-answer">
+              <span class="qa-answer-icon">✓</span>
+              <span>Dat klopt — in een ideale wereld financiert de overheid alles. Maar die ruimte is er nu niet. 4deklas vult een concreet gat dat anders leeg blijft. Meedoen is volledig vrijwillig; niemand wordt verplicht of verwacht.</span>
+            </div>
+          </div>
+        </div>
       </div>
 
-      <div class="qa-item">
-        <div class="qa-question">"Mijn kind wordt indirect benadeeld als ik niet doneer."</div>
-        <div class="qa-answer">Nee. Anoniem doneren is altijd mogelijk. Alle projecten komen de hele school ten goede — er is geen zichtbaar onderscheid tussen donerende en niet-donerende ouders. De school bepaalt zelf hoe ze communiceert over projecten.</div>
+      <div class="qa-item" id="qa-2">
+        <button class="qa-btn" aria-expanded="false" aria-controls="qa-2-body">
+          <span class="qa-num">02</span>
+          <span class="qa-btn-text">"Mijn kind wordt indirect benadeeld als ik niet doneer."</span>
+          <span class="qa-chevron">›</span>
+        </button>
+        <div class="qa-answer-wrapper" id="qa-2-body" role="region">
+          <div class="qa-answer-inner">
+            <div class="qa-answer">
+              <span class="qa-answer-icon">✓</span>
+              <span>Nee. Anoniem doneren is altijd mogelijk. Alle projecten komen de hele school ten goede — er is geen zichtbaar onderscheid tussen donerende en niet-donerende ouders. De school bepaalt zelf hoe ze communiceert over projecten.</span>
+            </div>
+          </div>
+        </div>
       </div>
 
-      <div class="qa-item">
-        <div class="qa-question">"Dit voelt als geld verdienen over de rug van kinderen."</div>
-        <div class="qa-answer">Een platformvergoeding dekt infrastructuurkosten, betalingsverwerking en onderhoud — niet anders dan elke andere betaaldienst of crowdfunding-platform. De vergoeding staat altijd transparant vermeld vóór de donatie, zodat donateurs precies weten wat ze betalen.</div>
+      <div class="qa-item" id="qa-3">
+        <button class="qa-btn" aria-expanded="false" aria-controls="qa-3-body">
+          <span class="qa-num">03</span>
+          <span class="qa-btn-text">"Dit voelt als geld verdienen over de rug van kinderen."</span>
+          <span class="qa-chevron">›</span>
+        </button>
+        <div class="qa-answer-wrapper" id="qa-3-body" role="region">
+          <div class="qa-answer-inner">
+            <div class="qa-answer">
+              <span class="qa-answer-icon">✓</span>
+              <span>Een platformvergoeding dekt infrastructuurkosten, betalingsverwerking en onderhoud — niet anders dan elke andere betaaldienst of crowdfunding-platform. De vergoeding staat altijd transparant vermeld vóór de donatie, zodat donateurs precies weten wat ze betalen.</span>
+            </div>
+          </div>
+        </div>
       </div>
 
-      <div class="qa-item">
-        <div class="qa-question">"Waarom gaat niet 100% naar de school?"</div>
-        <div class="qa-answer">Omdat betalingsverwerking, hosting en beheer kosten maken. De platformvergoeding van 2% ligt lager dan veel vergelijkbare crowdfunding-platforms (die doorgaans 5–10% plus transactiekosten rekenen). De school ziet het nettobedrag exact en communiceert dat naar donateurs.</div>
+      <div class="qa-item" id="qa-4">
+        <button class="qa-btn" aria-expanded="false" aria-controls="qa-4-body">
+          <span class="qa-num">04</span>
+          <span class="qa-btn-text">"Waarom gaat niet 100% naar de school?"</span>
+          <span class="qa-chevron">›</span>
+        </button>
+        <div class="qa-answer-wrapper" id="qa-4-body" role="region">
+          <div class="qa-answer-inner">
+            <div class="qa-answer">
+              <span class="qa-answer-icon">✓</span>
+              <span>Omdat betalingsverwerking, hosting en beheer kosten maken. De platformvergoeding van 2% ligt lager dan veel vergelijkbare crowdfunding-platforms (die doorgaans 5–10% plus transactiekosten rekenen). De school ziet het nettobedrag exact en communiceert dat naar donateurs.</span>
+            </div>
+          </div>
+        </div>
       </div>
 
-      <div class="qa-item">
-        <div class="qa-question">"Wordt dit geen sponsorcircus?"</div>
-        <div class="qa-answer">Bedrijfsvermeldingen zijn volledig optioneel. De school beslist zelf of, hoe en waar ze sponsors noemt. Er verschijnen geen logo's in klassen en er zijn geen verplichte reclame-uitingen. Sponsors worden vermeld als ze dat willen — niet andersom.</div>
+      <div class="qa-item" id="qa-5">
+        <button class="qa-btn" aria-expanded="false" aria-controls="qa-5-body">
+          <span class="qa-num">05</span>
+          <span class="qa-btn-text">"Wordt dit geen sponsorcircus?"</span>
+          <span class="qa-chevron">›</span>
+        </button>
+        <div class="qa-answer-wrapper" id="qa-5-body" role="region">
+          <div class="qa-answer-inner">
+            <div class="qa-answer">
+              <span class="qa-answer-icon">✓</span>
+              <span>Bedrijfsvermeldingen zijn volledig optioneel. De school beslist zelf of, hoe en waar ze sponsors noemt. Er verschijnen geen logo's in klassen en er zijn geen verplichte reclame-uitingen. Sponsors worden vermeld als ze dat willen — niet andersom.</span>
+            </div>
+          </div>
+        </div>
       </div>
 
-      <div class="qa-item honest">
-        <div class="qa-question">"Rijke scholen halen meer op dan arme scholen. Vergroot dit de kansenongelijkheid?"</div>
-        <div class="qa-answer">Dit is een geldige en moeilijke vraag — en we hebben geen kant-en-klare oplossing. Scholen in sterkere buurten hebben meer draagkrachtige donateurs. We maken dit probleem zichtbaar en denken na over compensatiemechanismen, maar eerlijk zijn: dit blijft een spanningsveld dat vraagt om een bredere maatschappelijke discussie.</div>
+      <div class="qa-item honest" id="qa-6">
+        <button class="qa-btn" aria-expanded="false" aria-controls="qa-6-body">
+          <span class="qa-num">06</span>
+          <span class="qa-btn-text">"Rijke scholen halen meer op dan arme scholen. Vergroot dit de kansenongelijkheid?"</span>
+          <div class="qa-badges">
+            <span class="badge-honest">Eerlijk antwoord</span>
+          </div>
+          <span class="qa-chevron">›</span>
+        </button>
+        <div class="qa-answer-wrapper" id="qa-6-body" role="region">
+          <div class="qa-answer-inner">
+            <div class="qa-answer">
+              <span class="qa-answer-icon">~</span>
+              <span>Dit is een geldige en moeilijke vraag — en we hebben geen kant-en-klare oplossing. Scholen in sterkere buurten hebben meer draagkrachtige donateurs. We maken dit probleem zichtbaar en denken na over compensatiemechanismen, maar eerlijk zijn: dit blijft een spanningsveld dat vraagt om een bredere maatschappelijke discussie.</span>
+            </div>
+          </div>
+        </div>
       </div>
 
-      <div class="qa-item">
-        <div class="qa-question">"Is dit wel veilig met betalingen en mijn privacy?"</div>
-        <div class="qa-answer">Betalingen verlopen via iDEAL (Mollie), een gecertificeerde betaaldienst met bankbeveiliging. Anoniem doneren is standaard mogelijk. We slaan geen persoonlijke data op buiten wat noodzakelijk is voor de transactieverwerking — en dat staat helder beschreven in de privacyverklaring.</div>
+      <div class="qa-item" id="qa-7">
+        <button class="qa-btn" aria-expanded="false" aria-controls="qa-7-body">
+          <span class="qa-num">07</span>
+          <span class="qa-btn-text">"Is dit wel veilig met betalingen en mijn privacy?"</span>
+          <span class="qa-chevron">›</span>
+        </button>
+        <div class="qa-answer-wrapper" id="qa-7-body" role="region">
+          <div class="qa-answer-inner">
+            <div class="qa-answer">
+              <span class="qa-answer-icon">✓</span>
+              <span>Betalingen verlopen via iDEAL (Mollie), een gecertificeerde betaaldienst met bankbeveiliging. Anoniem doneren is standaard mogelijk. We slaan geen persoonlijke data op buiten wat noodzakelijk is voor de transactieverwerking — en dat staat helder beschreven in de privacyverklaring.</span>
+            </div>
+          </div>
+        </div>
       </div>
 
-      <div class="qa-item">
-        <div class="qa-question">"De school heeft hier geen tijd voor."</div>
-        <div class="qa-answer">Setup duurt minder dan 5 minuten: één link op de schoolwebsite plaatsen en één project aanmaken in het dashboard. Daarna is het beheer minimaal. De school hoeft alleen af en toe de voortgang te controleren — alles loopt verder automatisch.</div>
+      <div class="qa-item" id="qa-8">
+        <button class="qa-btn" aria-expanded="false" aria-controls="qa-8-body">
+          <span class="qa-num">08</span>
+          <span class="qa-btn-text">"De school heeft hier geen tijd voor."</span>
+          <span class="qa-chevron">›</span>
+        </button>
+        <div class="qa-answer-wrapper" id="qa-8-body" role="region">
+          <div class="qa-answer-inner">
+            <div class="qa-answer">
+              <span class="qa-answer-icon">✓</span>
+              <span>Setup duurt minder dan 5 minuten: één link op de schoolwebsite plaatsen en één project aanmaken in het dashboard. Daarna is het beheer minimaal. De school hoeft alleen af en toe de voortgang te controleren — alles loopt verder automatisch.</span>
+            </div>
+          </div>
+        </div>
       </div>
 
-      <div class="qa-item">
-        <div class="qa-question">"Wat gebeurt er als het doel niet wordt gehaald?"</div>
-        <div class="qa-answer">Het geld gaat altijd naar de school, ook als het doelbedrag niet volledig bereikt is. De directeur communiceert zelf naar donateurs wat er met het opgehaalde bedrag gebeurt. Transparantie is hier de verantwoordelijkheid van de school — 4deklas biedt het platform en de rapportage daarvoor.</div>
+      <div class="qa-item" id="qa-9">
+        <button class="qa-btn" aria-expanded="false" aria-controls="qa-9-body">
+          <span class="qa-num">09</span>
+          <span class="qa-btn-text">"Wat gebeurt er als het doel niet wordt gehaald?"</span>
+          <span class="qa-chevron">›</span>
+        </button>
+        <div class="qa-answer-wrapper" id="qa-9-body" role="region">
+          <div class="qa-answer-inner">
+            <div class="qa-answer">
+              <span class="qa-answer-icon">✓</span>
+              <span>Het geld gaat altijd naar de school, ook als het doelbedrag niet volledig bereikt is. De directeur communiceert zelf naar donateurs wat er met het opgehaalde bedrag gebeurt. Transparantie is hier de verantwoordelijkheid van de school — 4deklas biedt het platform en de rapportage daarvoor.</span>
+            </div>
+          </div>
+        </div>
       </div>
 
-      <div class="qa-item">
-        <div class="qa-question">"Waarom zou ik dit via jullie platform doen en niet gewoon via de ouderraad of een Tikkie?"</div>
-        <div class="qa-answer">Een Tikkie heeft geen voortgangsbalk, geen projectbeheer, geen transparantie over bestemming van het geld, geen jaarrapportage en geen optie voor maandelijkse donaties. 4deklas biedt dat allemaal — met minder werk voor de ouderraad. Je hoeft niets te ontwikkelen; het is er al.</div>
+      <div class="qa-item" id="qa-10">
+        <button class="qa-btn" aria-expanded="false" aria-controls="qa-10-body">
+          <span class="qa-num">10</span>
+          <span class="qa-btn-text">"Waarom zou ik dit via jullie platform doen en niet gewoon via de ouderraad of een Tikkie?"</span>
+          <span class="qa-chevron">›</span>
+        </button>
+        <div class="qa-answer-wrapper" id="qa-10-body" role="region">
+          <div class="qa-answer-inner">
+            <div class="qa-answer">
+              <span class="qa-answer-icon">✓</span>
+              <span>Een Tikkie heeft geen voortgangsbalk, geen projectbeheer, geen transparantie over bestemming van het geld, geen jaarrapportage en geen optie voor maandelijkse donaties. 4deklas biedt dat allemaal — met minder werk voor de ouderraad. Je hoeft niets te ontwikkelen; het is er al.</span>
+            </div>
+          </div>
+        </div>
       </div>
 
     </div>
@@ -164,9 +651,14 @@
   <div class="cta-section">
     <h2>Overtuigd genoeg om te kijken?</h2>
     <p>Bekijk de live demo of neem contact op als u nog vragen heeft.</p>
-    <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap">
+    <div class="trust-row">
+      <div class="trust-item"><span class="trust-check">✓</span><span>Gratis te starten</span></div>
+      <div class="trust-item"><span class="trust-check">✓</span><span>Geen contract</span></div>
+      <div class="trust-item"><span class="trust-check">✓</span><span>AVG-proof</span></div>
+    </div>
+    <div class="cta-buttons">
       <a href="/doneren" class="cta-btn">❤️ Bekijk de demo →</a>
-      <a href="mailto:guidoboone@gmail.com" style="display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.15);color:white;border:2px solid rgba(255,255,255,.4);padding:14px 28px;border-radius:50px;font-size:15px;font-weight:700;text-decoration:none;font-family:'Archivo',sans-serif;transition:background .2s" onmouseover="this.style.background='rgba(255,255,255,.25)'" onmouseout="this.style.background='rgba(255,255,255,.15)'">Neem contact op →</a>
+      <a href="mailto:guidoboone@gmail.com" class="cta-btn-ghost">Neem contact op →</a>
     </div>
   </div>
 
@@ -175,6 +667,54 @@
 <footer>
   <p>© 2025 <strong>De Regenboogschool</strong> · Donaties verwerkt via 4deklas · <em>Demo op 4deklas.nl — geen echte betalingen</em></p>
 </footer>
+
+<script>
+  const items = document.querySelectorAll('.qa-item');
+  const total = items.length;
+  const seen = new Set();
+
+  function updateProgress() {
+    const count = seen.size;
+    document.getElementById('progress-text').textContent = `${count} van ${total} bekeken`;
+    document.getElementById('progress-track').style.width = (count / total * 100) + '%';
+    document.getElementById('progress-counter').classList.toggle('complete', count === total);
+  }
+
+  items.forEach(item => {
+    const btn = item.querySelector('.qa-btn');
+    btn.addEventListener('click', () => {
+      const isOpen = item.classList.contains('open');
+      item.classList.toggle('open', !isOpen);
+      btn.setAttribute('aria-expanded', String(!isOpen));
+      if (!isOpen) seen.add(item.id);
+      updateProgress();
+    });
+  });
+
+  const expandBtn = document.getElementById('expand-all-btn');
+  let allExpanded = false;
+
+  expandBtn.addEventListener('click', () => {
+    allExpanded = !allExpanded;
+    items.forEach(item => {
+      item.classList.toggle('open', allExpanded);
+      item.querySelector('.qa-btn').setAttribute('aria-expanded', String(allExpanded));
+      if (allExpanded) seen.add(item.id);
+    });
+    expandBtn.textContent = allExpanded ? 'Alle inklappen' : 'Alle uitklappen';
+    updateProgress();
+  });
+
+  const btns = Array.from(document.querySelectorAll('.qa-btn'));
+  btns.forEach((btn, i) => {
+    btn.addEventListener('keydown', e => {
+      if (e.key === 'ArrowDown') { e.preventDefault(); btns[(i + 1) % btns.length].focus(); }
+      if (e.key === 'ArrowUp')   { e.preventDefault(); btns[(i - 1 + btns.length) % btns.length].focus(); }
+      if (e.key === 'Home')      { e.preventDefault(); btns[0].focus(); }
+      if (e.key === 'End')       { e.preventDefault(); btns[btns.length - 1].focus(); }
+    });
+  });
+</script>
 
 </body>
 </html>

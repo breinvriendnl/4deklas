@@ -7,77 +7,880 @@
   <title>Ons verhaal — Waarom 4deklas? · 4deklas Demo</title>
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;700;800&family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
   <style>
+    html { scroll-behavior: smooth; }
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: 'Space Grotesk', system-ui, sans-serif; background: #f8fafc; color: #1a202c; }
 
-    .demo-bar { background: #0f0c29; color: rgba(255,255,255,.7); text-align: center; padding: 8px 16px; font-size: 12px; display: flex; align-items: center; justify-content: center; gap: 10px; }
-    .demo-bar strong { color: white; }
-    .demo-bar a { color: #60a5fa; text-decoration: none; }
+    /* === FOCUS STYLES === */
+    a:focus-visible, button:focus-visible {
+      outline: 2px solid #6366f1;
+      outline-offset: 3px;
+      border-radius: 4px;
+    }
 
-    header { background: #1e3a8a; color: white; padding: 14px 32px; display: flex; align-items: center; justify-content: space-between; }
+    /* === SCROLL PROGRESS === */
+    .scroll-progress {
+      position: fixed;
+      top: 0; left: 0;
+      height: 3px;
+      width: 0%;
+      background: linear-gradient(90deg, #6366f1, #3b82f6, #06b6d4);
+      z-index: 9999;
+      pointer-events: none;
+      transition: width .08s linear;
+      border-radius: 0 2px 2px 0;
+    }
+
+    /* === DEMO BAR === */
+    .demo-bar {
+      background: linear-gradient(90deg, #0f0c29, #1e1b4b, #312e81, #1e1b4b, #0f0c29);
+      background-size: 300% 100%;
+      animation: demoShimmer 10s linear infinite;
+      color: rgba(255,255,255,.7);
+      text-align: center;
+      padding: 9px 16px;
+      font-size: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+    }
+    @keyframes demoShimmer {
+      0% { background-position: 0% 0; }
+      100% { background-position: 300% 0; }
+    }
+    .demo-bar strong { color: white; }
+    .demo-bar a { color: #93c5fd; text-decoration: none; border-bottom: 1px solid rgba(147,197,253,.3); transition: color .15s; }
+    .demo-bar a:hover { color: #bfdbfe; }
+    .demo-bar .sep { opacity: .3; }
+
+    /* === HEADER === */
+    header {
+      background: #1e3a8a;
+      color: white;
+      padding: 14px 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 12px rgba(0,0,0,.2);
+    }
     .header-left { display: flex; align-items: center; gap: 14px; }
-    .school-logo { width: 44px; height: 44px; background: white; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 24px; flex-shrink: 0; }
+    .school-logo {
+      width: 44px;
+      height: 44px;
+      background: white;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      flex-shrink: 0;
+      box-shadow: 0 2px 8px rgba(0,0,0,.15);
+    }
     .school-name { font-family: 'Archivo', sans-serif; font-size: 19px; font-weight: 800; }
     .school-sub { font-size: 12px; opacity: .65; margin-top: 2px; }
 
-    nav { background: #1e40af; }
-    nav ul { display: flex; list-style: none; padding: 0 32px; }
-    nav ul li a { display: block; padding: 12px 18px; color: rgba(255,255,255,.75); text-decoration: none; font-size: 14px; transition: color .15s; }
-    nav ul li a:hover, nav ul li a.active { color: white; }
-    nav ul li.cta a { color: white; font-weight: 600; }
+    /* === NAV === */
+    nav { background: #1e40af; border-bottom: 1px solid rgba(255,255,255,.08); }
+    nav ul { display: flex; list-style: none; padding: 0 32px; overflow-x: auto; scrollbar-width: none; }
+    nav ul::-webkit-scrollbar { display: none; }
+    nav ul li a {
+      display: block;
+      padding: 13px 18px;
+      color: rgba(255,255,255,.7);
+      text-decoration: none;
+      font-size: 14px;
+      white-space: nowrap;
+      transition: color .15s;
+      position: relative;
+    }
+    nav ul li a::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 18px; right: 18px;
+      height: 2px;
+      background: white;
+      border-radius: 2px 2px 0 0;
+      transform: scaleX(0);
+      transition: transform .2s;
+    }
+    nav ul li a:hover { color: white; }
+    nav ul li a:hover::after,
+    nav ul li a.active::after { transform: scaleX(1); }
+    nav ul li a.active { color: white; }
+    nav ul li.cta a {
+      color: white;
+      font-weight: 600;
+      background: rgba(255,255,255,.1);
+      border-radius: 99px;
+      margin: 6px 0 6px 8px;
+      padding: 6px 16px;
+      transition: background .15s;
+    }
+    nav ul li.cta a:hover { background: rgba(255,255,255,.2); }
+    nav ul li.cta a::after { display: none; }
 
-    .hero { background: linear-gradient(135deg, #1e3a8a 0%, #3730a3 100%); color: white; padding: 64px 32px; text-align: center; }
-    .hero-label { display: inline-block; background: rgba(255,255,255,.15); border-radius: 99px; padding: 5px 16px; font-size: 12px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; margin-bottom: 18px; }
-    .hero h1 { font-family: 'Archivo', sans-serif; font-size: clamp(26px, 4vw, 40px); font-weight: 800; line-height: 1.2; margin-bottom: 14px; }
-    .hero p { font-size: 17px; opacity: .85; max-width: 600px; margin: 0 auto; line-height: 1.7; }
+    /* === HERO === */
+    .hero-wrapper {
+      background: linear-gradient(135deg, #1e3a8a 0%, #3730a3 60%, #4338ca 100%);
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-wrapper::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: radial-gradient(circle, rgba(255,255,255,.07) 1px, transparent 1px);
+      background-size: 28px 28px;
+      pointer-events: none;
+    }
+    .hero-wrapper::after {
+      content: '';
+      position: absolute;
+      top: -120px;
+      right: -60px;
+      width: 520px;
+      height: 520px;
+      background: radial-gradient(circle, rgba(99,102,241,.3) 0%, transparent 65%);
+      pointer-events: none;
+    }
+    .hero {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 80px 40px 88px;
+      display: grid;
+      grid-template-columns: 1fr 420px;
+      gap: 64px;
+      align-items: center;
+      color: white;
+      position: relative;
+      z-index: 1;
+    }
+    .hero-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(255,255,255,.15);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255,255,255,.2);
+      border-radius: 99px;
+      padding: 6px 16px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      margin-bottom: 22px;
+    }
+    .hero h1 {
+      font-family: 'Archivo', sans-serif;
+      font-size: clamp(30px, 3.8vw, 48px);
+      font-weight: 800;
+      line-height: 1.12;
+      margin-bottom: 20px;
+      letter-spacing: -.01em;
+    }
+    .hero p {
+      font-size: 16px;
+      opacity: .85;
+      line-height: 1.8;
+      margin-bottom: 36px;
+      max-width: 460px;
+    }
+    .hero-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: white;
+      color: #1e3a8a;
+      padding: 14px 28px;
+      border-radius: 50px;
+      font-size: 14px;
+      font-weight: 700;
+      text-decoration: none;
+      font-family: 'Archivo', sans-serif;
+      box-shadow: 0 4px 20px rgba(0,0,0,.25);
+      transition: transform .2s, box-shadow .2s;
+    }
+    .hero-cta:hover { transform: translateY(-2px); box-shadow: 0 10px 28px rgba(0,0,0,.35); }
+    .hero-cta .cta-arrow { display: inline-block; transition: transform .2s; }
+    .hero-cta:hover .cta-arrow { transform: translateX(5px); }
 
-    .content { max-width: 860px; margin: 0 auto; padding: 56px 32px; }
+    /* === HERO WIDGET === */
+    .hero-widget {
+      background: white;
+      border-radius: 22px;
+      padding: 28px;
+      color: #1a202c;
+      box-shadow: 0 28px 72px rgba(0,0,0,.4), 0 0 0 1px rgba(255,255,255,.1);
+      position: relative;
+      animation: floatWidget 5s ease-in-out infinite;
+    }
+    @keyframes floatWidget {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+    .widget-tag {
+      position: absolute;
+      top: -12px;
+      right: 20px;
+      background: linear-gradient(135deg, #16a34a, #15803d);
+      color: white;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 4px 14px;
+      border-radius: 99px;
+      box-shadow: 0 2px 8px rgba(21,128,61,.4);
+    }
+    .widget-school-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #eff6ff;
+      border-radius: 99px;
+      padding: 4px 12px 4px 5px;
+      font-size: 12px;
+      font-weight: 600;
+      color: #1e40af;
+      margin-bottom: 14px;
+    }
+    .widget-school-badge .badge-logo {
+      width: 20px;
+      height: 20px;
+      background: #1e3a8a;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+    }
+    .widget-title {
+      font-family: 'Archivo', sans-serif;
+      font-weight: 800;
+      font-size: 16px;
+      color: #1e293b;
+      margin-bottom: 18px;
+      line-height: 1.35;
+    }
+    .widget-progress-track {
+      background: #e2e8f0;
+      border-radius: 99px;
+      height: 10px;
+      margin-bottom: 10px;
+      overflow: hidden;
+    }
+    .widget-progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #3b82f6, #6366f1);
+      border-radius: 99px;
+      width: 0%;
+      transition: width 1.5s cubic-bezier(.22,.68,0,1.1);
+      position: relative;
+    }
+    .widget-progress-fill::after {
+      content: '';
+      position: absolute;
+      right: -1px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: #6366f1;
+      border: 2px solid white;
+      box-shadow: 0 0 0 3px rgba(99,102,241,.25);
+      opacity: 0;
+      transition: opacity .3s .8s;
+    }
+    .widget-progress-fill.animated { width: 67%; }
+    .widget-progress-fill.animated::after { opacity: 1; }
+    .widget-meta {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      color: #64748b;
+      margin-bottom: 18px;
+    }
+    .widget-meta strong { color: #1e293b; font-weight: 700; }
+    .widget-amounts {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+    .amount-btn {
+      background: #f1f5f9;
+      border: 2px solid #e2e8f0;
+      border-radius: 10px;
+      padding: 9px 4px;
+      font-size: 13px;
+      font-weight: 700;
+      color: #334155;
+      text-align: center;
+      cursor: pointer;
+      transition: all .15s;
+      font-family: 'Space Grotesk', sans-serif;
+    }
+    .amount-btn:hover,
+    .amount-btn.selected {
+      background: #eff6ff;
+      border-color: #3b82f6;
+      color: #1d4ed8;
+    }
+    .widget-donate-btn {
+      width: 100%;
+      background: linear-gradient(135deg, #1e3a8a, #3730a3);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      padding: 14px;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: 'Archivo', sans-serif;
+      transition: transform .15s, box-shadow .15s;
+      animation: btnPulse 2.8s ease-in-out infinite;
+    }
+    @keyframes btnPulse {
+      0%, 100% { box-shadow: 0 4px 14px rgba(30,58,138,.4); }
+      50% { box-shadow: 0 6px 24px rgba(30,58,138,.6), 0 0 0 5px rgba(30,58,138,.08); }
+    }
+    .widget-donate-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 8px 22px rgba(30,58,138,.5);
+      animation: none;
+    }
+    .widget-trust {
+      text-align: center;
+      font-size: 11px;
+      color: #94a3b8;
+      margin-top: 9px;
+      letter-spacing: .02em;
+    }
+    .widget-donors {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 12px;
+      font-size: 12px;
+      color: #64748b;
+    }
+    .donor-avatars { display: flex; }
+    .donor-avatar {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      border: 2px solid white;
+      margin-left: -7px;
+      font-size: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 1px 4px rgba(0,0,0,.1);
+    }
+    .donor-avatar:first-child { margin-left: 0; }
 
-    .lead { font-size: 18px; line-height: 1.8; color: #334155; margin-bottom: 48px; border-left: 4px solid #4f6ef7; padding-left: 20px; }
+    /* === STATS STRIP === */
+    .stats-strip { background: white; border-bottom: 1px solid #e2e8f0; }
+    .stats-inner {
+      max-width: 780px;
+      margin: 0 auto;
+      padding: 0 32px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+    }
+    .stat-item {
+      padding: 28px 24px;
+      text-align: center;
+      border-right: 1px solid #f1f5f9;
+    }
+    .stat-item:last-child { border-right: none; }
+    .stat-emoji { font-size: 22px; margin-bottom: 8px; line-height: 1; }
+    .stat-value {
+      font-family: 'Archivo', sans-serif;
+      font-size: 30px;
+      font-weight: 800;
+      color: #1e3a8a;
+      line-height: 1;
+      margin-bottom: 5px;
+    }
+    .stat-label { font-size: 12px; color: #94a3b8; font-weight: 500; }
 
-    .section { margin-bottom: 52px; }
-    .section-label { font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: #4f6ef7; margin-bottom: 8px; }
-    .section h2 { font-family: 'Archivo', sans-serif; font-size: 24px; font-weight: 800; margin-bottom: 16px; color: #1e293b; }
-    .section p { font-size: 15px; color: #475569; line-height: 1.8; margin-bottom: 14px; }
+    /* === CONTENT === */
+    .content { max-width: 860px; margin: 0 auto; padding: 64px 32px; }
+
+    /* === LEAD === */
+    .lead {
+      font-size: 19px;
+      line-height: 1.8;
+      color: #334155;
+      margin-bottom: 60px;
+      padding: 32px 32px 32px 44px;
+      background: linear-gradient(135deg, #f8fafc 0%, #f0f4ff 100%);
+      border-left: 4px solid #6366f1;
+      border-radius: 0 16px 16px 0;
+      position: relative;
+    }
+    .lead::before {
+      content: '\201C';
+      position: absolute;
+      top: 8px;
+      left: 20px;
+      font-size: 72px;
+      font-family: 'Archivo', sans-serif;
+      font-weight: 800;
+      color: #c7d2fe;
+      line-height: 1;
+      pointer-events: none;
+    }
+
+    /* === SECTION === */
+    .section { margin-bottom: 60px; }
+    .section-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: #6366f1;
+      margin-bottom: 10px;
+    }
+    .section-label::before {
+      content: '';
+      display: inline-block;
+      width: 16px;
+      height: 2px;
+      background: currentColor;
+      border-radius: 2px;
+    }
+    .section h2 {
+      font-family: 'Archivo', sans-serif;
+      font-size: 28px;
+      font-weight: 800;
+      margin-bottom: 20px;
+      color: #0f172a;
+      line-height: 1.15;
+      letter-spacing: -.015em;
+    }
+    .section p { font-size: 15px; color: #475569; line-height: 1.9; margin-bottom: 16px; }
     .section p:last-child { margin-bottom: 0; }
+    .section p strong { color: #1e293b; font-weight: 600; }
 
-    .qa-list { display: flex; flex-direction: column; gap: 16px; margin-top: 8px; }
-    .qa-item { background: white; border-radius: 14px; box-shadow: 0 2px 8px rgba(0,0,0,.06); overflow: hidden; }
-    .qa-question { padding: 18px 22px; background: #f8fafc; border-bottom: 1px solid #e2e8f0; font-weight: 700; font-size: 15px; color: #1e3a8a; display: flex; align-items: flex-start; gap: 10px; }
-    .qa-question::before { content: "V"; background: #1e3a8a; color: white; width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 800; flex-shrink: 0; margin-top: 1px; }
-    .qa-answer { padding: 18px 22px; font-size: 14px; color: #475569; line-height: 1.75; display: flex; align-items: flex-start; gap: 10px; }
-    .qa-answer::before { content: "A"; background: #16a34a; color: white; width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 800; flex-shrink: 0; margin-top: 1px; }
+    /* === HOW IT WORKS BOX === */
+    .how-box {
+      background: linear-gradient(135deg, #eef2ff 0%, #f5f3ff 100%);
+      border: 1.5px solid #c7d2fe;
+      border-radius: 24px;
+      padding: 44px;
+      margin-bottom: 60px;
+      position: relative;
+      overflow: hidden;
+    }
+    .how-box::before {
+      content: '';
+      position: absolute;
+      bottom: -60px;
+      right: -60px;
+      width: 200px;
+      height: 200px;
+      background: radial-gradient(circle, rgba(99,102,241,.12), transparent 70%);
+      pointer-events: none;
+    }
+    .how-box-header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+    .how-box-header h3 {
+      font-family: 'Archivo', sans-serif;
+      font-size: 22px;
+      font-weight: 800;
+      color: #1e3a8a;
+      margin-bottom: 8px;
+    }
+    .how-box-header p {
+      font-size: 14px;
+      color: #6366f1;
+      font-style: italic;
+      font-weight: 500;
+    }
+    .steps {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr auto 1fr;
+      gap: 0;
+      align-items: start;
+    }
+    .step {
+      background: white;
+      border-radius: 18px;
+      padding: 24px 20px;
+      text-align: center;
+      box-shadow: 0 2px 12px rgba(30,58,138,.08);
+      border: 1px solid rgba(196,208,255,.4);
+      transition: transform .2s, box-shadow .2s;
+    }
+    .step:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 24px rgba(30,58,138,.14);
+    }
+    .step-num {
+      width: 44px;
+      height: 44px;
+      background: linear-gradient(135deg, #1e3a8a, #4338ca);
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Archivo', sans-serif;
+      font-weight: 800;
+      font-size: 18px;
+      margin: 0 auto 12px;
+      box-shadow: 0 4px 12px rgba(30,58,138,.3);
+    }
+    .step-icon { font-size: 28px; margin-bottom: 10px; }
+    .step h4 { font-family: 'Archivo', sans-serif; font-weight: 800; font-size: 14px; color: #1e293b; margin-bottom: 6px; }
+    .step p { font-size: 13px; color: #64748b; line-height: 1.65; }
+    .step-arrow {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 28px 16px 0;
+      color: #a5b4fc;
+      font-size: 22px;
+      animation: arrowBounce 2s ease-in-out infinite;
+    }
+    .step-arrow:nth-of-type(4) { animation-delay: .35s; }
+    @keyframes arrowBounce {
+      0%, 100% { transform: translateX(0); color: #c7d2fe; }
+      50% { transform: translateX(5px); color: #818cf8; }
+    }
+    .example-row { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 32px; justify-content: center; }
+    .example-tag {
+      background: white;
+      border: 1.5px solid #c7d2fe;
+      border-radius: 99px;
+      padding: 7px 16px;
+      font-size: 13px;
+      color: #4338ca;
+      font-weight: 600;
+      transition: all .15s;
+      cursor: default;
+    }
+    .example-tag:hover { background: #eff6ff; border-color: #818cf8; transform: translateY(-1px); }
 
-    .cards-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 18px; margin-top: 8px; }
-    .info-card { background: white; border-radius: 14px; padding: 24px; box-shadow: 0 2px 8px rgba(0,0,0,.06); }
-    .info-card .icon { font-size: 28px; margin-bottom: 12px; }
+    /* === Q&A ACCORDION === */
+    .qa-list { display: flex; flex-direction: column; gap: 10px; margin-top: 12px; }
+    .qa-item {
+      background: white;
+      border-radius: 14px;
+      box-shadow: 0 1px 4px rgba(0,0,0,.04);
+      border: 1.5px solid #e2e8f0;
+      overflow: hidden;
+      transition: box-shadow .2s, border-color .2s;
+    }
+    .qa-item:hover { box-shadow: 0 4px 16px rgba(0,0,0,.08); }
+    .qa-item.open {
+      border-color: #c7d2fe;
+      box-shadow: 0 4px 20px rgba(99,102,241,.12);
+    }
+    .qa-question {
+      padding: 18px 20px;
+      font-weight: 700;
+      font-size: 15px;
+      color: #1e3a8a;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      cursor: pointer;
+      user-select: none;
+      transition: background .15s;
+    }
+    .qa-question:hover { background: #f8fafc; }
+    .qa-q-badge {
+      background: linear-gradient(135deg, #1e3a8a, #3730a3);
+      color: white;
+      width: 26px;
+      height: 26px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: 800;
+      flex-shrink: 0;
+    }
+    .qa-chevron {
+      margin-left: auto;
+      color: #94a3b8;
+      font-size: 14px;
+      transition: transform .3s, color .3s;
+      flex-shrink: 0;
+    }
+    .qa-item.open .qa-chevron { transform: rotate(180deg); color: #6366f1; }
+    .qa-answer-wrap {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height .4s ease;
+    }
+    .qa-item.open .qa-answer-wrap { max-height: 400px; }
+    .qa-answer {
+      padding: 4px 20px 22px 58px;
+      font-size: 14.5px;
+      color: #475569;
+      line-height: 1.85;
+      border-top: 1px solid #f1f5f9;
+    }
+
+    /* === CARDS GRID === */
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 16px;
+      margin-top: 12px;
+    }
+    .info-card {
+      background: white;
+      border-radius: 18px;
+      padding: 26px;
+      box-shadow: 0 2px 8px rgba(0,0,0,.04);
+      border: 1.5px solid #f1f5f9;
+      border-top: 3px solid var(--accent, #4f6ef7);
+      transition: transform .2s, box-shadow .2s, border-color .2s;
+    }
+    .info-card:hover { transform: translateY(-4px); box-shadow: 0 12px 28px rgba(0,0,0,.1); border-color: var(--accent, #4f6ef7); }
+    .info-card:nth-child(1) { --accent: #3b82f6; --icon-bg: #eff6ff; }
+    .info-card:nth-child(2) { --accent: #6366f1; --icon-bg: #eef2ff; }
+    .info-card:nth-child(3) { --accent: #8b5cf6; --icon-bg: #f5f3ff; }
+    .info-card:nth-child(4) { --accent: #0ea5e9; --icon-bg: #f0f9ff; }
+    .info-card:nth-child(5) { --accent: #10b981; --icon-bg: #f0fdf4; }
+    .info-card:nth-child(6) { --accent: #f59e0b; --icon-bg: #fffbeb; }
+    .info-card .icon {
+      width: 52px;
+      height: 52px;
+      background: var(--icon-bg, #eff6ff);
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 26px;
+      margin-bottom: 14px;
+    }
     .info-card h4 { font-family: 'Archivo', sans-serif; font-weight: 800; font-size: 15px; margin-bottom: 8px; color: #1e293b; }
-    .info-card p { font-size: 13px; color: #64748b; line-height: 1.6; }
+    .info-card p { font-size: 13px; color: #64748b; line-height: 1.7; }
 
-    .highlight-box { background: linear-gradient(135deg, #eef2ff, #f5f3ff); border: 2px solid #c7d2fe; border-radius: 18px; padding: 36px; margin-bottom: 52px; }
-    .highlight-box h3 { font-family: 'Archivo', sans-serif; font-size: 20px; font-weight: 800; color: #1e3a8a; margin-bottom: 12px; }
-    .highlight-box p { font-size: 15px; color: #4b5563; line-height: 1.75; }
-    .highlight-box .quote { font-size: 17px; font-style: italic; color: #3730a3; font-weight: 600; border-left: 3px solid #4f6ef7; padding-left: 16px; margin: 16px 0; }
+    /* === DIRECTOR SECTION === */
+    .director-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      align-items: start;
+      margin-top: 8px;
+    }
+    .director-text p { font-size: 15px; color: #475569; line-height: 1.9; margin-bottom: 16px; }
+    .director-text p:last-child { margin-bottom: 0; }
+    .director-text p strong { color: #1e293b; font-weight: 600; }
+    .dashboard-mockup {
+      background: white;
+      border-radius: 18px;
+      border: 1px solid #e2e8f0;
+      box-shadow: 0 12px 36px rgba(0,0,0,.1);
+      overflow: hidden;
+    }
+    .mockup-bar {
+      background: linear-gradient(90deg, #1e3a8a, #1e40af);
+      padding: 10px 14px;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+    }
+    .mockup-dot { width: 10px; height: 10px; border-radius: 50%; }
+    .mockup-dot:nth-child(1) { background: #f87171; }
+    .mockup-dot:nth-child(2) { background: #fbbf24; }
+    .mockup-dot:nth-child(3) { background: #34d399; }
+    .mockup-url {
+      background: rgba(255,255,255,.1);
+      border-radius: 6px;
+      padding: 3px 12px;
+      font-size: 11px;
+      color: rgba(255,255,255,.55);
+      flex: 1;
+      text-align: center;
+    }
+    .mockup-body { padding: 16px; }
+    .mockup-heading { font-family: 'Archivo', sans-serif; font-weight: 800; font-size: 12px; color: #1e293b; margin-bottom: 12px; }
+    .mockup-project {
+      background: #f8fafc;
+      border-radius: 10px;
+      padding: 12px;
+      margin-bottom: 8px;
+      border: 1px solid #e8ecf4;
+      transition: background .15s;
+    }
+    .mockup-project:last-child { margin-bottom: 0; }
+    .mockup-project:hover { background: #f0f4ff; }
+    .mockup-project-name { font-weight: 700; font-size: 12px; color: #1e293b; margin-bottom: 7px; }
+    .mockup-track { background: #e2e8f0; height: 6px; border-radius: 99px; margin-bottom: 5px; overflow: hidden; }
+    .mockup-fill { height: 100%; border-radius: 99px; background: linear-gradient(90deg, #3b82f6, #6366f1); }
+    .mockup-meta { display: flex; justify-content: space-between; font-size: 10px; color: #94a3b8; }
+    .mockup-meta strong { color: #475569; }
 
-    .example-row { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 16px; }
-    .example-tag { background: white; border: 1px solid #c7d2fe; border-radius: 99px; padding: 6px 14px; font-size: 13px; color: #4338ca; font-weight: 600; }
+    /* === CTA === */
+    .cta-section {
+      background: linear-gradient(135deg, #1e3a8a 0%, #3730a3 100%);
+      color: white;
+      border-radius: 28px;
+      padding: 60px 48px;
+      text-align: center;
+      margin-bottom: 8px;
+      position: relative;
+      overflow: hidden;
+    }
+    .cta-section::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 70% 30%, rgba(99,102,241,.5) 0%, transparent 60%);
+      pointer-events: none;
+    }
+    .cta-orb-1 {
+      position: absolute;
+      width: 280px;
+      height: 280px;
+      border-radius: 50%;
+      border: 1.5px solid rgba(255,255,255,.08);
+      bottom: -100px;
+      left: -60px;
+      pointer-events: none;
+    }
+    .cta-orb-2 {
+      position: absolute;
+      width: 180px;
+      height: 180px;
+      border-radius: 50%;
+      border: 1.5px solid rgba(255,255,255,.06);
+      top: -60px;
+      right: 80px;
+      pointer-events: none;
+    }
+    .cta-section h2 {
+      font-family: 'Archivo', sans-serif;
+      font-size: 30px;
+      font-weight: 800;
+      margin-bottom: 14px;
+      position: relative;
+      letter-spacing: -.01em;
+    }
+    .cta-section p {
+      font-size: 15px;
+      opacity: .85;
+      max-width: 480px;
+      margin: 0 auto 36px;
+      line-height: 1.75;
+      position: relative;
+    }
+    .cta-buttons { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; position: relative; }
+    .cta-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: white;
+      color: #1e3a8a;
+      padding: 15px 32px;
+      border-radius: 50px;
+      font-size: 15px;
+      font-weight: 700;
+      text-decoration: none;
+      font-family: 'Archivo', sans-serif;
+      box-shadow: 0 6px 24px rgba(0,0,0,.3);
+      transition: transform .2s, box-shadow .2s;
+    }
+    .cta-btn:hover { transform: translateY(-2px); box-shadow: 0 12px 32px rgba(0,0,0,.35); }
+    .cta-btn-outline {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255,255,255,.1);
+      color: white;
+      border: 1.5px solid rgba(255,255,255,.3);
+      padding: 15px 30px;
+      border-radius: 50px;
+      font-size: 15px;
+      font-weight: 700;
+      text-decoration: none;
+      font-family: 'Archivo', sans-serif;
+      transition: background .2s, border-color .2s;
+      backdrop-filter: blur(4px);
+    }
+    .cta-btn-outline:hover { background: rgba(255,255,255,.2); border-color: rgba(255,255,255,.55); }
 
-    .cta-section { background: linear-gradient(135deg, #1e3a8a, #3730a3); color: white; border-radius: 20px; padding: 48px 40px; text-align: center; margin-bottom: 8px; }
-    .cta-section h2 { font-family: 'Archivo', sans-serif; font-size: 26px; font-weight: 800; margin-bottom: 12px; }
-    .cta-section p { font-size: 15px; opacity: .85; max-width: 480px; margin: 0 auto 28px; line-height: 1.65; }
-    .cta-btn { display: inline-flex; align-items: center; gap: 10px; background: white; color: #1e3a8a; padding: 14px 30px; border-radius: 50px; font-size: 15px; font-weight: 700; text-decoration: none; transition: transform .2s, box-shadow .2s; font-family: 'Archivo', sans-serif; box-shadow: 0 6px 20px rgba(0,0,0,.3); }
-    .cta-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 28px rgba(0,0,0,.35); }
+    /* === FOOTER === */
+    footer {
+      background: #0f172a;
+      color: rgba(255,255,255,.35);
+      text-align: center;
+      padding: 32px 24px;
+      font-size: 12px;
+      margin-top: 48px;
+      line-height: 2;
+    }
+    footer strong { color: rgba(255,255,255,.65); }
+    footer a { color: rgba(147,197,253,.6); text-decoration: none; }
+    footer a:hover { color: #93c5fd; }
 
-    footer { background: #1e293b; color: rgba(255,255,255,.4); text-align: center; padding: 24px; font-size: 12px; margin-top: 40px; }
-    footer strong { color: rgba(255,255,255,.7); }
+    /* === SCROLL REVEAL === */
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity .65s ease, transform .65s ease;
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .reveal-d1 { transition-delay: .12s; }
+    .reveal-d2 { transition-delay: .24s; }
+
+    /* === RESPONSIVE === */
+    @media (max-width: 860px) {
+      .hero { grid-template-columns: 1fr; gap: 44px; padding: 56px 24px 72px; }
+      .hero-widget { max-width: 440px; animation: none; }
+      .steps { grid-template-columns: 1fr; gap: 16px; }
+      .step-arrow { display: none; }
+      .director-grid { grid-template-columns: 1fr; }
+      .cards-grid { grid-template-columns: 1fr 1fr; }
+      .content { padding: 44px 20px; }
+      .how-box { padding: 28px 20px; }
+      .cta-section { padding: 44px 24px; }
+      nav ul { padding: 0 16px; }
+      header { padding: 12px 20px; }
+    }
+    @media (max-width: 540px) {
+      .stats-inner { grid-template-columns: repeat(3, 1fr); padding: 0; }
+      .stat-item { padding: 20px 10px; border-right: 1px solid #f1f5f9; }
+      .stat-value { font-size: 22px; }
+      .stat-emoji { font-size: 18px; }
+      .cards-grid { grid-template-columns: 1fr; }
+      .widget-amounts { grid-template-columns: repeat(2, 1fr); }
+      .hero-widget { max-width: 100%; }
+      .cta-section { border-radius: 20px; }
+    }
   </style>
 </head>
 <body>
 
+<div id="scrollProgress" class="scroll-progress"></div>
+
 <div class="demo-bar">
-  <strong>🎯 4deklas Demo</strong> · Stap 1: <a href="/doneren">Doneer als ouder →</a> · Stap 2: <a href="/dashboard">Log in als directeur →</a>
+  <strong>🎯 4deklas Demo</strong>
+  <span class="sep">·</span>
+  Stap 1: <a href="/doneren">Doneer als ouder →</a>
+  <span class="sep">·</span>
+  Stap 2: <a href="/dashboard">Log in als directeur →</a>
 </div>
 
 <header>
@@ -103,30 +906,111 @@
   </ul>
 </nav>
 
-<div class="hero">
-  <div class="hero-label">Waarom 4deklas?</div>
-  <h1>Goede plannen verdienen<br>een eerlijke kans</h1>
-  <p>Veel scholen hebben mooie ideeën waar nét geen budget voor is. Wij verbinden die scholen met de mensen die er het liefst aan bijdragen: ouders, buren en lokale ondernemers.</p>
+<div class="hero-wrapper">
+  <div class="hero">
+    <div class="hero-text">
+      <div class="hero-label">✦ Waarom 4deklas?</div>
+      <h1>Goede plannen verdienen een eerlijke kans</h1>
+      <p>Veel scholen hebben mooie ideeën waar nét geen budget voor is. Wij verbinden die scholen met de mensen die er het liefst aan bijdragen: ouders, buren en lokale ondernemers.</p>
+      <a href="/doneren" class="hero-cta">Bekijk de demo <span class="cta-arrow">→</span></a>
+    </div>
+
+    <div class="hero-widget">
+      <div class="widget-tag">Live demo</div>
+      <div class="widget-school-badge">
+        <div class="badge-logo">🌈</div>
+        De Regenboogschool
+      </div>
+      <div class="widget-title">15 nieuwe laptops voor groep 7 &amp; 8</div>
+      <div class="widget-progress-track">
+        <div class="widget-progress-fill" id="heroProgress"></div>
+      </div>
+      <div class="widget-meta">
+        <span><strong>€ 1.340</strong> opgehaald</span>
+        <span>67% van <strong>€ 2.000</strong></span>
+      </div>
+      <div class="widget-amounts">
+        <div class="amount-btn">€ 10</div>
+        <div class="amount-btn selected">€ 25</div>
+        <div class="amount-btn">€ 50</div>
+        <div class="amount-btn">Eigen</div>
+      </div>
+      <button class="widget-donate-btn">❤️ Doneer nu via iDEAL</button>
+      <div class="widget-trust">🔒 Beveiligd · iDEAL · Geen account nodig</div>
+      <div class="widget-donors">
+        <div class="donor-avatars">
+          <div class="donor-avatar" style="background:#fef3c7">👩</div>
+          <div class="donor-avatar" style="background:#dbeafe">👨</div>
+          <div class="donor-avatar" style="background:#f3e8ff">👩‍🦱</div>
+          <div class="donor-avatar" style="background:#dcfce7">👴</div>
+        </div>
+        <span>31 mensen doneerden al</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="stats-strip">
+  <div class="stats-inner">
+    <div class="stat-item reveal">
+      <div class="stat-emoji">🏫</div>
+      <div class="stat-value" data-count="23" data-suffix="+">23+</div>
+      <div class="stat-label">scholen in de demo</div>
+    </div>
+    <div class="stat-item reveal reveal-d1">
+      <div class="stat-emoji">💰</div>
+      <div class="stat-value" data-prefix="€ " data-count="48" data-suffix="k">€ 48k</div>
+      <div class="stat-label">gecombineerd doel</div>
+    </div>
+    <div class="stat-item reveal reveal-d2">
+      <div class="stat-emoji">⚡</div>
+      <div class="stat-value" data-count="4" data-suffix=" min">4 min</div>
+      <div class="stat-label">gemiddelde installatietijd</div>
+    </div>
+  </div>
 </div>
 
 <div class="content">
 
-  <p class="lead">
-    "Veel scholen hebben mooie plannen waar nét geen budget voor is. Tegelijkertijd willen ouders en lokale ondernemers vaak best bijdragen — als het simpel en transparant geregeld is."
+  <p class="lead reveal">
+    Veel scholen hebben mooie plannen waar nét geen budget voor is. Tegelijkertijd willen ouders en lokale ondernemers vaak best bijdragen — als het simpel en transparant geregeld is.
   </p>
 
-  <div class="section">
+  <div class="section reveal">
     <div class="section-label">Het probleem</div>
     <h2>Scholen hebben ideeën. Het geld ontbreekt.</h2>
     <p>Basisscholen werken met een vast budget dat nauwelijks ruimte laat voor extra's. Nieuwe tablets, een avontuurlijk schoolplein, muziekinstrumenten voor een schoolband — het zijn concrete wensen die in de lade blijven liggen.</p>
     <p>Tegelijkertijd zijn ouders en lokale bedrijven best bereid om bij te dragen. Ze missen alleen een makkelijke, transparante manier om dat te doen.</p>
-    <p>4deklas is die manier.</p>
+    <p><strong>4deklas is die manier.</strong></p>
   </div>
 
-  <div class="highlight-box">
-    <h3>Hoe het werkt — in één zin</h3>
-    <div class="quote">"Een grote doneerknop op de website van de school, zodat iedereen direct kan bijdragen aan een concreet project."</div>
-    <p>Ouders en bedrijven kiezen een bedrag, zien live hoeveel er al opgehaald is, en weten precies waarvoor het geld gebruikt wordt. Eenmalig of maandelijks — hun keuze.</p>
+  <div class="how-box reveal">
+    <div class="how-box-header">
+      <h3>Zo werkt het — in drie stappen</h3>
+      <p>"Een doneerknop op de schoolsite. Zo simpel is het."</p>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-icon">🏫</div>
+        <h4>School maakt een project</h4>
+        <p>Directeur logt in, geeft het project een naam en een doelbedrag. Klaar in 2 minuten.</p>
+      </div>
+      <div class="step-arrow">→</div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-icon">❤️</div>
+        <h4>Ouders &amp; bedrijven doneren</h4>
+        <p>Via de doneerknop op de schoolsite — eenmalig of maandelijks, simpel via iDEAL.</p>
+      </div>
+      <div class="step-arrow">→</div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-icon">🎉</div>
+        <h4>Project wordt realiteit</h4>
+        <p>School ontvangt het bedrag direct. Donateurs zien live hoe het project vordert.</p>
+      </div>
+    </div>
     <div class="example-row">
       <span class="example-tag">💻 Nieuwe tablets</span>
       <span class="example-tag">🌳 Groen schoolplein</span>
@@ -136,40 +1020,70 @@
     </div>
   </div>
 
-  <div class="section">
+  <div class="section reveal">
     <div class="section-label">Veelgestelde vragen</div>
     <h2>Wat scholen willen weten</h2>
     <div class="qa-list">
 
       <div class="qa-item">
-        <div class="qa-question">Zet dit ouders niet onder druk?</div>
-        <div class="qa-answer">Doneren is volledig vrijwillig. Er is geen verwachting, geen drempel en geen minimumbedrag. Mensen kunnen ook anoniem bijdragen of helemaal niets doen — dat is prima.</div>
+        <div class="qa-question">
+          <div class="qa-q-badge">V</div>
+          Zet dit ouders niet onder druk?
+          <span class="qa-chevron">▾</span>
+        </div>
+        <div class="qa-answer-wrap">
+          <div class="qa-answer">Doneren is volledig vrijwillig. Er is geen verwachting, geen drempel en geen minimumbedrag. Mensen kunnen ook anoniem bijdragen of helemaal niets doen — dat is prima.</div>
+        </div>
       </div>
 
       <div class="qa-item">
-        <div class="qa-question">Is dit niet te commercieel voor een school?</div>
-        <div class="qa-answer">Sponsoring blijft subtiel. Er zijn geen advertenties, geen logo's door de klas en geen verplichtingen. Bedrijven kunnen eventueel een kleine vermelding krijgen als sponsor — alleen als ze dat zelf willen.</div>
+        <div class="qa-question">
+          <div class="qa-q-badge">V</div>
+          Is dit niet te commercieel voor een school?
+          <span class="qa-chevron">▾</span>
+        </div>
+        <div class="qa-answer-wrap">
+          <div class="qa-answer">Sponsoring blijft subtiel. Er zijn geen advertenties, geen logo's door de klas en geen verplichtingen. Bedrijven kunnen eventueel een kleine vermelding krijgen als sponsor — alleen als ze dat zelf willen.</div>
+        </div>
       </div>
 
       <div class="qa-item">
-        <div class="qa-question">Wie beheert het geld?</div>
-        <div class="qa-answer">Betalingen lopen via betrouwbare betaalpartners zoals Mollie of Stripe. Het geld gaat direct naar de schoolrekening of stichting van de school — 4deklas beheert dat geld niet.</div>
+        <div class="qa-question">
+          <div class="qa-q-badge">V</div>
+          Wie beheert het geld?
+          <span class="qa-chevron">▾</span>
+        </div>
+        <div class="qa-answer-wrap">
+          <div class="qa-answer">Betalingen lopen via betrouwbare betaalpartners zoals Mollie of Stripe. Het geld gaat direct naar de schoolrekening of stichting van de school — 4deklas beheert dat geld niet.</div>
+        </div>
       </div>
 
       <div class="qa-item">
-        <div class="qa-question">Waarom zouden ouders dit gebruiken?</div>
-        <div class="qa-answer">Mensen geven makkelijker aan een concreet, zichtbaar doel dan aan een algemene collecte. Als je weet dat jouw tientje bijdraagt aan "15 nieuwe laptops voor klas 7 en 8", voelt dat veel persoonlijker dan een anonieme bijdrage aan een schoolfonds.</div>
+        <div class="qa-question">
+          <div class="qa-q-badge">V</div>
+          Waarom zouden ouders dit gebruiken?
+          <span class="qa-chevron">▾</span>
+        </div>
+        <div class="qa-answer-wrap">
+          <div class="qa-answer">Mensen geven makkelijker aan een concreet, zichtbaar doel dan aan een algemene collecte. Als je weet dat jouw tientje bijdraagt aan "15 nieuwe laptops voor klas 7 en 8", voelt dat veel persoonlijker dan een anonieme bijdrage aan een schoolfonds.</div>
+        </div>
       </div>
 
       <div class="qa-item">
-        <div class="qa-question">Hoe weten ouders waar het geld naartoe gaat?</div>
-        <div class="qa-answer">Via een dashboard met het doelbedrag, een live voortgangsbalk en updates zodra het project gerealiseerd is. Volledige transparantie — van de eerste euro tot de oplevering.</div>
+        <div class="qa-question">
+          <div class="qa-q-badge">V</div>
+          Hoe weten ouders waar het geld naartoe gaat?
+          <span class="qa-chevron">▾</span>
+        </div>
+        <div class="qa-answer-wrap">
+          <div class="qa-answer">Via een dashboard met het doelbedrag, een live voortgangsbalk en updates zodra het project gerealiseerd is. Volledige transparantie — van de eerste euro tot de oplevering.</div>
+        </div>
       </div>
 
     </div>
   </div>
 
-  <div class="section">
+  <div class="section reveal">
     <div class="section-label">Waarom het werkt</div>
     <h2>Betrokkenheid, transparantie en lokale trots</h2>
     <div class="cards-grid">
@@ -206,28 +1120,134 @@
     </div>
   </div>
 
-  <div class="section">
+  <div class="section reveal">
     <div class="section-label">Voor de school</div>
     <h2>Wat betekent dit voor u als directeur?</h2>
-    <p>U log in op uw eigen dashboard en maakt projecten aan: geef een naam, een doelbedrag en eventueel een sluitingsdatum. 4deklas regelt de rest. U ziet live hoeveel er binnenkomt, welke donateurs u wilt bedanken en wat de status is van elk project.</p>
-    <p>U kunt medewerkers toegang geven zodat ook de intern coördinator projecten kan aanmaken en beheren — zonder dat zij financiële details zien.</p>
-    <p>4deklas rekent een klein platformpercentage (2% in de demo) over elke ontvangen donatie. De school ontvangt de rest direct.</p>
+    <div class="director-grid">
+      <div class="director-text">
+        <p>U logt in op uw eigen dashboard en maakt projecten aan: geef een naam, een doelbedrag en eventueel een sluitingsdatum. 4deklas regelt de rest.</p>
+        <p>U ziet live hoeveel er binnenkomt, welke donateurs u wilt bedanken en wat de status is van elk project.</p>
+        <p>U kunt medewerkers toegang geven zodat ook de intern coördinator projecten kan aanmaken en beheren — zonder dat zij financiële details zien.</p>
+        <p>4deklas rekent een klein platformpercentage <strong>(2% in de demo)</strong> over elke ontvangen donatie. De school ontvangt de rest direct.</p>
+      </div>
+      <div class="dashboard-mockup">
+        <div class="mockup-bar">
+          <div class="mockup-dot"></div>
+          <div class="mockup-dot"></div>
+          <div class="mockup-dot"></div>
+          <div class="mockup-url">dashboard.4deklas.nl</div>
+        </div>
+        <div class="mockup-body">
+          <div class="mockup-heading">Mijn projecten — De Regenboogschool</div>
+          <div class="mockup-project">
+            <div class="mockup-project-name">💻 15 nieuwe laptops groep 7 &amp; 8</div>
+            <div class="mockup-track"><div class="mockup-fill" style="width:67%"></div></div>
+            <div class="mockup-meta"><span>€ 1.340 opgehaald</span><span><strong>67%</strong></span></div>
+          </div>
+          <div class="mockup-project">
+            <div class="mockup-project-name">🌳 Groen schoolplein fase 2</div>
+            <div class="mockup-track"><div class="mockup-fill" style="width:34%"></div></div>
+            <div class="mockup-meta"><span>€ 850 opgehaald</span><span><strong>34%</strong></span></div>
+          </div>
+          <div class="mockup-project">
+            <div class="mockup-project-name">🎸 Muziekinstrumenten schoolband</div>
+            <div class="mockup-track"><div class="mockup-fill" style="width:91%"></div></div>
+            <div class="mockup-meta"><span>€ 1.820 opgehaald</span><span><strong>91% ✅</strong></span></div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 
-  <div class="cta-section">
+  <div class="cta-section reveal">
+    <div class="cta-orb-1"></div>
+    <div class="cta-orb-2"></div>
     <h2>Zelf ervaren?</h2>
     <p>Bekijk de live demo en doneer aan een schoolproject van De Regenboogschool. Of open het admin dashboard om te zien hoe het er voor een directeur uitziet.</p>
-    <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap">
+    <div class="cta-buttons">
       <a href="/doneren" class="cta-btn">❤️ Doneer aan een project →</a>
-      <a href="/dashboard" style="display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.15);color:white;border:2px solid rgba(255,255,255,.4);padding:14px 28px;border-radius:50px;font-size:15px;font-weight:700;text-decoration:none;font-family:'Archivo',sans-serif;transition:background .2s" onmouseover="this.style.background='rgba(255,255,255,.25)'" onmouseout="this.style.background='rgba(255,255,255,.15)'">🔍 Bekijk admin dashboard</a>
+      <a href="/dashboard" class="cta-btn-outline">🔍 Bekijk admin dashboard</a>
     </div>
   </div>
 
 </div>
 
 <footer>
-  <p>© 2025 <strong>De Regenboogschool</strong> · Donaties verwerkt via 4deklas · <em>Demo op 4deklas.nl — geen echte betalingen</em></p>
+  <p>© 2026 <strong>De Regenboogschool</strong> · Donaties verwerkt via <a href="https://4deklas.nl">4deklas.nl</a></p>
+  <p><em>Demo op 4deklas.nl — geen echte betalingen</em></p>
 </footer>
+
+<script>
+  // Progress bar animatie bij laden
+  window.addEventListener('load', () => {
+    setTimeout(() => {
+      document.getElementById('heroProgress').classList.add('animated');
+    }, 350);
+  });
+
+  // Scroll progress bar
+  const scrollProgressEl = document.getElementById('scrollProgress');
+  window.addEventListener('scroll', () => {
+    const scrollTop = window.scrollY;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    if (docHeight > 0) scrollProgressEl.style.width = (scrollTop / docHeight * 100) + '%';
+  }, { passive: true });
+
+  // Stats counter animatie
+  function animateCounter(el) {
+    const target = parseInt(el.dataset.count, 10);
+    const prefix = el.dataset.prefix || '';
+    const suffix = el.dataset.suffix || '';
+    const duration = 1100;
+    const start = performance.now();
+    function tick(now) {
+      const t = Math.min((now - start) / duration, 1);
+      const eased = 1 - Math.pow(1 - t, 3);
+      el.textContent = prefix + Math.round(eased * target) + suffix;
+      if (t < 1) requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+  }
+
+  const statsObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting && !entry.target.dataset.counted) {
+        entry.target.dataset.counted = '1';
+        entry.target.querySelectorAll('.stat-value[data-count]').forEach(animateCounter);
+      }
+    });
+  }, { threshold: 0.6 });
+
+  const statsStrip = document.querySelector('.stats-strip');
+  if (statsStrip) statsObserver.observe(statsStrip);
+
+  // Q&A accordion
+  document.querySelectorAll('.qa-question').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const item = btn.closest('.qa-item');
+      const isOpen = item.classList.contains('open');
+      document.querySelectorAll('.qa-item').forEach(i => i.classList.remove('open'));
+      if (!isOpen) item.classList.add('open');
+    });
+  });
+
+  // Bedragknoppen in widget
+  document.querySelectorAll('.amount-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.amount-btn').forEach(b => b.classList.remove('selected'));
+      btn.classList.add('selected');
+    });
+  });
+
+  // Scroll reveal
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) entry.target.classList.add('visible');
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
 
 </body>
 </html>

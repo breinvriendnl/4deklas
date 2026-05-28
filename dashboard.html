@@ -9,173 +9,968 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;700;800&family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
   <style>
+    :root {
+      --blue:       #4f6ef7;
+      --blue-dark:  #2563eb;
+      --blue-light: #eff4ff;
+      --purple:     #7c3aed;
+      --green:      #16a34a;
+      --orange:     #ea580c;
+      --red:        #dc2626;
+
+      --navy:       #0f172a;
+      --navy-mid:   #141e35;
+      --navy-light: #1e2f52;
+      --sl6:        #475569;
+      --sl5:        #64748b;
+      --sl4:        #94a3b8;
+      --sl3:        #cbd5e1;
+      --sl2:        #e2e8f0;
+      --sl1:        #f1f5f9;
+      --sl0:        #f8fafc;
+      --surface:    #ffffff;
+      --bg:         #edf1f7;
+
+      --shadow-sm:  0 1px 3px rgba(15,23,42,.07), 0 1px 2px rgba(15,23,42,.04);
+      --shadow-md:  0 4px 16px rgba(15,23,42,.09), 0 2px 6px rgba(15,23,42,.05);
+      --shadow-lg:  0 16px 48px rgba(15,23,42,.14), 0 4px 16px rgba(15,23,42,.07);
+
+      --r-sm: 8px;
+      --r-md: 12px;
+      --r-lg: 16px;
+      --r-xl: 20px;
+
+      --topbar-h: 58px;
+      --sidebar-w: 220px;
+
+      --ease: cubic-bezier(.4, 0, .2, 1);
+      --spring: cubic-bezier(.22, .68, 0, 1.15);
+    }
+
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: 'Space Grotesk', system-ui, sans-serif; background: #f1f5f9; color: #1a202c; }
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: calc(var(--topbar-h) + 16px);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+    body {
+      font-family: 'Space Grotesk', system-ui, sans-serif;
+      background: var(--bg);
+      color: #1a202c;
+    }
 
-    /* ── Login ── */
-    .login-screen { min-height: 100vh; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #0f0c29, #1e3a8a); }
-    .login-box { background: white; border-radius: 20px; padding: 44px 36px; width: 380px; box-shadow: 0 20px 60px rgba(0,0,0,.4); text-align: center; }
-    .login-logo { font-size: 32px; margin-bottom: 6px; }
-    .login-brand { font-family: 'Archivo', sans-serif; font-size: 22px; font-weight: 800; color: #1e3a8a; margin-bottom: 4px; }
-    .login-brand span { color: #4f6ef7; }
-    .login-sub { font-size: 13px; color: #94a3b8; margin-bottom: 24px; }
-    .login-label { display: block; text-align: left; font-size: 11px; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: .06em; margin-bottom: 5px; }
-    .login-input { width: 100%; padding: 11px 14px; border: 2px solid #e2e8f0; border-radius: 10px; font-size: 14px; margin-bottom: 12px; font-family: 'Space Grotesk', sans-serif; transition: border-color .15s; }
-    .login-input:focus { outline: none; border-color: #4f6ef7; }
-    .login-btn { width: 100%; padding: 12px; background: linear-gradient(135deg, #4f6ef7, #7c3aed); color: white; border: none; border-radius: 10px; font-size: 15px; font-weight: 700; cursor: pointer; font-family: 'Archivo', sans-serif; }
-    .login-error { color: #dc2626; font-size: 13px; margin-top: 10px; display: none; }
-    .login-hint { margin-top: 16px; font-size: 12px; color: #cbd5e1; line-height: 1.6; text-align: left; background: #f8fafc; border-radius: 8px; padding: 10px 14px; }
-    .login-hint strong { color: #64748b; }
+    /* ── Animations ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      20%      { transform: translateX(-7px); }
+      40%      { transform: translateX(7px); }
+      60%      { transform: translateX(-4px); }
+      80%      { transform: translateX(4px); }
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50%      { opacity: .45; transform: scale(.75); }
+    }
+    @keyframes gridScroll {
+      from { background-position: 0 0; }
+      to   { background-position: 40px 40px; }
+    }
+    @keyframes glow {
+      0%, 100% { opacity: .5; }
+      50%      { opacity: 1; }
+    }
+    @keyframes toastIn {
+      from { opacity: 0; transform: translateX(110%); }
+      to   { opacity: 1; transform: translateX(0); }
+    }
+    @keyframes toastOut {
+      from { opacity: 1; transform: translateX(0); }
+      to   { opacity: 0; transform: translateX(110%); }
+    }
+    @keyframes shimmer {
+      from { background-position: -200% 0; }
+      to   { background-position: 200% 0; }
+    }
 
-    /* ── Dashboard shell ── */
+    /* ── Scrollbar ── */
+    ::-webkit-scrollbar { width: 5px; height: 5px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: var(--sl3); border-radius: 99px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--sl4); }
+
+    /* ── Toast ── */
+    .toast-container {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      pointer-events: none;
+    }
+    .toast {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 11px 16px;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 600;
+      box-shadow: 0 8px 24px rgba(0,0,0,.13), 0 2px 8px rgba(0,0,0,.07);
+      animation: toastIn .3s var(--spring) both;
+      pointer-events: all;
+      min-width: 220px;
+      max-width: 360px;
+      border-left: 3px solid transparent;
+      cursor: pointer;
+    }
+    .toast.success { background: #f0fdf4; color: #15803d; border-left-color: #22c55e; }
+    .toast.error   { background: #fff1f2; color: #be123c; border-left-color: #f43f5e; }
+    .toast.info    { background: #eff6ff; color: #1d4ed8; border-left-color: #3b82f6; }
+    .toast.warning { background: #fffbeb; color: #92400e; border-left-color: #f59e0b; }
+    .toast.dismissing { animation: toastOut .25s ease forwards; }
+    .toast-icon { font-size: 14px; flex-shrink: 0; }
+
+    /* ─────────────────────────────────────────
+       LOGIN
+    ───────────────────────────────────────── */
+    .login-screen {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #090d1b;
+      position: relative;
+      overflow: hidden;
+    }
+    .login-screen::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(79,110,247,.07) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(79,110,247,.07) 1px, transparent 1px);
+      background-size: 40px 40px;
+      animation: gridScroll 8s linear infinite;
+    }
+    .login-screen::after {
+      content: '';
+      position: absolute;
+      width: 800px;
+      height: 800px;
+      background: radial-gradient(circle, rgba(79,110,247,.18) 0%, rgba(124,58,237,.08) 40%, transparent 65%);
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      animation: glow 5s ease-in-out infinite;
+      pointer-events: none;
+    }
+
+    .login-box {
+      background: var(--surface);
+      border-radius: 24px;
+      padding: 44px 40px 40px;
+      width: 400px;
+      box-shadow: var(--shadow-lg), 0 0 0 1px rgba(255,255,255,.06), 0 0 80px rgba(79,110,247,.1);
+      text-align: center;
+      animation: fadeUp .45s var(--spring) both;
+      position: relative;
+      z-index: 1;
+    }
+
+    .login-logo {
+      width: 60px;
+      height: 60px;
+      background: linear-gradient(135deg, var(--blue), var(--purple));
+      border-radius: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      margin: 0 auto 18px;
+      box-shadow: 0 8px 32px rgba(79,110,247,.4), 0 0 0 1px rgba(79,110,247,.2);
+    }
+    .login-brand {
+      font-family: 'Archivo', sans-serif;
+      font-size: 26px;
+      font-weight: 800;
+      color: var(--navy);
+      margin-bottom: 5px;
+      letter-spacing: -.02em;
+    }
+    .login-brand span { color: var(--blue); }
+    .login-sub {
+      font-size: 13px;
+      color: var(--sl4);
+      margin-bottom: 28px;
+    }
+
+    .demo-creds {
+      background: linear-gradient(135deg, #fffbeb, #fef3c7);
+      border: 1.5px solid #fcd34d;
+      border-radius: 12px;
+      padding: 13px 16px;
+      margin-bottom: 24px;
+      text-align: left;
+      cursor: pointer;
+      transition: border-color .15s, box-shadow .15s, transform .15s var(--ease);
+    }
+    .demo-creds:hover {
+      border-color: #f59e0b;
+      box-shadow: 0 0 0 3px rgba(251,191,36,.15);
+      transform: translateY(-1px);
+    }
+    .demo-creds:active { transform: translateY(0); }
+    .demo-creds-title {
+      font-weight: 800;
+      font-size: 11px;
+      color: #92400e;
+      margin-bottom: 7px;
+      text-transform: uppercase;
+      letter-spacing: .07em;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .demo-creds-row { display: flex; align-items: center; justify-content: space-between; }
+    .demo-creds-value { font-size: 14px; color: #78350f; }
+    .demo-creds-value strong { font-family: monospace; font-size: 16px; letter-spacing: .03em; }
+    .demo-creds-hint { font-size: 11px; color: #a16207; opacity: .8; }
+
+    .login-label {
+      display: block;
+      text-align: left;
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--sl5);
+      text-transform: uppercase;
+      letter-spacing: .09em;
+      margin-bottom: 7px;
+    }
+    .login-input {
+      width: 100%;
+      padding: 12px 14px;
+      border: 2px solid var(--sl2);
+      border-radius: 10px;
+      font-size: 14px;
+      margin-bottom: 16px;
+      font-family: 'Space Grotesk', sans-serif;
+      transition: border-color .15s, box-shadow .15s, background .15s;
+      background: var(--sl0);
+      color: var(--navy);
+    }
+    .login-input:focus {
+      outline: none;
+      border-color: var(--blue);
+      box-shadow: 0 0 0 3px rgba(79,110,247,.12);
+      background: white;
+    }
+    .login-input.shake { animation: shake .35s ease; }
+
+    .login-btn {
+      width: 100%;
+      padding: 14px;
+      background: linear-gradient(135deg, var(--blue), var(--purple));
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: 'Archivo', sans-serif;
+      transition: transform .15s var(--ease), box-shadow .15s;
+      letter-spacing: .02em;
+      position: relative;
+      overflow: hidden;
+    }
+    .login-btn::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,.12) 50%, transparent 100%);
+      background-size: 200% 100%;
+      opacity: 0;
+      transition: opacity .2s;
+    }
+    .login-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 28px rgba(79,110,247,.45);
+    }
+    .login-btn:hover::after { opacity: 1; animation: shimmer 1.2s ease infinite; }
+    .login-btn:active { transform: translateY(0); box-shadow: none; }
+
+    .login-error {
+      color: var(--red);
+      font-size: 13px;
+      margin-top: 12px;
+      display: none;
+      font-weight: 600;
+      background: #fff1f2;
+      border-radius: 8px;
+      padding: 9px 14px;
+      border: 1px solid #fecdd3;
+    }
+
+    /* ─────────────────────────────────────────
+       DASHBOARD SHELL
+    ───────────────────────────────────────── */
     .dashboard { display: none; }
-    .topbar { background: #0f172a; color: white; padding: 0 24px; display: flex; align-items: center; justify-content: space-between; height: 54px; }
-    .topbar-brand { font-family: 'Archivo', sans-serif; font-size: 17px; font-weight: 800; }
+    .dashboard.visible { display: block; animation: fadeIn .2s ease both; }
+
+    /* ── Topbar ── */
+    .topbar {
+      background: linear-gradient(90deg, #0d1529 0%, #111c38 100%);
+      color: white;
+      padding: 0 20px 0 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: var(--topbar-h);
+      border-bottom: 1px solid rgba(255,255,255,.06);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 1px 0 rgba(255,255,255,.04), 0 4px 16px rgba(0,0,0,.2);
+    }
+    .topbar-left { display: flex; align-items: center; gap: 14px; }
+    .topbar-brand {
+      font-family: 'Archivo', sans-serif;
+      font-size: 18px;
+      font-weight: 800;
+      letter-spacing: -.02em;
+    }
     .topbar-brand span { color: #60a5fa; }
-    .topbar-right { display: flex; align-items: center; gap: 14px; }
-    .role-badge { font-size: 10px; font-weight: 700; padding: 3px 8px; border-radius: 4px; }
-    .role-badge.director { background: #dc2626; color: white; }
-    .role-badge.user     { background: #2563eb; color: white; }
-    .demo-badge { background: rgba(255,255,255,.1); color: rgba(255,255,255,.6); font-size: 10px; font-weight: 700; padding: 3px 7px; border-radius: 4px; }
-    .current-user-name { font-size: 13px; color: rgba(255,255,255,.65); }
-    .logout-btn { background: none; border: 1px solid rgba(255,255,255,.2); color: rgba(255,255,255,.65); padding: 5px 12px; border-radius: 6px; font-size: 12px; cursor: pointer; transition: all .15s; }
-    .logout-btn:hover { border-color: rgba(255,255,255,.5); color: white; }
-    .refresh-note { font-size: 11px; color: rgba(255,255,255,.35); }
+    .topbar-divider { width: 1px; height: 18px; background: rgba(255,255,255,.1); }
+    .topbar-context {
+      font-size: 12px;
+      color: rgba(255,255,255,.35);
+      letter-spacing: .01em;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .topbar-context strong { color: rgba(255,255,255,.55); font-weight: 600; }
+
+    .topbar-right { display: flex; align-items: center; gap: 10px; }
+
+    .role-badge {
+      font-size: 9px;
+      font-weight: 800;
+      padding: 3px 9px;
+      border-radius: 99px;
+      letter-spacing: .09em;
+      text-transform: uppercase;
+    }
+    .role-badge.director { background: rgba(220,38,38,.22); color: #fca5a5; border: 1px solid rgba(220,38,38,.28); }
+    .role-badge.user     { background: rgba(37,99,235,.22); color: #93c5fd; border: 1px solid rgba(37,99,235,.28); }
+
+    .demo-badge {
+      background: rgba(255,255,255,.07);
+      color: rgba(255,255,255,.35);
+      font-size: 9px;
+      font-weight: 800;
+      padding: 3px 8px;
+      border-radius: 99px;
+      letter-spacing: .09em;
+      border: 1px solid rgba(255,255,255,.09);
+    }
+
+    .live-indicator { display: flex; align-items: center; gap: 5px; }
+    .live-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: #4ade80;
+      animation: pulse 2.5s ease-in-out infinite;
+      flex-shrink: 0;
+    }
+    .refresh-note { font-size: 11px; color: rgba(255,255,255,.28); }
+
+    .user-avatar {
+      width: 30px; height: 30px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--blue), var(--purple));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 11px; font-weight: 800; color: white;
+      letter-spacing: .01em;
+      flex-shrink: 0;
+      box-shadow: 0 0 0 2px rgba(255,255,255,.1);
+    }
+    .current-user-name { font-size: 13px; color: rgba(255,255,255,.55); }
+
+    .logout-btn {
+      background: none;
+      border: 1px solid rgba(255,255,255,.13);
+      color: rgba(255,255,255,.45);
+      padding: 5px 12px;
+      border-radius: 6px;
+      font-size: 12px;
+      cursor: pointer;
+      transition: all .15s var(--ease);
+      font-family: 'Space Grotesk', sans-serif;
+    }
+    .logout-btn:hover {
+      border-color: rgba(255,255,255,.35);
+      color: white;
+      background: rgba(255,255,255,.07);
+    }
 
     /* ── Layout ── */
-    .layout { display: flex; min-height: calc(100vh - 54px); }
-    .sidebar { width: 210px; background: #1e293b; padding: 20px 0; flex-shrink: 0; }
-    .sidebar-section { font-size: 10px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: #475569; padding: 14px 18px 5px; }
-    .sidebar nav a { display: flex; align-items: center; gap: 9px; padding: 10px 18px; color: #94a3b8; text-decoration: none; font-size: 13px; border-left: 3px solid transparent; transition: all .15s; }
-    .sidebar nav a:hover { background: #334155; color: #e2e8f0; }
-    .sidebar nav a.active { background: #1e3a8a; color: white; border-left-color: #60a5fa; }
-    .sidebar nav a.danger { color: #f87171; }
-    .sidebar hr { border: none; border-top: 1px solid #334155; margin: 10px 0; }
+    .layout { display: flex; min-height: calc(100vh - var(--topbar-h)); }
 
-    .main { flex: 1; padding: 28px; overflow: auto; }
-    .page-title { font-family: 'Archivo', sans-serif; font-size: 22px; font-weight: 800; margin-bottom: 4px; }
-    .page-sub { font-size: 13px; color: #64748b; margin-bottom: 24px; }
+    /* ── Sidebar ── */
+    .sidebar {
+      width: var(--sidebar-w);
+      background: linear-gradient(180deg, #141e38 0%, #0f172a 100%);
+      padding: 14px 10px 20px;
+      flex-shrink: 0;
+      border-right: 1px solid rgba(255,255,255,.04);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .sidebar-nav-area { flex: 1; }
+
+    .sidebar-section {
+      font-size: 9px;
+      font-weight: 800;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,.25);
+      padding: 10px 12px 5px;
+    }
+
+    .sidebar nav a {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      padding: 8.5px 12px;
+      color: rgba(255,255,255,.42);
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 500;
+      border-radius: 8px;
+      transition: background .12s var(--ease), color .12s var(--ease);
+      margin-bottom: 1px;
+      position: relative;
+      user-select: none;
+    }
+    .sidebar nav a::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%) scaleY(0);
+      width: 3px;
+      height: 50%;
+      background: linear-gradient(180deg, var(--blue), var(--purple));
+      border-radius: 0 3px 3px 0;
+      transition: transform .18s var(--spring);
+    }
+    .sidebar nav a:hover {
+      background: rgba(255,255,255,.06);
+      color: rgba(255,255,255,.82);
+    }
+    .sidebar nav a.active {
+      background: rgba(79,110,247,.16);
+      color: white;
+      font-weight: 600;
+    }
+    .sidebar nav a.active::before { transform: translateY(-50%) scaleY(1); }
+    .sidebar nav a .nav-icon {
+      font-size: 14px;
+      opacity: .65;
+      flex-shrink: 0;
+      transition: opacity .12s;
+      width: 18px;
+      text-align: center;
+    }
+    .sidebar nav a.active .nav-icon { opacity: 1; }
+    .sidebar nav a.danger { color: rgba(248,113,113,.65); }
+    .sidebar nav a.danger:hover { background: rgba(248,113,113,.07); color: #f87171; }
+    .sidebar hr { border: none; border-top: 1px solid rgba(255,255,255,.06); margin: 8px 6px; }
+
+    .sidebar-footer {
+      padding: 12px 12px 0;
+      border-top: 1px solid rgba(255,255,255,.06);
+      margin-top: 8px;
+    }
+    .sidebar-footer-label {
+      font-size: 10px;
+      color: rgba(255,255,255,.2);
+      font-weight: 600;
+      letter-spacing: .04em;
+    }
+    .sidebar-footer-brand {
+      font-family: 'Archivo', sans-serif;
+      font-size: 12px;
+      font-weight: 800;
+      color: rgba(255,255,255,.35);
+      letter-spacing: -.01em;
+      margin-top: 3px;
+    }
+    .sidebar-footer-brand span { color: rgba(79,110,247,.8); }
+
+    /* ── Main content ── */
+    .main { flex: 1; padding: 28px 32px; overflow: auto; min-width: 0; }
+    .page-header {
+      margin-bottom: 24px;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+    }
+    .page-header-text {}
+    .page-title {
+      font-family: 'Archivo', sans-serif;
+      font-size: 22px;
+      font-weight: 800;
+      letter-spacing: -.025em;
+      color: var(--navy);
+    }
+    .page-sub { font-size: 13px; color: var(--sl5); margin-top: 3px; }
 
     /* ── Stat cards ── */
-    .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 24px; }
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+      margin-bottom: 24px;
+    }
     .stats-grid.two-col { grid-template-columns: repeat(2, 1fr); }
-    .stat-card { background: white; border-radius: 12px; padding: 20px; box-shadow: 0 1px 4px rgba(0,0,0,.06); border-left: 4px solid transparent; }
-    .stat-card.blue   { border-left-color: #3b82f6; }
-    .stat-card.green  { border-left-color: #22c55e; }
-    .stat-card.purple { border-left-color: #a855f7; }
-    .stat-card.orange { border-left-color: #f97316; }
-    .stat-lbl { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .07em; color: #94a3b8; margin-bottom: 8px; }
-    .stat-val { font-family: 'Archivo', sans-serif; font-size: 26px; font-weight: 800; }
-    .stat-card.blue   .stat-val { color: #2563eb; }
-    .stat-card.green  .stat-val { color: #16a34a; }
-    .stat-card.purple .stat-val { color: #9333ea; }
-    .stat-card.orange .stat-val { color: #ea580c; }
-    .stat-sub { font-size: 11px; color: #94a3b8; margin-top: 5px; }
 
-    /* ── Cards / tabellen ── */
-    .card { background: white; border-radius: 12px; box-shadow: 0 1px 4px rgba(0,0,0,.06); margin-bottom: 20px; overflow: hidden; }
-    .card-header { padding: 16px 22px; border-bottom: 1px solid #f1f5f9; }
-    .card-title { font-weight: 700; font-size: 14px; }
-    .card-sub { font-size: 12px; color: #94a3b8; margin-top: 2px; }
+    .stat-card {
+      background: var(--surface);
+      border-radius: 14px;
+      padding: 20px 20px 18px;
+      box-shadow: var(--shadow-sm);
+      border: 1px solid rgba(0,0,0,.045);
+      position: relative;
+      overflow: hidden;
+      transition: transform .2s var(--ease), box-shadow .2s var(--ease);
+    }
+    .stat-card::after {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      border-radius: 14px 14px 0 0;
+    }
+    .stat-card::before {
+      content: '';
+      position: absolute;
+      right: -20px;
+      bottom: -20px;
+      width: 90px;
+      height: 90px;
+      border-radius: 50%;
+      opacity: .04;
+    }
+    .stat-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
 
-    table { width: 100%; border-collapse: collapse; }
-    th { background: #f8fafc; padding: 10px 14px; text-align: left; font-size: 10px; color: #64748b; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; border-bottom: 1px solid #e2e8f0; white-space: nowrap; }
-    td { padding: 11px 14px; font-size: 13px; border-bottom: 1px solid #f8fafc; vertical-align: middle; }
+    .stat-card.blue::after   { background: linear-gradient(90deg, #3b82f6, #60a5fa); }
+    .stat-card.green::after  { background: linear-gradient(90deg, #16a34a, #4ade80); }
+    .stat-card.purple::after { background: linear-gradient(90deg, #7c3aed, #a78bfa); }
+    .stat-card.orange::after { background: linear-gradient(90deg, #ea580c, #fb923c); }
+
+    .stat-card.blue::before   { background: #3b82f6; }
+    .stat-card.green::before  { background: #16a34a; }
+    .stat-card.purple::before { background: #7c3aed; }
+    .stat-card.orange::before { background: #ea580c; }
+
+    .stat-icon {
+      font-size: 15px;
+      width: 36px; height: 36px;
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 14px;
+    }
+    .stat-card.blue   .stat-icon { background: #dbeafe; }
+    .stat-card.green  .stat-icon { background: #dcfce7; }
+    .stat-card.purple .stat-icon { background: #ede9fe; }
+    .stat-card.orange .stat-icon { background: #ffedd5; }
+
+    .stat-lbl {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .1em;
+      color: var(--sl4);
+      margin-bottom: 5px;
+    }
+    .stat-val {
+      font-family: 'Archivo', sans-serif;
+      font-size: 26px;
+      font-weight: 800;
+      line-height: 1;
+      letter-spacing: -.03em;
+    }
+    .stat-card.blue   .stat-val { color: var(--blue-dark); }
+    .stat-card.green  .stat-val { color: #15803d; }
+    .stat-card.purple .stat-val { color: #6d28d9; }
+    .stat-card.orange .stat-val { color: #c2410c; }
+    .stat-sub { font-size: 11px; color: var(--sl4); margin-top: 7px; line-height: 1.4; }
+
+    /* ── Cards ── */
+    .card {
+      background: var(--surface);
+      border-radius: 14px;
+      box-shadow: var(--shadow-sm);
+      margin-bottom: 20px;
+      overflow: hidden;
+      border: 1px solid rgba(0,0,0,.04);
+    }
+    .card-header {
+      padding: 16px 22px 15px;
+      border-bottom: 1px solid var(--sl1);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: linear-gradient(180deg, #fff 0%, var(--sl0) 100%);
+    }
+    .card-title { font-weight: 700; font-size: 14px; color: var(--navy); }
+    .card-sub { font-size: 12px; color: var(--sl4); margin-top: 2px; }
+
+    /* ── Tables ── */
+    .table-wrap { overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; min-width: 480px; }
+
+    th {
+      background: var(--sl0);
+      padding: 9px 14px;
+      text-align: left;
+      font-size: 10px;
+      color: var(--sl5);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .09em;
+      border-bottom: 1px solid var(--sl2);
+      white-space: nowrap;
+      user-select: none;
+    }
+    td {
+      padding: 11px 14px;
+      font-size: 13px;
+      border-bottom: 1px solid var(--sl1);
+      vertical-align: middle;
+    }
     tr:last-child td { border-bottom: none; }
-    tr:hover td { background: #fafbff; }
-    .amount { font-weight: 700; }
-    .green-t  { color: #16a34a; }
-    .blue-t   { color: #2563eb; }
-    .purple-t { color: #9333ea; }
-    .muted { color: #94a3b8; font-size: 12px; }
+    tbody tr { transition: background .1s var(--ease); }
+    tbody tr:hover td { background: #f4f7ff; }
+
+    .amount { font-weight: 700; font-variant-numeric: tabular-nums; }
+    .green-t  { color: #15803d; }
+    .blue-t   { color: var(--blue-dark); }
+    .purple-t { color: #6d28d9; }
+    .muted    { color: var(--sl4); font-size: 12px; }
+
+    /* ── Empty state ── */
+    .empty-state {
+      text-align: center;
+      padding: 52px 24px;
+    }
+    .empty-state-icon {
+      font-size: 32px;
+      margin-bottom: 12px;
+      opacity: .35;
+      filter: grayscale(.3);
+    }
+    .empty-state-text {
+      font-size: 13px;
+      color: var(--sl4);
+      font-weight: 500;
+      max-width: 280px;
+      margin: 0 auto;
+      line-height: 1.6;
+    }
 
     /* ── Badges ── */
-    .badge { display: inline-block; padding: 3px 9px; border-radius: 99px; font-size: 11px; font-weight: 700; white-space: nowrap; }
-    .badge-active   { background: #dcfce7; color: #15803d; }
-    .badge-achieved { background: #dbeafe; color: #1d4ed8; }
-    .badge-closed   { background: #f1f5f9; color: #64748b; }
-    .badge-expired  { background: #ffedd5; color: #c2410c; }
-    .badge-neutral  { background: #f1f5f9; color: #475569; }
-    .badge-monthly  { background: #eef1ff; color: #4f6ef7; }
-    .badge-director { background: #fee2e2; color: #dc2626; }
-    .badge-user     { background: #dbeafe; color: #1d4ed8; }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 3px 9px;
+      border-radius: 99px;
+      font-size: 11px;
+      font-weight: 700;
+      white-space: nowrap;
+      letter-spacing: .01em;
+    }
+    .badge-active   { background: #dcfce7; color: #15803d; border: 1px solid #bbf7d0; }
+    .badge-achieved { background: #dbeafe; color: #1d4ed8; border: 1px solid #bfdbfe; }
+    .badge-closed   { background: var(--sl1); color: var(--sl6); border: 1px solid var(--sl2); }
+    .badge-expired  { background: #ffedd5; color: #c2410c; border: 1px solid #fed7aa; }
+    .badge-neutral  { background: var(--sl1); color: var(--sl6); border: 1px solid var(--sl2); }
+    .badge-monthly  { background: #eef1ff; color: var(--blue); border: 1px solid #c7d2fe; }
+    .badge-director { background: #fee2e2; color: var(--red); border: 1px solid #fecaca; }
+    .badge-user     { background: #dbeafe; color: var(--blue-dark); border: 1px solid #bfdbfe; }
 
-    /* ── Actieknoppen ── */
-    .action-btns { display: flex; gap: 6px; flex-wrap: wrap; }
-    .btn-sm { padding: 4px 10px; border-radius: 6px; font-size: 11px; font-weight: 700; cursor: pointer; border: none; transition: all .15s; white-space: nowrap; font-family: 'Space Grotesk', sans-serif; }
-    .btn-close  { background: #f1f5f9; color: #475569; }
-    .btn-close:hover  { background: #e2e8f0; }
-    .btn-reopen { background: #dcfce7; color: #15803d; }
+    /* ── Action buttons ── */
+    .action-btns { display: flex; gap: 5px; flex-wrap: wrap; }
+    .btn-sm {
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+      border: none;
+      transition: background .12s var(--ease), transform .1s, box-shadow .12s;
+      white-space: nowrap;
+      font-family: 'Space Grotesk', sans-serif;
+      letter-spacing: .01em;
+    }
+    .btn-sm:active { transform: scale(.92); }
+    .btn-close  { background: var(--sl1); color: var(--sl6); border: 1px solid var(--sl2); }
+    .btn-close:hover  { background: var(--sl2); color: var(--sl6); }
+    .btn-reopen { background: #dcfce7; color: #15803d; border: 1px solid #bbf7d0; }
     .btn-reopen:hover { background: #bbf7d0; }
-    .btn-delete { background: #fee2e2; color: #dc2626; }
+    .btn-delete { background: #fee2e2; color: var(--red); border: 1px solid #fecaca; }
     .btn-delete:hover { background: #fecaca; }
 
-    /* ── Mini voortgangsbalk ── */
-    .mini-bar { display: inline-flex; align-items: center; gap: 6px; }
-    .mini-track { background: #e2e8f0; border-radius: 99px; height: 6px; width: 72px; overflow: hidden; display: inline-block; }
-    .mini-fill  { background: linear-gradient(90deg, #4f6ef7, #7c3aed); height: 100%; border-radius: 99px; }
-    .mini-pct   { font-size: 12px; font-weight: 700; color: #4f6ef7; }
+    /* ── Progress bar ── */
+    .mini-bar { display: inline-flex; align-items: center; gap: 7px; }
+    .mini-track {
+      background: var(--sl2);
+      border-radius: 99px;
+      height: 6px;
+      width: 80px;
+      overflow: hidden;
+      display: inline-block;
+    }
+    .mini-fill {
+      background: linear-gradient(90deg, var(--blue), var(--purple));
+      height: 100%;
+      border-radius: 99px;
+      transition: width .6s cubic-bezier(.4,0,.2,1);
+    }
+    .mini-pct {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--blue-dark);
+      min-width: 34px;
+      font-variant-numeric: tabular-nums;
+    }
 
-    /* ── Formulieren ── */
-    .form-grid { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 10px; padding: 20px 22px 10px; }
+    /* ── Forms ── */
+    .form-grid { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 14px; padding: 20px 22px 10px; }
     .form-grid.three { grid-template-columns: repeat(3, 1fr); }
-    .form-group { display: flex; flex-direction: column; gap: 4px; }
+    .form-group { display: flex; flex-direction: column; gap: 6px; }
     .form-group.full { grid-column: 1/-1; }
-    .form-group label { font-size: 10px; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: .06em; }
-    .form-group input, .form-group textarea { padding: 8px 12px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 13px; font-family: 'Space Grotesk', sans-serif; transition: border-color .15s; }
-    .form-group input:focus, .form-group textarea:focus { outline: none; border-color: #4f6ef7; }
-    .form-group textarea { resize: vertical; min-height: 60px; }
-    .form-group input:disabled { background: #f8fafc; color: #94a3b8; cursor: not-allowed; }
-    .form-actions { padding: 12px 22px 20px; display: flex; align-items: center; gap: 10px; }
-    .btn-primary { background: linear-gradient(135deg, #4f6ef7, #7c3aed); color: white; border: none; border-radius: 8px; padding: 9px 20px; font-size: 13px; font-weight: 700; cursor: pointer; font-family: 'Archivo', sans-serif; transition: opacity .15s; }
-    .btn-primary:hover { opacity: .9; }
-    .btn-primary:disabled { opacity: .5; cursor: not-allowed; }
-    .form-feedback { font-size: 12px; }
 
-    /* ── Gebruikerslimiet indicator ── */
-    .user-limit { display: flex; align-items: center; gap: 8px; padding: 10px 22px; font-size: 13px; color: #64748b; border-top: 1px solid #f1f5f9; }
-    .user-limit-bar { flex: 1; background: #e2e8f0; border-radius: 99px; height: 6px; overflow: hidden; max-width: 120px; }
-    .user-limit-fill { background: #4f6ef7; height: 100%; border-radius: 99px; transition: width .3s; }
-    .user-limit.full .user-limit-fill { background: #dc2626; }
+    .form-group label {
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--sl5);
+      text-transform: uppercase;
+      letter-spacing: .09em;
+    }
+    .form-group input, .form-group textarea {
+      padding: 9px 12px;
+      border: 1.5px solid var(--sl2);
+      border-radius: 8px;
+      font-size: 13px;
+      font-family: 'Space Grotesk', sans-serif;
+      background: var(--sl0);
+      color: var(--navy);
+      transition: border-color .15s, box-shadow .15s, background .15s;
+    }
+    .form-group input:focus, .form-group textarea:focus {
+      outline: none;
+      border-color: var(--blue);
+      box-shadow: 0 0 0 3px rgba(79,110,247,.1);
+      background: white;
+    }
+    .form-group textarea { resize: vertical; min-height: 68px; line-height: 1.6; }
+    .form-group input:disabled { background: var(--sl1); color: var(--sl4); cursor: not-allowed; }
 
-    /* ── Embed ── */
-    .embed-box { background: #0f172a; color: #e2e8f0; border-radius: 8px; padding: 14px 18px; font-family: monospace; font-size: 12px; line-height: 1.7; margin: 0 22px 20px; }
-    .embed-box .comment { color: #475569; }
-    .embed-note { padding: 0 22px 20px; font-size: 12px; color: #64748b; line-height: 1.6; }
+    .form-actions { padding: 12px 22px 20px; display: flex; align-items: center; gap: 12px; }
+    .btn-primary {
+      background: linear-gradient(135deg, var(--blue), var(--purple));
+      color: white;
+      border: none;
+      border-radius: 8px;
+      padding: 9px 22px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: 'Archivo', sans-serif;
+      transition: transform .15s var(--ease), box-shadow .15s, opacity .15s;
+      letter-spacing: .02em;
+    }
+    .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(79,110,247,.38); }
+    .btn-primary:active { transform: none; box-shadow: none; }
+    .btn-primary:disabled { opacity: .4; cursor: not-allowed; transform: none; box-shadow: none; }
+
+    .form-feedback { font-size: 12px; font-weight: 600; }
+
+    /* ── User limit bar ── */
+    .user-limit {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 22px;
+      font-size: 12px;
+      color: var(--sl5);
+      border-top: 1px solid var(--sl1);
+    }
+    .user-limit-bar {
+      flex: 1;
+      background: var(--sl2);
+      border-radius: 99px;
+      height: 5px;
+      overflow: hidden;
+      max-width: 120px;
+    }
+    .user-limit-fill { background: var(--blue); height: 100%; border-radius: 99px; transition: width .35s; }
+    .user-limit.full .user-limit-fill { background: var(--red); }
+
+    /* ── Embed code ── */
+    .embed-box {
+      background: #0d1117;
+      color: #c9d1d9;
+      border-radius: 10px;
+      padding: 20px 20px;
+      font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
+      font-size: 12.5px;
+      line-height: 2;
+      margin: 0 22px 12px;
+      position: relative;
+      border: 1px solid rgba(255,255,255,.07);
+    }
+    .embed-box .comment { color: #6e7681; }
+    .embed-box .tag { color: #7ee787; }
+    .embed-box .attr { color: #79c0ff; }
+    .embed-box .val { color: #a5d6ff; }
+    .embed-box .bold { color: #ff7b72; font-weight: 700; }
+
+    .copy-btn {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      background: rgba(255,255,255,.07);
+      border: 1px solid rgba(255,255,255,.11);
+      color: rgba(255,255,255,.55);
+      padding: 5px 12px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: 'Space Grotesk', sans-serif;
+      transition: background .15s, color .15s;
+    }
+    .copy-btn:hover { background: rgba(255,255,255,.13); color: white; }
+    .copy-btn.copied { background: rgba(34,197,94,.16); border-color: rgba(34,197,94,.3); color: #4ade80; }
+
+    .embed-note {
+      padding: 0 22px 20px;
+      font-size: 12px;
+      color: var(--sl5);
+      line-height: 1.8;
+    }
+    .embed-note code {
+      background: var(--sl1);
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-family: monospace;
+      color: var(--sl6);
+      border: 1px solid var(--sl2);
+    }
+
+    /* ── Reset section ── */
+    .reset-section { margin-bottom: 24px; }
+    .btn-reset {
+      background: none;
+      border: 1.5px solid #fca5a5;
+      color: var(--red);
+      padding: 9px 18px;
+      border-radius: 8px;
+      font-size: 13px;
+      cursor: pointer;
+      font-family: 'Space Grotesk', sans-serif;
+      transition: background .15s, border-color .15s;
+      font-weight: 600;
+    }
+    .btn-reset:hover { background: #fee2e2; border-color: var(--red); }
+
+    /* ── Section divider ── */
+    .section-label {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--sl4);
+      text-transform: uppercase;
+      letter-spacing: .1em;
+      margin: 8px 0 14px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .section-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--sl2);
+    }
   </style>
 </head>
 <body>
+
+<!-- ── Toast container ── -->
+<div class="toast-container" id="toast-container"></div>
 
 <!-- ── Login ── -->
 <div class="login-screen" id="login-screen">
   <div class="login-box">
     <div class="login-logo">🏫</div>
-    <div class="login-brand">School<span>Fund</span></div>
-    <div class="login-sub">Schoolbeheer · voer uw wachtwoord in</div>
+    <div class="login-brand">4dek<span>las</span></div>
+    <div class="login-sub">Schoolbeheer &mdash; voer uw wachtwoord in</div>
 
-    <div style="background:#fef9c3;border:2px solid #fbbf24;border-radius:10px;padding:14px 18px;margin-bottom:20px;text-align:left">
-      <div style="font-weight:800;font-size:13px;color:#92400e;margin-bottom:6px">⭐ Demo-inloggegevens</div>
-      <div style="font-size:15px;color:#78350f">Directeur: <strong style="font-family:monospace;font-size:17px;letter-spacing:.03em">admin2025</strong></div>
+    <div class="demo-creds" onclick="document.getElementById('login-pw').value='admin2025'">
+      <div class="demo-creds-title">⭐ Demo-inloggegevens</div>
+      <div class="demo-creds-row">
+        <div class="demo-creds-value">Directeur: <strong>admin2025</strong></div>
+        <div class="demo-creds-hint">Klik om in te vullen →</div>
+      </div>
     </div>
 
     <label class="login-label">Wachtwoord</label>
-    <input type="password" class="login-input" id="login-pw" placeholder="admin2025"
+    <input type="password" class="login-input" id="login-pw" placeholder="••••••••"
            onkeydown="if(event.key==='Enter') tryLogin()">
 
     <button class="login-btn" onclick="tryLogin()">Inloggen als directeur</button>
-    <div class="login-error" id="login-error">Ongeldig wachtwoord.</div>
+    <div class="login-error" id="login-error">Ongeldig wachtwoord — probeer opnieuw.</div>
   </div>
 </div>
 
 <!-- ── Dashboard ── -->
 <div class="dashboard" id="dashboard">
   <div class="topbar">
-    <div class="topbar-brand">School<span>Fund</span></div>
-    <div class="topbar-right">
-      <span class="role-badge" id="role-badge">–</span>
+    <div class="topbar-left">
+      <div class="topbar-brand">4dek<span>las</span></div>
+      <div class="topbar-divider"></div>
+      <div class="topbar-context">
+        <span>Admin</span>
+        <svg width="10" height="10" viewBox="0 0 10 10" fill="none" style="opacity:.35"><path d="M3.5 2L6.5 5L3.5 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <strong id="page-title-crumb">Dashboard</strong>
+      </div>
       <span class="demo-badge">DEMO</span>
+    </div>
+    <div class="topbar-right">
+      <div class="live-indicator">
+        <div class="live-dot"></div>
+        <span class="refresh-note" id="last-refresh"></span>
+      </div>
+      <span class="role-badge" id="role-badge">–</span>
+      <div class="user-avatar" id="user-avatar"></div>
       <span class="current-user-name" id="topbar-username"></span>
-      <span class="refresh-note" id="last-refresh"></span>
       <button class="logout-btn" onclick="logout()">Uitloggen</button>
     </div>
   </div>
@@ -183,23 +978,31 @@
   <div class="layout">
     <!-- Sidebar -->
     <div class="sidebar">
-      <div class="sidebar-section">Beheer</div>
-      <nav id="sidebar-nav">
-        <!-- gevuld door JS op basis van rol -->
-      </nav>
-      <hr>
-      <nav>
-        <a href="/" target="_blank">🏫 Schoolwebsite</a>
-        <a href="/doneren" target="_blank">👁️ Donateurspagina</a>
-        <a href="/verhaal" target="_blank">📖 Ons verhaal</a>
-        <a href="/kritisch" target="_blank">🧐 Kritisch bekeken</a>
-      </nav>
+      <div class="sidebar-nav-area">
+        <div class="sidebar-section">Beheer</div>
+        <nav id="sidebar-nav"></nav>
+        <hr>
+        <nav>
+          <a href="/" target="_blank"><span class="nav-icon">🏫</span> Schoolwebsite</a>
+          <a href="/doneren" target="_blank"><span class="nav-icon">👁️</span> Donateurspagina</a>
+          <a href="/verhaal" target="_blank"><span class="nav-icon">📖</span> Ons verhaal</a>
+          <a href="/kritisch" target="_blank"><span class="nav-icon">🧐</span> Kritisch bekeken</a>
+        </nav>
+      </div>
+      <div class="sidebar-footer">
+        <div class="sidebar-footer-label">Platform</div>
+        <div class="sidebar-footer-brand">4dek<span>las</span> &middot; demo</div>
+      </div>
     </div>
 
     <!-- Hoofd inhoud -->
-    <div class="main">
-      <div class="page-title" id="page-title">Financieel overzicht</div>
-      <div class="page-sub" id="page-sub">De Regenboogschool</div>
+    <div class="main" id="top">
+      <div class="page-header">
+        <div class="page-header-text">
+          <div class="page-title" id="page-title">Financieel overzicht</div>
+          <div class="page-sub" id="page-sub">De Regenboogschool</div>
+        </div>
+      </div>
 
       <!-- Stats -->
       <div class="stats-grid" id="stats-grid"></div>
@@ -207,30 +1010,43 @@
       <!-- Projecten -->
       <div class="card" id="projecten">
         <div class="card-header">
-          <div class="card-title">Projecten</div>
-          <div class="card-sub" id="projects-card-sub">Beheer status — sluit af, heropen of verwijder</div>
+          <div>
+            <div class="card-title">Projecten</div>
+            <div class="card-sub" id="projects-card-sub">Beheer status — sluit af, heropen of verwijder</div>
+          </div>
         </div>
-        <table>
-          <thead><tr id="projects-thead"></tr></thead>
-          <tbody id="projects-tbody"></tbody>
-        </table>
+        <div class="table-wrap">
+          <table>
+            <thead><tr id="projects-thead"></tr></thead>
+            <tbody id="projects-tbody"></tbody>
+          </table>
+        </div>
       </div>
 
       <!-- Donaties -->
       <div class="card" id="donaties">
         <div class="card-header">
-          <div class="card-title">Donaties</div>
-          <div class="card-sub" id="donations-card-sub">Overzicht van ontvangen donaties</div>
+          <div>
+            <div class="card-title">Donaties</div>
+            <div class="card-sub" id="donations-card-sub">Overzicht van ontvangen donaties</div>
+          </div>
         </div>
-        <table>
-          <thead><tr id="donations-thead"></tr></thead>
-          <tbody id="donations-tbody"></tbody>
-        </table>
+        <div class="table-wrap">
+          <table>
+            <thead><tr id="donations-thead"></tr></thead>
+            <tbody id="donations-tbody"></tbody>
+          </table>
+        </div>
       </div>
 
       <!-- Nieuw project -->
       <div class="card" id="nieuw">
-        <div class="card-header"><div class="card-title">Nieuw project aanmaken</div></div>
+        <div class="card-header">
+          <div>
+            <div class="card-title">Nieuw project aanmaken</div>
+            <div class="card-sub">Vul naam en doelbedrag in om te starten</div>
+          </div>
+        </div>
         <div class="form-grid">
           <div class="form-group full">
             <label>Projectnaam</label>
@@ -258,15 +1074,19 @@
       <!-- Gebruikersbeheer (alleen directeur) -->
       <div class="card" id="gebruikers" style="display:none">
         <div class="card-header">
-          <div class="card-title">👥 Gebruikersbeheer</div>
-          <div class="card-sub">Medewerkers die toegang hebben tot dit dashboard</div>
+          <div>
+            <div class="card-title">Gebruikersbeheer</div>
+            <div class="card-sub">Medewerkers die toegang hebben tot dit dashboard</div>
+          </div>
         </div>
-        <table>
-          <thead><tr>
-            <th>Naam</th><th>Gebruikersnaam</th><th>Rol</th><th>Actie</th>
-          </tr></thead>
-          <tbody id="users-tbody"></tbody>
-        </table>
+        <div class="table-wrap">
+          <table>
+            <thead><tr>
+              <th>Naam</th><th>Gebruikersnaam</th><th>Rol</th><th>Actie</th>
+            </tr></thead>
+            <tbody id="users-tbody"></tbody>
+          </table>
+        </div>
         <div class="user-limit" id="user-limit-bar-wrap">
           <span id="user-limit-text"></span>
           <div class="user-limit-bar"><div class="user-limit-fill" id="user-limit-fill"></div></div>
@@ -294,13 +1114,16 @@
       <!-- Embed code -->
       <div class="card" id="embed">
         <div class="card-header">
-          <div class="card-title">Widget op schoolwebsite plaatsen</div>
-          <div class="card-sub">Kopieer naar de HTML van de schoolsite</div>
+          <div>
+            <div class="card-title">Widget op schoolwebsite plaatsen</div>
+            <div class="card-sub">Kopieer naar de HTML van de schoolsite</div>
+          </div>
         </div>
         <div class="embed-box">
+          <button class="copy-btn" id="copy-btn" onclick="copyEmbed()">Kopiëren</button>
           <span class="comment">&lt;!-- 4deklas widget — vervang PROJECT_ID --&gt;</span><br>
-          &lt;div data-schoolfund-project="<strong>PROJECT_ID</strong>"&gt;&lt;/div&gt;<br>
-          &lt;script src="https://schoolfund.nl/widget.js"&gt;&lt;/script&gt;
+          <span class="tag">&lt;div</span> <span class="attr">data-schoolfund-project</span>=<span class="val">"<strong class="bold">PROJECT_ID</strong>"</span><span class="tag">&gt;&lt;/div&gt;</span><br>
+          <span class="tag">&lt;script</span> <span class="attr">src</span>=<span class="val">"https://schoolfund.nl/widget.js"</span><span class="tag">&gt;&lt;/script&gt;</span>
         </div>
         <div class="embed-note">
           Project-ID's staan in de tabel hierboven.<br>
@@ -309,10 +1132,8 @@
       </div>
 
       <!-- Reset (alleen directeur) -->
-      <div id="reset-section" style="display:none;margin-bottom:20px">
-        <button onclick="resetDemo()" style="background:none;border:1px solid #fca5a5;color:#dc2626;padding:8px 16px;border-radius:8px;font-size:13px;cursor:pointer">
-          🗑️ Demo resetten naar beginstand
-        </button>
+      <div id="reset-section" class="reset-section" style="display:none">
+        <button class="btn-reset" onclick="resetDemo()">🗑️ Demo resetten naar beginstand</button>
       </div>
 
     </div>
@@ -323,32 +1144,66 @@
 <script>
   let currentUser = null;
 
+  // ── Toast ──
+  function showToast(message, type = 'success', duration = 3500) {
+    const icons = { success: '✓', error: '✕', info: 'ℹ', warning: '⚠' };
+    const container = document.getElementById('toast-container');
+    const toast = document.createElement('div');
+    toast.className = `toast ${type}`;
+    toast.innerHTML = `<span class="toast-icon">${icons[type] || '✓'}</span><span>${message}</span>`;
+    container.appendChild(toast);
+    const dismiss = () => {
+      toast.classList.add('dismissing');
+      toast.addEventListener('animationend', () => toast.remove(), { once: true });
+    };
+    setTimeout(dismiss, duration);
+    toast.onclick = dismiss;
+  }
+
   // ── Auth ──
   function tryLogin() {
-    const password = document.getElementById('login-pw').value;
+    const input = document.getElementById('login-pw');
+    const password = input.value;
     const user = SF.authenticate(password);
     if (user) {
       currentUser = user;
       document.getElementById('login-screen').style.display = 'none';
-      document.getElementById('dashboard').style.display = 'block';
+      const dash = document.getElementById('dashboard');
+      dash.classList.add('visible');
       setupRoleUI();
       render();
       setInterval(render, 15000);
     } else {
       document.getElementById('login-error').style.display = 'block';
-      document.getElementById('login-pw').value = '';
+      input.value = '';
+      input.classList.remove('shake');
+      void input.offsetWidth;
+      input.classList.add('shake');
     }
   }
 
   function logout() {
     currentUser = null;
-    document.getElementById('dashboard').style.display = 'none';
+    const dash = document.getElementById('dashboard');
+    dash.classList.remove('visible');
     document.getElementById('login-screen').style.display = 'flex';
     document.getElementById('login-pw').value = '';
     document.getElementById('login-error').style.display = 'none';
   }
 
   const isDirector = () => currentUser && currentUser.role === 'director';
+
+  // ── Copy embed code ──
+  function copyEmbed() {
+    const code = `<!-- 4deklas widget — vervang PROJECT_ID -->\n<div data-schoolfund-project="PROJECT_ID"></div>\n<script src="https://schoolfund.nl/widget.js"><\/script>`;
+    navigator.clipboard.writeText(code).then(() => {
+      const btn = document.getElementById('copy-btn');
+      btn.textContent = '✓ Gekopieerd';
+      btn.classList.add('copied');
+      setTimeout(() => { btn.textContent = 'Kopiëren'; btn.classList.remove('copied'); }, 2000);
+      showToast('Embedcode gekopieerd naar klembord', 'success');
+    }).catch(() => {});
+  }
 
   // ── Rol-gebaseerde UI ──
   function setupRoleUI() {
@@ -357,22 +1212,22 @@
     badge.className   = 'role-badge ' + (isDirector() ? 'director' : 'user');
     document.getElementById('topbar-username').textContent = currentUser.name;
 
-    // Sidebar
+    const initials = currentUser.name.split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase();
+    document.getElementById('user-avatar').textContent = initials;
+
     const nav = document.getElementById('sidebar-nav');
     nav.innerHTML = `
-      <a href="#projecten" class="active">📊 Overzicht</a>
-      <a href="#projecten">🎯 Projecten</a>
-      <a href="#donaties">💚 Donaties</a>
-      <a href="#nieuw">➕ Nieuw project</a>
-      ${isDirector() ? '<a href="#gebruikers">👥 Gebruikers</a>' : ''}
-      <a href="#embed">🔗 Widget code</a>
+      <a href="#projecten" class="active" onclick="setActive(this)"><span class="nav-icon">📊</span> Overzicht</a>
+      <a href="#projecten" onclick="setActive(this)"><span class="nav-icon">🎯</span> Projecten</a>
+      <a href="#donaties" onclick="setActive(this)"><span class="nav-icon">💚</span> Donaties</a>
+      <a href="#nieuw" onclick="setActive(this)"><span class="nav-icon">➕</span> Nieuw project</a>
+      ${isDirector() ? '<a href="#gebruikers" onclick="setActive(this)"><span class="nav-icon">👥</span> Gebruikers</a>' : ''}
+      <a href="#embed" onclick="setActive(this)"><span class="nav-icon">🔗</span> Widget code</a>
     `;
 
-    // Kaarten zichtbaarheid
     document.getElementById('gebruikers').style.display    = isDirector() ? 'block' : 'none';
     document.getElementById('reset-section').style.display = isDirector() ? 'block' : 'none';
 
-    // Tabelkoppen afhankelijk van rol
     document.getElementById('projects-card-sub').textContent = isDirector()
       ? 'Beheer status — sluit af, heropen of verwijder'
       : 'Bekijk projecten en sluit ze af';
@@ -381,7 +1236,6 @@
       ? 'Inclusief financiële details en zichtbaarheidsvoorkeur donateur'
       : 'Overzicht van donaties (zonder financiële details)';
 
-    // Tabelkoppen projecten
     document.getElementById('projects-thead').innerHTML = [
       '<th>ID</th><th>Project</th><th>Status</th><th>Einddatum</th>',
       '<th>Voortgang</th><th>Opgehaald</th><th>Doel</th><th>Donaties</th>',
@@ -389,10 +1243,14 @@
       '<th>Acties</th>'
     ].join('');
 
-    // Tabelkoppen donaties
     document.getElementById('donations-thead').innerHTML = isDirector()
       ? '<th>#</th><th>Donateur</th><th>Bedrijf</th><th>Zichtbaarheid</th><th>Project</th><th>Bedrag</th><th>School ontvangt</th><th>Platform fee</th><th>Type</th><th>Berichtje</th><th>Tijdstip</th>'
       : '<th>#</th><th>Donateur</th><th>Project</th><th>Type</th><th>Berichtje</th><th>Tijdstip</th>';
+  }
+
+  function setActive(el) {
+    document.querySelectorAll('#sidebar-nav a').forEach(a => a.classList.remove('active'));
+    el.classList.add('active');
   }
 
   // ── Status badge ──
@@ -440,29 +1298,27 @@
     const monthlyAmount   = s.donations.filter(d => d.frequency === 'monthly').reduce((a, d) => a + d.amount, 0);
     const monthlyCount    = s.donations.filter(d => d.frequency === 'monthly').length;
 
-    // Stats
     if (isDirector()) {
       document.getElementById('stats-grid').className = 'stats-grid';
       document.getElementById('stats-grid').style.gridTemplateColumns = 'repeat(auto-fill, minmax(160px, 1fr))';
       document.getElementById('stats-grid').innerHTML = `
-        <div class="stat-card blue"><div class="stat-lbl">Totaal ontvangen</div><div class="stat-val">${SF.euro(totalCollected)}</div><div class="stat-sub">bruto donaties</div></div>
-        <div class="stat-card green"><div class="stat-lbl">Uitbetaling school</div><div class="stat-val">${SF.euro(totalCollected - totalFees)}</div><div class="stat-sub">na 2% vergoeding</div></div>
-        <div class="stat-card purple"><div class="stat-lbl">Platforminkomsten</div><div class="stat-val">${SF.euro(totalFees)}</div><div class="stat-sub">2% commissie</div></div>
-        <div class="stat-card orange"><div class="stat-lbl">Actieve projecten</div><div class="stat-val">${activeCount}</div><div class="stat-sub">${s.donations.length} donaties totaal</div></div>
-        <div class="stat-card blue"><div class="stat-lbl">Maandelijks terugkerend</div><div class="stat-val">${SF.euro(monthlyAmount)}</div><div class="stat-sub">${monthlyCount} abonnement${monthlyCount !== 1 ? 'en' : ''} · per maand</div></div>
+        <div class="stat-card blue"><div class="stat-icon">💰</div><div class="stat-lbl">Totaal ontvangen</div><div class="stat-val">${SF.euro(totalCollected)}</div><div class="stat-sub">bruto donaties</div></div>
+        <div class="stat-card green"><div class="stat-icon">🏦</div><div class="stat-lbl">Uitbetaling school</div><div class="stat-val">${SF.euro(totalCollected - totalFees)}</div><div class="stat-sub">na 2% vergoeding</div></div>
+        <div class="stat-card purple"><div class="stat-icon">📈</div><div class="stat-lbl">Platforminkomsten</div><div class="stat-val">${SF.euro(totalFees)}</div><div class="stat-sub">2% commissie</div></div>
+        <div class="stat-card orange"><div class="stat-icon">🎯</div><div class="stat-lbl">Actieve projecten</div><div class="stat-val">${activeCount}</div><div class="stat-sub">${s.donations.length} donaties totaal</div></div>
+        <div class="stat-card blue"><div class="stat-icon">🔄</div><div class="stat-lbl">Maandelijks terugkerend</div><div class="stat-val">${SF.euro(monthlyAmount)}</div><div class="stat-sub">${monthlyCount} abonnement${monthlyCount !== 1 ? 'en' : ''} · per maand</div></div>
       `;
     } else {
       document.getElementById('stats-grid').className = 'stats-grid two-col';
       document.getElementById('stats-grid').innerHTML = `
-        <div class="stat-card orange"><div class="stat-lbl">Actieve projecten</div><div class="stat-val">${activeCount}</div><div class="stat-sub">van ${s.projects.length} totaal</div></div>
-        <div class="stat-card blue"><div class="stat-lbl">Aantal donaties</div><div class="stat-val">${s.donations.length}</div><div class="stat-sub">over alle projecten</div></div>
+        <div class="stat-card orange"><div class="stat-icon">🎯</div><div class="stat-lbl">Actieve projecten</div><div class="stat-val">${activeCount}</div><div class="stat-sub">van ${s.projects.length} totaal</div></div>
+        <div class="stat-card blue"><div class="stat-icon">💚</div><div class="stat-lbl">Aantal donaties</div><div class="stat-val">${s.donations.length}</div><div class="stat-sub">over alle projecten</div></div>
       `;
     }
 
-    // Projecten tabel
     const projMap = Object.fromEntries(s.projects.map(p => [p.id, p.title]));
     document.getElementById('projects-tbody').innerHTML = s.projects.length === 0
-      ? `<tr><td colspan="12" style="text-align:center;color:#94a3b8;padding:20px">Geen projecten — maak er een aan hieronder</td></tr>`
+      ? `<tr><td colspan="12"><div class="empty-state"><div class="empty-state-icon">📋</div><div class="empty-state-text">Geen projecten — maak er een aan hieronder</div></div></td></tr>`
       : s.projects.map(p => {
           const fees  = s.donations.filter(d => d.project_id === p.id).reduce((a, d) => a + d.platform_fee, 0);
           const count = s.donations.filter(d => d.project_id === p.id).length;
@@ -484,10 +1340,9 @@
           </tr>`;
         }).join('');
 
-    // Donaties tabel
     const sorted = [...s.donations].sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
     document.getElementById('donations-tbody').innerHTML = sorted.length === 0
-      ? `<tr><td colspan="10" style="text-align:center;color:#94a3b8;padding:20px">Nog geen donaties</td></tr>`
+      ? `<tr><td colspan="10"><div class="empty-state"><div class="empty-state-icon">💚</div><div class="empty-state-text">Nog geen donaties ontvangen</div></div></td></tr>`
       : sorted.map(d => {
           const donorDisplay = d.visibility === 'hidden'    ? '<span class="muted">—</span>'
                              : d.visibility === 'anonymous' ? '<em class="muted">Anoniem</em>'
@@ -526,7 +1381,6 @@
           }
         }).join('');
 
-    // Gebruikers (directeur)
     if (isDirector()) {
       const users = SF.getUsers();
       const nonDirectors = users.filter(u => u.role !== 'director');
@@ -569,7 +1423,11 @@
     const desc    = document.getElementById('new-desc').value.trim();
     const endDate = document.getElementById('new-enddate').value || null;
     const fb      = document.getElementById('create-feedback');
-    if (!title || !goal || goal < 1) { fb.style.color = '#dc2626'; fb.textContent = 'Vul een naam en doelbedrag in.'; return; }
+    if (!title || !goal || goal < 1) {
+      fb.style.color = '#dc2626';
+      fb.textContent = 'Vul een naam en doelbedrag in.';
+      return;
+    }
     const p = SF.addProject(title, desc, goal, endDate);
     fb.style.color = '#16a34a';
     fb.textContent = `"${p.title}" aangemaakt (ID: ${p.id})`;
@@ -577,6 +1435,7 @@
     document.getElementById('new-goal').value    = '';
     document.getElementById('new-desc').value    = '';
     document.getElementById('new-enddate').value = '';
+    showToast(`Project "${p.title}" aangemaakt`, 'success');
     render();
   }
 
@@ -594,6 +1453,7 @@
     document.getElementById('new-user-name').value     = '';
     document.getElementById('new-user-username').value = '';
     document.getElementById('new-user-password').value = '';
+    showToast(`Gebruiker "${result.user.name}" aangemaakt`, 'success');
     render();
   }
 
