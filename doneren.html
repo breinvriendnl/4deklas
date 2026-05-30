@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="robots" content="noindex">
-  <title>Doneren — De Regenboogschool · 4deklas Demo</title>
+  <title>Doneren — OBS De Springplank · 4deklas</title>
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -12,495 +12,451 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --blue:      #2563eb;
-      --blue-dk:   #1e3a8a;
-      --blue-md:   #1e40af;
-      --indigo:    #4f6ef7;
-      --violet:    #7c3aed;
-      --green:     #16a34a;
-      --bg:        #f5f4ef;
-      --slate-50:  #f8fafc;
-      --slate-100: #f1f5f9;
-      --slate-200: #e2e8f0;
-      --slate-300: #cbd5e1;
-      --slate-400: #94a3b8;
-      --slate-500: #64748b;
-      --slate-700: #334155;
-      --slate-900: #0f172a;
-      --r-card:    20px;
-      --shadow:    0 4px 28px rgba(0,0,0,.07), 0 1px 4px rgba(0,0,0,.04);
-      --shadow-lg: 0 16px 52px rgba(0,0,0,.14), 0 3px 12px rgba(0,0,0,.06);
-      --grad:      linear-gradient(135deg, var(--indigo) 0%, var(--violet) 100%);
+      --cream:         #f7f3eb;
+      --paper:         #fefcf8;
+      --navy:          #1d3048;
+      --navy-mid:      #264062;
+      --navy-soft:     #eef1f5;
+      --amber:         #b8722a;
+      --amber-deep:    #8f5318;
+      --amber-bg:      #fdf0dc;
+      --amber-border:  #f0d4a4;
+      --teal:          #1b5e4e;
+      --teal-bg:       #e5f3ef;
+      --teal-border:   #b6dbd4;
+      --red:           #b83232;
+      --red-bg:        #fef2f0;
+      --text:          #1c2e3e;
+      --text-mid:      #4e6070;
+      --text-soft:     #7a8fa0;
+      --border:        #e2dbd0;
+      --border-light:  #edeae2;
+      --r-sm:  8px;
+      --r-md:  14px;
+      --r-lg:  22px;
+      --shadow-sm: 0 1px 4px rgba(29,48,72,.06);
+      --shadow-md: 0 4px 24px rgba(29,48,72,.09), 0 1px 3px rgba(29,48,72,.04);
+      --shadow-lg: 0 12px 48px rgba(29,48,72,.12), 0 2px 8px rgba(29,48,72,.05);
     }
 
     html { scroll-behavior: smooth; }
-    body { font-family: 'Space Grotesk', system-ui, sans-serif; background: var(--bg); color: #1a202c; line-height: 1.5; }
+    body {
+      font-family: 'Space Grotesk', system-ui, sans-serif;
+      background: var(--cream);
+      color: var(--text);
+      line-height: 1.6;
+    }
 
     /* ── DEMO BAR ─────────────────────────────── */
     .demo-bar {
-      background: linear-gradient(90deg, #0f0c29, #1a1060);
-      color: rgba(255,255,255,.6);
-      text-align: center; padding: 9px 16px;
-      font-size: 12px; display: flex; align-items: center; justify-content: center; gap: 10px;
+      display: none;
+      background: #0f0d26;
+      color: rgba(255,255,255,.55);
+      text-align: center; padding: 8px 16px;
+      font-size: 12px; align-items: center; justify-content: center; gap: 10px;
     }
-    .demo-bar strong { color: white; }
-    .demo-bar a { color: #93c5fd; text-decoration: none; transition: color .15s; }
-    .demo-bar a:hover { color: white; }
+    .demo-bar.visible { display: flex; }
+    .demo-bar strong { color: rgba(255,255,255,.9); }
+    .demo-bar a { color: #f0b86c; text-decoration: none; }
+    .demo-bar a:hover { color: #fcd39a; }
 
     /* ── TOPBAR ───────────────────────────────── */
     .topbar {
-      background: var(--blue-dk); color: white;
-      padding: 14px 32px; display: flex; align-items: center; justify-content: space-between;
+      background: var(--navy); color: white;
+      padding: 14px 40px; display: flex; align-items: center; justify-content: space-between;
     }
-    .topbar-left { display: flex; align-items: center; gap: 12px; }
+    .topbar-left { display: flex; align-items: center; gap: 14px; }
     .school-logo {
-      width: 40px; height: 40px; background: white; border-radius: 10px;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 22px; box-shadow: 0 2px 8px rgba(0,0,0,.2);
+      width: 38px; height: 38px;
+      background: rgba(255,255,255,.1); border: 1.5px solid rgba(255,255,255,.18);
+      border-radius: var(--r-sm);
+      display: flex; align-items: center; justify-content: center; font-size: 20px;
     }
-    .school-name { font-family: 'Archivo', sans-serif; font-size: 17px; font-weight: 800; }
-    .school-sub  { font-size: 11px; opacity: .5; margin-top: 1px; }
-    .back-link   { color: rgba(255,255,255,.6); text-decoration: none; font-size: 13px; transition: color .15s; }
-    .back-link:hover { color: white; }
+    .school-name { font-family: 'Archivo', sans-serif; font-size: 16px; font-weight: 800; letter-spacing: -.01em; }
+    .school-sub  { font-size: 11px; color: rgba(255,255,255,.52); margin-top: 1px; }
+    .back-link   { color: rgba(255,255,255,.55); text-decoration: none; font-size: 13px; transition: color .15s; }
+    .back-link:hover { color: rgba(255,255,255,.9); }
 
     /* ── NAV ──────────────────────────────────── */
-    nav { background: var(--blue-md); display: flex; align-items: center; flex-wrap: wrap; }
-    nav ul { display: flex; list-style: none; padding: 0 28px; flex-wrap: wrap; flex: 1; }
+    nav {
+      background: var(--navy-mid);
+      display: flex; align-items: center; flex-wrap: wrap;
+      border-bottom: 1px solid rgba(255,255,255,.06);
+    }
+    nav ul { display: flex; list-style: none; padding: 0 32px; flex-wrap: wrap; flex: 1; }
     nav ul li a {
-      display: block; padding: 11px 14px;
-      color: rgba(255,255,255,.7); text-decoration: none; font-size: 13.5px; font-weight: 500;
+      display: block; padding: 11px 13px;
+      color: rgba(255,255,255,.65); text-decoration: none; font-size: 13px; font-weight: 500;
       transition: color .15s; position: relative;
     }
     nav ul li a::after {
-      content: ''; position: absolute; bottom: 0; left: 14px; right: 14px;
-      height: 2px; background: white; border-radius: 2px 2px 0 0;
+      content: ''; position: absolute; bottom: 0; left: 13px; right: 13px;
+      height: 2px; background: var(--amber); border-radius: 2px 2px 0 0;
       opacity: 0; transform: scaleX(.4); transition: opacity .2s, transform .2s;
     }
     nav ul li a:hover { color: white; }
     nav ul li a:hover::after { opacity: 1; transform: scaleX(1); }
     nav ul li.cta a {
-      color: white; font-weight: 700; background: rgba(255,255,255,.12);
-      border-radius: 6px; margin: 6px 4px; padding: 7px 14px;
+      color: white; font-weight: 700;
+      background: rgba(184,114,42,.2); border-radius: var(--r-sm);
+      margin: 5px 4px; padding: 7px 14px;
+      border: 1px solid rgba(184,114,42,.32);
     }
-    nav ul li.cta a:hover { background: rgba(255,255,255,.2); }
+    nav ul li.cta a:hover { background: rgba(184,114,42,.34); }
     nav ul li.cta a::after { display: none; }
-    nav ul li.cta.active a {
-      background: rgba(255,255,255,.26);
-      box-shadow: 0 0 0 1.5px rgba(255,255,255,.4), 0 4px 12px rgba(0,0,0,.18);
-    }
+    nav ul li.cta.active a { background: var(--amber); border-color: var(--amber); }
     .nav-toggle {
       display: none; background: none; border: none; cursor: pointer;
-      color: white; font-size: 22px; padding: 10px 16px; margin-left: auto;
+      color: rgba(255,255,255,.8); font-size: 20px; padding: 10px 16px; margin-left: auto;
       line-height: 1;
     }
 
-    /* ── CAMPAIGN STRIP ───────────────────────── */
-    .campaign-strip {
-      background: white;
-      border-bottom: 1px solid var(--slate-200);
-    }
-    .campaign-inner {
-      max-width: 960px; margin: 0 auto; padding: 16px 32px;
-      display: flex; align-items: center; gap: 24px; flex-wrap: wrap;
-    }
-    .campaign-bar-group { flex: 1; min-width: 180px; }
-    .campaign-title-lbl {
-      font-size: 10px; font-weight: 700; letter-spacing: .12em;
-      text-transform: uppercase; color: var(--slate-400); margin-bottom: 8px;
-    }
-    .campaign-bar-track {
-      height: 7px; background: var(--slate-100); border-radius: 99px; overflow: hidden;
-    }
-    .campaign-bar-fill {
-      height: 100%; border-radius: 99px; width: 0%;
-      background: linear-gradient(90deg, var(--indigo), var(--violet));
-      transition: width 1.8s cubic-bezier(.4,0,.2,1);
+    /* ── HERO ─────────────────────────────────── */
+    .hero {
+      background: linear-gradient(160deg, #fef8ec 0%, var(--paper) 50%, #f0f7f1 100%);
+      border-bottom: 1px solid var(--border);
+      padding: 64px 40px 72px;
       position: relative; overflow: hidden;
     }
-    .campaign-bar-fill::after {
-      content: ''; position: absolute; inset: 0;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,.45), transparent);
-      animation: sheen 2.8s infinite;
-    }
-    .campaign-stat { flex-shrink: 0; text-align: right; }
-    .campaign-stat strong {
-      font-family: 'Archivo', sans-serif; font-size: 20px; font-weight: 800;
-      color: var(--indigo); display: block; line-height: 1;
-    }
-    .campaign-stat span { font-size: 11px; color: var(--slate-400); margin-top: 2px; display: block; }
-
-    /* ── PAGE HEADER ──────────────────────────── */
-    .page-header {
-      background: linear-gradient(155deg, #0d1f6e 0%, #1a3a8a 35%, #1e40af 60%, #3730a3 85%, #4c2aaa 100%);
-      color: white; padding: 72px 32px 100px; text-align: center;
-      position: relative; overflow: hidden;
-    }
-    .page-header::before {
+    .hero::before {
       content: ''; position: absolute; inset: 0;
       background:
-        radial-gradient(ellipse 700px 320px at 92% 130%, rgba(124,58,237,.44) 0%, transparent 58%),
-        radial-gradient(ellipse 500px 420px at 8% -30%, rgba(96,165,250,.3) 0%, transparent 58%),
-        radial-gradient(ellipse 360px 280px at 50% 150%, rgba(245,158,11,.07) 0%, transparent 55%);
+        radial-gradient(ellipse 900px 500px at 105% -5%, rgba(184,114,42,.11) 0%, transparent 55%),
+        radial-gradient(ellipse 700px 600px at -5% 110%, rgba(27,94,78,.09) 0%, transparent 55%),
+        radial-gradient(ellipse 500px 400px at 75% 90%, rgba(93,156,89,.06) 0%, transparent 50%);
       pointer-events: none;
-      animation: header-pulse 9s ease-in-out infinite alternate;
     }
-    @keyframes header-pulse {
-      from { opacity: .85; transform: scale(1); }
-      to   { opacity: 1;   transform: scale(1.06); }
+    .hero::after {
+      content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px;
+      background: linear-gradient(90deg,
+        rgba(232,64,64,.55) 0%, rgba(240,160,32,.55) 17%,
+        rgba(240,208,32,.55) 34%, rgba(64,176,64,.55) 51%,
+        rgba(64,128,240,.55) 68%, rgba(128,64,224,.55) 100%
+      );
+      pointer-events: none;
     }
-    .page-header-dots {
-      position: absolute; inset: 0; pointer-events: none;
-      background-image: radial-gradient(circle, rgba(255,255,255,.07) 1px, transparent 1px);
-      background-size: 26px 26px;
+    .hero-inner { max-width: 680px; position: relative; z-index: 1; }
+    .hero-eyebrow {
+      display: inline-flex; align-items: center; gap: 10px;
+      font-size: 12px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase;
+      color: var(--amber); margin-bottom: 22px;
     }
-    .page-header::after {
-      content: ''; position: absolute; bottom: -1px; left: 0; right: 0;
-      height: 68px; background: var(--bg);
-      clip-path: ellipse(56% 100% at 50% 100%);
+    .hero-eyebrow::before {
+      content: ''; width: 24px; height: 2px;
+      background: var(--amber); border-radius: 2px;
     }
-    .page-header-inner { position: relative; z-index: 1; }
-    .school-tag {
-      display: inline-flex; align-items: center; gap: 8px;
-      background: rgba(255,255,255,.16); backdrop-filter: blur(6px);
-      border: 1px solid rgba(255,255,255,.25); border-radius: 99px;
-      padding: 7px 18px; font-size: 12px; font-weight: 700; letter-spacing: .06em;
-      text-transform: uppercase; margin-bottom: 20px;
-    }
-    .school-tag .heart { display: inline-block; animation: heartbeat 2.2s ease-in-out infinite; }
-    @keyframes heartbeat {
-      0%, 55%, 100% { transform: scale(1); }
-      28%           { transform: scale(1.22); }
-      42%           { transform: scale(1.1); }
-    }
-    .page-header h1 {
+    .hero h1 {
       font-family: 'Archivo', sans-serif;
-      font-size: clamp(32px, 5vw, 52px); font-weight: 900;
-      letter-spacing: -.03em; margin-bottom: 16px; line-height: 1.04;
+      font-size: clamp(36px, 5.5vw, 58px);
+      font-weight: 900; letter-spacing: -.03em; line-height: 1.0;
+      color: var(--navy); margin-bottom: 20px;
     }
-    .page-header p { font-size: 16px; opacity: .82; max-width: 520px; margin: 0 auto; line-height: 1.7; }
-    .header-link {
-      display: inline-flex; align-items: center; gap: 5px; margin-top: 22px;
-      color: rgba(255,255,255,.65); font-size: 13px; text-decoration: none;
-      border-bottom: 1px solid rgba(255,255,255,.3); padding-bottom: 1px;
+    .hero-sub {
+      font-size: 17px; color: var(--text-mid);
+      max-width: 540px; line-height: 1.7; margin-bottom: 32px;
+    }
+    .hero-trust {
+      display: flex; align-items: center; flex-wrap: wrap; gap: 6px 20px;
+      margin-bottom: 32px;
+    }
+    .trust-item { font-size: 13px; color: var(--text-mid); font-weight: 500; display: flex; align-items: center; gap: 5px; }
+    .trust-sep  { color: var(--border); }
+    .hero-cta-row { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+    .btn-primary {
+      display: inline-flex; align-items: center; gap: 7px;
+      padding: 14px 28px; background: var(--navy); color: white;
+      border-radius: var(--r-md); font-size: 15px; font-weight: 700;
+      text-decoration: none; border: none; cursor: pointer;
+      font-family: 'Space Grotesk', sans-serif;
+      transition: background .18s, transform .18s, box-shadow .18s;
+      box-shadow: 0 4px 16px rgba(29,48,72,.2);
+    }
+    .btn-primary:hover { background: var(--navy-mid); transform: translateY(-1px); box-shadow: 0 6px 22px rgba(29,48,72,.28); }
+    .hero-link {
+      font-size: 13.5px; color: var(--text-soft); text-decoration: none;
+      border-bottom: 1px solid var(--border); padding-bottom: 1px;
       transition: color .15s, border-color .15s;
     }
-    .header-link:hover { color: white; border-color: rgba(255,255,255,.7); }
+    .hero-link:hover { color: var(--text-mid); border-color: var(--text-soft); }
 
-    .header-trust {
-      display: flex; align-items: center; justify-content: center; gap: 8px;
-      margin-top: 24px; flex-wrap: wrap;
+    /* ── CAMPAIGN STATS ──────────────────────── */
+    .campaign-feature {
+      background: var(--navy); color: white;
+      padding: 0;
     }
-    .header-trust-chip {
-      display: inline-flex; align-items: center; gap: 6px;
-      background: rgba(255,255,255,.12); backdrop-filter: blur(6px);
-      border: 1px solid rgba(255,255,255,.2); border-radius: 99px;
-      padding: 6px 14px; font-size: 11.5px; font-weight: 600;
-      color: rgba(255,255,255,.9); letter-spacing: .02em;
-      transition: background .2s, border-color .2s;
+    .cstat-grid {
+      max-width: 960px; margin: 0 auto;
+      display: grid; grid-template-columns: repeat(4, 1fr);
     }
-    .header-trust-chip:hover { background: rgba(255,255,255,.2); border-color: rgba(255,255,255,.35); }
-
-    /* ── STATS BAR ────────────────────────────── */
-    .stats-bar {
-      background: white;
-      border-bottom: 1px solid var(--slate-200);
-      box-shadow: 0 2px 14px rgba(0,0,0,.05);
+    .cstat {
+      padding: 28px 20px; text-align: center;
+      border-right: 1px solid rgba(255,255,255,.07);
     }
-    .stats-bar-inner {
-      max-width: 960px; margin: 0 auto; padding: 0 32px;
-      display: flex; align-items: stretch; flex-wrap: wrap;
+    .cstat:last-child { border-right: none; }
+    .cstat-val {
+      font-family: 'Archivo', sans-serif;
+      font-size: clamp(22px, 3vw, 38px);
+      font-weight: 900; letter-spacing: -.03em; line-height: 1; color: white;
     }
-    .stat-item {
-      padding: 26px 40px 26px 0; display: flex; align-items: center; gap: 16px;
-      flex: 1; min-width: 140px;
-      animation: stat-appear .5s ease both;
+    .cstat-lbl {
+      font-size: 11px; font-weight: 700; letter-spacing: .10em;
+      text-transform: uppercase; color: rgba(255,255,255,.38); margin-top: 5px;
     }
-    .stat-item:nth-child(1) { animation-delay: .06s; }
-    .stat-item:nth-child(2) { animation-delay: .12s; }
-    .stat-item:nth-child(3) { animation-delay: .18s; }
-    .stat-item:nth-child(4) { animation-delay: .24s; }
-    @keyframes stat-appear {
-      from { opacity: 0; transform: translateY(10px); }
-      to   { opacity: 1; transform: translateY(0); }
+    .cstat-pct .cstat-val {
+      color: var(--amber); font-size: clamp(26px, 3.5vw, 44px);
     }
-    .stat-item + .stat-item { border-left: 1px solid var(--slate-200); padding-left: 40px; }
-    .stat-icon {
-      width: 48px; height: 48px; border-radius: 14px; flex-shrink: 0;
-      display: flex; align-items: center; justify-content: center; font-size: 22px;
+    .cstat-bar-wrap {
+      max-width: 960px; margin: 0 auto; padding: 0 20px 16px;
     }
-    .stat-icon.blue   { background: #dbeafe; }
-    .stat-icon.green  { background: #dcfce7; }
-    .stat-icon.violet { background: #ede9fe; }
-    .stat-icon.amber  { background: #fef3c7; }
-    .stat-val { font-family: 'Archivo', sans-serif; font-size: 28px; font-weight: 800; line-height: 1; }
-    .stat-val.blue   { color: var(--blue); }
-    .stat-val.green  { color: var(--green); }
-    .stat-val.violet { color: var(--violet); }
-    .stat-val.amber  { color: #d97706; }
-    .stat-lbl { font-size: 12px; color: var(--slate-400); margin-top: 4px; }
+    .cstat-bar-track {
+      height: 5px; background: rgba(255,255,255,.1); border-radius: 99px; overflow: hidden;
+    }
+    .cstat-bar-fill {
+      height: 100%; border-radius: 99px; width: 0%;
+      background: linear-gradient(90deg, var(--amber), #e8a04a);
+      transition: width 1.8s cubic-bezier(.4,0,.2,1);
+    }
 
     /* ── MAIN ─────────────────────────────────── */
-    .main { max-width: 960px; margin: 0 auto; padding: 52px 32px 0; }
-    .section-header { margin-bottom: 36px; }
+    .main { max-width: 960px; margin: 0 auto; padding: 56px 40px 0; }
+
+    .section-header { margin-bottom: 40px; }
     .section-eyebrow {
       font-size: 11px; font-weight: 700; letter-spacing: .14em;
-      text-transform: uppercase; color: var(--indigo); margin-bottom: 6px;
+      text-transform: uppercase; color: var(--amber); margin-bottom: 8px;
     }
     .section-title {
-      font-family: 'Archivo', sans-serif; font-size: 26px; font-weight: 800;
-      letter-spacing: -.02em; margin-bottom: 5px;
+      font-family: 'Archivo', sans-serif; font-size: 28px; font-weight: 800;
+      letter-spacing: -.02em; color: var(--navy); margin-bottom: 6px;
     }
-    .section-sub { font-size: 14px; color: var(--slate-500); }
+    .section-sub { font-size: 14px; color: var(--text-mid); line-height: 1.65; }
 
     /* ── PROJECT CARD ─────────────────────────── */
     .project-card {
-      background: white; border-radius: var(--r-card); box-shadow: var(--shadow);
-      margin-bottom: 28px; overflow: hidden;
-      transition: box-shadow .3s, transform .3s;
-      border: 1px solid var(--slate-200);
+      background: var(--paper); border-radius: var(--r-lg);
+      border: 1px solid var(--border); box-shadow: var(--shadow-md);
+      margin-bottom: 32px; overflow: hidden;
+      transition: box-shadow .3s, transform .25s;
     }
-    .project-card:hover { box-shadow: var(--shadow-lg); transform: translateY(-4px); }
-    .project-card.status-active   { border-top: 4px solid var(--indigo); }
-    .project-card.status-achieved { border-top: 4px solid var(--green); }
-    .project-card.status-closed   { border-top: 4px solid var(--slate-300); }
+    .project-card:hover { box-shadow: var(--shadow-lg); transform: translateY(-3px); }
+    .project-card.status-active   { border-top: 3px solid var(--amber); }
+    .project-card.status-achieved { border-top: 3px solid var(--teal); }
+    .project-card.status-closed   { border-top: 3px solid var(--border); }
 
-    .project-body { padding: 32px 32px 26px; }
+    .project-body { padding: 36px; }
 
-    /* Redesigned card header */
-    .project-header {
-      display: flex; align-items: flex-start; gap: 18px; margin-bottom: 24px;
+    .project-meta {
+      display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px;
     }
-    .project-icon-wrap { position: relative; flex-shrink: 0; }
-    .project-icon {
-      width: 64px; height: 64px; border-radius: 18px;
-      background: linear-gradient(135deg, #eef1ff, #ede9fe);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 32px;
-      box-shadow: 0 4px 18px rgba(79,110,247,.16);
+    .project-index {
+      font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase;
+      color: var(--text-soft);
     }
-    .project-num {
-      position: absolute; bottom: -6px; right: -6px;
-      width: 22px; height: 22px; border-radius: 7px;
-      background: var(--slate-900); color: white;
-      font-size: 10px; font-weight: 800; font-family: 'Archivo', sans-serif;
-      display: flex; align-items: center; justify-content: center;
-      border: 2px solid var(--bg);
-    }
-    .project-info { flex: 1; min-width: 0; padding-top: 2px; }
-    .project-title { font-family: 'Archivo', sans-serif; font-size: 21px; font-weight: 800; letter-spacing: -.02em; }
-    .project-desc  { font-size: 14px; color: var(--slate-500); line-height: 1.7; margin-top: 6px; }
-
     .badge {
       display: inline-flex; align-items: center; gap: 5px;
-      padding: 6px 14px; border-radius: 99px; font-size: 12px; font-weight: 700; white-space: nowrap; flex-shrink: 0;
+      padding: 5px 12px; border-radius: 99px; font-size: 11.5px; font-weight: 700; white-space: nowrap;
     }
     .badge::before { content: ''; width: 6px; height: 6px; border-radius: 50%; display: inline-block; }
-    .badge-active   { background: #dcfce7; color: #15803d; }
-    .badge-active::before   { background: #22c55e; animation: dot-pulse 2s infinite; }
-    .badge-achieved { background: #dbeafe; color: #1d4ed8; }
-    .badge-achieved::before { background: #3b82f6; }
-    .badge-closed   { background: var(--slate-100); color: var(--slate-500); }
-    .badge-closed::before   { background: var(--slate-400); }
+    .badge-active   { background: var(--amber-bg); color: var(--amber-deep); border: 1px solid var(--amber-border); }
+    .badge-active::before   { background: var(--amber); animation: dot-pulse 2s infinite; }
+    .badge-achieved { background: var(--teal-bg); color: var(--teal); border: 1px solid var(--teal-border); }
+    .badge-achieved::before { background: var(--teal); }
+    .badge-closed   { background: var(--border-light); color: var(--text-soft); border: 1px solid var(--border); }
+    .badge-closed::before { background: var(--text-soft); }
     @keyframes dot-pulse {
       0%,100% { opacity: 1; transform: scale(1); }
       50%      { opacity: .4; transform: scale(.75); }
     }
 
-    /* Progress */
+    .project-headline { display: flex; align-items: flex-start; gap: 16px; margin-bottom: 12px; }
+    .project-icon { font-size: 36px; line-height: 1; flex-shrink: 0; margin-top: 3px; }
+    .project-title {
+      font-family: 'Archivo', sans-serif; font-size: 22px; font-weight: 800;
+      letter-spacing: -.02em; color: var(--navy); line-height: 1.2;
+    }
+    .project-desc {
+      font-size: 14.5px; color: var(--text-mid); line-height: 1.7;
+      margin-bottom: 28px; max-width: 600px;
+    }
+
+    .progress-amounts {
+      display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 10px;
+    }
+    .progress-collected {
+      font-family: 'Archivo', sans-serif; font-size: 28px; font-weight: 800;
+      color: var(--navy); letter-spacing: -.02em; line-height: 1;
+    }
+    .progress-right { text-align: right; }
+    .progress-pct {
+      font-family: 'Archivo', sans-serif; font-size: 20px; font-weight: 800; color: var(--amber);
+    }
+    .progress-pct.achieved { color: var(--teal); }
+    .progress-goal-text { font-size: 12px; color: var(--text-soft); margin-top: 2px; }
+    .progress-remaining { color: var(--amber); font-weight: 600; }
     .progress-track {
-      background: var(--slate-100); border-radius: 99px; height: 14px;
-      overflow: hidden; margin: 0 0 16px;
-      box-shadow: inset 0 1px 3px rgba(0,0,0,.06);
+      background: var(--border-light); border-radius: 99px; height: 10px; overflow: hidden;
     }
     .progress-fill {
-      background: linear-gradient(90deg, var(--indigo), var(--violet));
+      background: linear-gradient(90deg, var(--amber), #e8a04a);
       height: 100%; border-radius: 99px; width: 0%;
       transition: width 1.6s cubic-bezier(.4,0,.2,1);
-      position: relative; overflow: hidden;
     }
-    .progress-fill::after {
-      content: ''; position: absolute; inset: 0;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,.4), transparent);
-      animation: sheen 3s infinite;
-    }
-    @keyframes sheen {
-      0%   { transform: translateX(-100%); }
-      100% { transform: translateX(300%); }
-    }
-    .progress-meta { display: flex; justify-content: space-between; align-items: center; }
-    .progress-collected { font-family: 'Archivo', sans-serif; font-size: 26px; font-weight: 800; color: var(--indigo); line-height: 1; }
-    .progress-goal      { font-size: 12px; color: var(--slate-400); margin-top: 3px; }
-    .prog-remaining     { color: var(--indigo); font-weight: 600; }
-    .pct-ring {
-      --p: 0deg;
-      width: 56px; height: 56px; border-radius: 50%; flex-shrink: 0;
-      background: conic-gradient(var(--indigo) var(--p), var(--slate-100) var(--p));
-      display: flex; align-items: center; justify-content: center; position: relative;
-      box-shadow: 0 2px 10px rgba(79,110,247,.15);
-    }
-    .pct-ring::after {
-      content: ''; position: absolute; inset: 8px;
-      background: white; border-radius: 50%;
-    }
-    .pct-ring span { position: relative; z-index: 1; font-size: 11px; font-weight: 700; color: var(--indigo); }
+    .progress-fill.achieved { background: linear-gradient(90deg, var(--teal), #3a9a84); }
 
     /* Status notices */
-    .status-notice { padding: 24px 32px; border-top: 1px solid var(--slate-200); display: flex; align-items: flex-start; gap: 16px; }
-    .status-notice.achieved { background: #f0f9ff; }
-    .status-notice.closed   { background: var(--slate-50); }
-    .status-icon {
-      width: 46px; height: 46px; border-radius: 12px; flex-shrink: 0;
-      display: flex; align-items: center; justify-content: center; font-size: 22px;
+    .status-notice {
+      padding: 24px 36px; border-top: 1px solid var(--border);
+      display: flex; align-items: flex-start; gap: 16px;
     }
-    .status-notice.achieved .status-icon { background: #dbeafe; }
-    .status-notice.closed   .status-icon { background: var(--slate-100); }
-    .status-notice h4 { font-weight: 700; font-size: 15px; margin-bottom: 4px; }
-    .status-notice p  { font-size: 13px; color: var(--slate-500); line-height: 1.55; }
-
-    /* Form section divider */
-    .form-divider { height: 1px; background: var(--slate-200); margin: 24px 0; }
-    .custom-hint  { font-size: 11px; color: var(--slate-400); margin-top: 5px; }
+    .status-notice.achieved { background: var(--teal-bg); }
+    .status-notice.closed   { background: var(--cream); }
+    .status-icon {
+      width: 44px; height: 44px; border-radius: var(--r-sm); flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center; font-size: 20px;
+    }
+    .status-notice.achieved .status-icon { background: var(--teal-border); }
+    .status-notice.closed   .status-icon { background: var(--border); }
+    .status-notice h4 { font-weight: 700; font-size: 15px; margin-bottom: 4px; color: var(--navy); }
+    .status-notice p  { font-size: 13px; color: var(--text-mid); line-height: 1.55; }
 
     /* ── DONATE TOGGLE ────────────────────────── */
     .donate-toggle {
       display: flex; align-items: center; justify-content: space-between;
-      padding: 20px 32px;
-      background: var(--grad);
-      cursor: pointer; user-select: none;
-      transition: opacity .2s, filter .2s;
+      padding: 22px 36px; width: 100%; text-align: left; border: none;
+      background: var(--navy); cursor: pointer;
+      transition: background .2s;
     }
-    .donate-toggle:hover { opacity: .92; filter: brightness(1.06); }
-    .donate-toggle:active { opacity: .85; }
-    .donate-toggle-left { display: flex; flex-direction: column; gap: 3px; }
+    .donate-toggle:hover { background: var(--navy-mid); }
+    .donate-toggle-left { display: flex; flex-direction: column; gap: 2px; }
     .donate-toggle-text {
-      font-size: 15px; font-weight: 800; color: white;
-      display: flex; align-items: center; gap: 9px;
+      font-size: 15px; font-weight: 700; color: white;
       font-family: 'Archivo', sans-serif; letter-spacing: -.01em;
     }
-    .donate-toggle-hint { font-size: 11.5px; color: rgba(255,255,255,.65); font-weight: 500; }
+    .donate-toggle-hint { font-size: 12px; color: rgba(255,255,255,.52); }
     .toggle-arrow {
-      width: 30px; height: 30px; border-radius: 50%;
-      background: rgba(255,255,255,.25); color: white;
+      width: 36px; height: 36px; border-radius: 50%; flex-shrink: 0;
+      background: rgba(255,255,255,.12); color: rgba(255,255,255,.7);
       display: flex; align-items: center; justify-content: center;
-      font-size: 11px; transition: background .15s, transform .3s;
+      font-size: 12px; transition: background .15s, transform .3s;
     }
-    .donate-toggle:hover .toggle-arrow { background: rgba(255,255,255,.38); }
+    .donate-toggle:hover .toggle-arrow { background: rgba(255,255,255,.2); }
     .toggle-arrow.open { transform: rotate(180deg); }
 
-    .donate-form-wrap { display: none; padding: 32px 32px 28px; border-top: 1px solid var(--slate-200); background: var(--slate-50); }
-    .donate-form-wrap.open { display: block; animation: slide-in .22s ease; }
+    .donate-form-wrap {
+      display: none; padding: 36px; border-top: 1px solid var(--border); background: var(--cream);
+    }
+    .donate-form-wrap.open { display: block; animation: slide-in .2s ease; }
     @keyframes slide-in {
-      from { opacity: 0; transform: translateY(-8px); }
+      from { opacity: 0; transform: translateY(-6px); }
       to   { opacity: 1; transform: translateY(0); }
     }
 
     /* ── FORM ELEMENTS ────────────────────────── */
     .field-label {
-      display: block; font-size: 11px; font-weight: 700; color: var(--slate-500);
+      display: block; font-size: 11px; font-weight: 700; color: var(--text-soft);
       text-transform: uppercase; letter-spacing: .09em; margin-bottom: 10px;
     }
+    .opt-group { margin-bottom: 24px; }
+    .opt-row   { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 8px; }
+    .opt-btn {
+      padding: 9px 20px; min-height: 44px;
+      border: 1.5px solid var(--border); border-radius: 99px;
+      background: var(--paper); font-size: 13px; font-weight: 600; cursor: pointer;
+      transition: all .15s; font-family: 'Space Grotesk', sans-serif; color: var(--text-mid);
+      display: inline-flex; align-items: center;
+    }
+    .opt-btn:hover  { border-color: var(--amber); color: var(--amber-deep); background: var(--amber-bg); }
+    .opt-btn.active { border-color: var(--amber); background: var(--amber-bg); color: var(--amber-deep); box-shadow: 0 0 0 1px var(--amber); }
+    .freq-note {
+      display: none; font-size: 12px; color: var(--navy); margin-top: 8px;
+      padding: 12px 16px; background: var(--navy-soft); border-radius: var(--r-sm);
+      line-height: 1.6; border: 1.5px solid rgba(29,48,72,.12);
+    }
+    .form-divider { height: 1px; background: var(--border); margin: 24px 0; }
+    .custom-hint  { font-size: 11.5px; color: var(--text-soft); margin-top: 5px; }
 
-    /* Amount */
-    .amount-row { display: flex; gap: 10px; margin-bottom: 22px; flex-wrap: wrap; padding-top: 28px; overflow: visible; }
+    .amount-row {
+      display: flex; gap: 10px; margin-bottom: 22px; flex-wrap: wrap;
+      padding-top: 28px; overflow: visible;
+    }
     .amt-btn {
-      padding: 15px 18px; min-height: 62px; min-width: 72px;
-      border: 2px solid var(--slate-200); border-radius: 16px;
-      background: white; font-size: 20px; font-weight: 800; cursor: pointer;
+      padding: 14px 16px; min-height: 62px; min-width: 68px;
+      border: 1.5px solid var(--border); border-radius: var(--r-md);
+      background: var(--paper); font-size: 19px; font-weight: 800; cursor: pointer;
       transition: all .2s cubic-bezier(.34,1.56,.64,1);
-      font-family: 'Archivo', sans-serif; color: var(--slate-700);
-      display: flex; align-items: center; justify-content: center;
-      flex: 1;
+      font-family: 'Archivo', sans-serif; color: var(--text-mid);
+      display: flex; align-items: center; justify-content: center; flex: 1;
     }
     .amt-btn:hover {
-      border-color: var(--indigo); color: var(--indigo); background: #f5f3ff;
-      transform: translateY(-3px);
-      box-shadow: 0 6px 16px rgba(79,110,247,.15);
+      border-color: var(--amber); color: var(--amber-deep); background: var(--amber-bg);
+      transform: translateY(-3px); box-shadow: 0 6px 18px rgba(184,114,42,.18);
     }
     .amt-btn.active {
-      border-color: transparent;
-      background: var(--grad);
-      color: white;
-      box-shadow: 0 6px 24px rgba(79,110,247,.4);
-      transform: translateY(-2px);
+      border-color: var(--amber); background: var(--amber); color: white;
+      box-shadow: 0 6px 22px rgba(184,114,42,.35); transform: translateY(-2px);
     }
     .amt-popular { position: relative; }
     .amt-popular::before {
       content: '★ Populair'; position: absolute;
       top: -26px; left: 50%; transform: translateX(-50%);
-      font-size: 9px; font-weight: 700; color: white; white-space: nowrap;
-      background: var(--grad);
+      font-size: 9px; font-weight: 700; color: var(--amber-deep); white-space: nowrap;
+      background: var(--amber-bg); border: 1px solid var(--amber-border);
       padding: 3px 10px; border-radius: 99px; letter-spacing: .04em;
     }
-
-    /* Custom amount */
     .custom-wrap { position: relative; margin-bottom: 22px; }
-    .custom-wrap .euro { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); font-weight: 700; color: var(--slate-400); font-size: 15px; pointer-events: none; }
+    .custom-wrap .euro {
+      position: absolute; left: 14px; top: 50%; transform: translateY(-50%);
+      font-weight: 700; color: var(--text-soft); font-size: 15px; pointer-events: none;
+    }
     .custom-wrap input {
       max-width: 200px; width: 100%; padding: 12px 14px 12px 30px;
-      border: 1.5px solid var(--slate-200); border-radius: 12px;
+      border: 1.5px solid var(--border); border-radius: var(--r-md);
       font-size: 16px; font-weight: 700; font-family: 'Archivo', sans-serif;
-      transition: border-color .15s, box-shadow .15s; background: white;
+      transition: border-color .15s, box-shadow .15s; background: var(--paper); color: var(--text);
     }
-    .custom-wrap input:focus { outline: none; border-color: var(--indigo); box-shadow: 0 0 0 3px rgba(79,110,247,.12); }
+    .custom-wrap input:focus { outline: none; border-color: var(--amber); box-shadow: 0 0 0 3px rgba(184,114,42,.12); }
 
-    /* Vis / Freq buttons */
-    .opt-group { margin-bottom: 22px; }
-    .opt-row   { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 8px; }
-    .opt-btn {
-      padding: 9px 18px; border: 2px solid var(--slate-200); border-radius: 99px;
-      background: white; font-size: 13px; font-weight: 600; cursor: pointer;
-      transition: all .15s; font-family: 'Space Grotesk', sans-serif; color: var(--slate-600);
-    }
-    .opt-btn:hover  { border-color: var(--indigo); color: var(--indigo); background: #f5f3ff; }
-    .opt-btn.active { border-color: var(--indigo); background: #eef1ff; color: var(--indigo); box-shadow: 0 0 0 1px var(--indigo); }
-    .freq-note {
-      display: none; font-size: 12px; color: var(--indigo); margin-top: 6px;
-      padding: 10px 14px; background: #eef1ff; border-radius: 10px;
-      line-height: 1.6; border-left: 3px solid var(--indigo);
-    }
-
-    /* Text inputs */
     .form-row   { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
     .form-group { display: flex; flex-direction: column; gap: 6px; }
-    .form-group label { font-size: 11px; font-weight: 700; color: var(--slate-500); text-transform: uppercase; letter-spacing: .06em; }
+    .form-group label { font-size: 11px; font-weight: 700; color: var(--text-mid); text-transform: uppercase; letter-spacing: .06em; }
     .form-group input {
-      padding: 11px 14px; border: 1.5px solid var(--slate-200); border-radius: 11px;
+      padding: 11px 14px; border: 1.5px solid var(--border); border-radius: var(--r-md);
       font-size: 14px; font-family: 'Space Grotesk', sans-serif;
-      transition: border-color .15s, box-shadow .15s; background: white; color: #1a202c;
+      transition: border-color .15s, box-shadow .15s; background: var(--paper); color: var(--text);
     }
-    .form-group input:focus { outline: none; border-color: var(--indigo); box-shadow: 0 0 0 3px rgba(79,110,247,.12); }
-    .form-group input::placeholder { color: #cbd5e1; }
-    .form-group.hidden { display: none; }
+    .form-group input:focus { outline: none; border-color: var(--amber); box-shadow: 0 0 0 3px rgba(184,114,42,.12); }
+    .form-group input::placeholder { color: var(--border); }
 
-    /* Submit */
     .donate-submit {
-      width: 100%; padding: 18px; border: none; border-radius: 16px;
-      background: var(--grad);
-      color: white; font-size: 17px; font-weight: 800; cursor: pointer;
+      width: 100%; padding: 18px; border: none; border-radius: var(--r-md);
+      background: var(--amber); color: white;
+      font-size: 16px; font-weight: 800; cursor: pointer;
       margin-top: 20px; font-family: 'Archivo', sans-serif;
-      box-shadow: 0 8px 28px rgba(79,110,247,.42);
-      transition: opacity .15s, transform .2s, box-shadow .2s;
-      position: relative; overflow: hidden;
+      box-shadow: 0 6px 24px rgba(184,114,42,.35);
+      transition: background .18s, transform .2s, box-shadow .2s;
       letter-spacing: -.01em;
     }
-    .donate-submit::before {
-      content: ''; position: absolute; inset: 0;
-      background: linear-gradient(135deg, rgba(255,255,255,.18) 0%, transparent 55%);
-      pointer-events: none;
+    .donate-submit:hover:not(:disabled) {
+      background: var(--amber-deep); transform: translateY(-2px);
+      box-shadow: 0 10px 32px rgba(184,114,42,.48);
     }
-    .donate-submit:hover:not(:disabled) { opacity: .94; transform: translateY(-2px); box-shadow: 0 12px 36px rgba(79,110,247,.54); }
     .donate-submit:active:not(:disabled) { transform: translateY(0); }
     .donate-submit:disabled { opacity: .5; transform: none; cursor: default; box-shadow: none; }
 
-    /* Trust line */
     .donate-disclaimer {
-      display: flex; align-items: center; justify-content: center; gap: 8px; flex-wrap: wrap;
-      font-size: 11px; color: var(--slate-400); text-align: center; margin-top: 14px;
+      display: flex; align-items: center; justify-content: center;
+      gap: 8px; flex-wrap: wrap;
+      font-size: 11px; color: var(--text-soft); text-align: center; margin-top: 14px;
     }
-    .donate-disclaimer-sep { opacity: .4; }
-    .donate-disclaimer-lock { color: var(--green); font-weight: 600; }
+    .donate-disclaimer-sep  { opacity: .35; }
+    .donate-disclaimer-lock { color: var(--teal); font-weight: 600; }
 
-    /* Shake on error */
+    .form-error {
+      margin-top: 10px; padding: 10px 14px; border-radius: var(--r-sm);
+      background: var(--red-bg); color: var(--red); font-size: 13px; font-weight: 600;
+      border: 1.5px solid rgba(184,50,50,.2);
+    }
+
     @keyframes shake {
       0%,100% { transform: translateX(0); }
       20%      { transform: translateX(-6px); }
@@ -512,9 +468,9 @@
 
     /* ── THANK YOU ────────────────────────────── */
     .thank-you {
-      padding: 48px 32px; text-align: center;
-      border-top: 1px solid var(--slate-200);
-      background: linear-gradient(135deg, #f0f9ff 0%, #f5f3ff 100%);
+      padding: 48px 36px; text-align: center;
+      border-top: 1px solid var(--border);
+      background: var(--teal-bg);
       position: relative; overflow: hidden;
     }
     .ty-confetti { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
@@ -527,11 +483,11 @@
       to   { transform: translateY(240px) rotate(540deg) scaleX(.5); opacity: 0; }
     }
     .ty-icon {
-      width: 88px; height: 88px; border-radius: 50%;
-      background: var(--grad);
+      width: 80px; height: 80px; border-radius: 50%;
+      background: var(--teal);
       display: inline-flex; align-items: center; justify-content: center;
-      font-size: 40px; margin-bottom: 20px;
-      box-shadow: 0 12px 40px rgba(79,110,247,.4);
+      font-size: 36px; margin-bottom: 20px;
+      box-shadow: 0 8px 32px rgba(27,94,78,.3);
       animation: pop-in .45s cubic-bezier(.34,1.56,.64,1);
       position: relative; z-index: 1;
     }
@@ -539,111 +495,178 @@
       from { transform: scale(0) rotate(-10deg); opacity: 0; }
       to   { transform: scale(1) rotate(0deg); opacity: 1; }
     }
-    .thank-you h3 { font-family: 'Archivo', sans-serif; font-size: 24px; font-weight: 800; color: #1a202c; margin-bottom: 10px; position: relative; z-index: 1; }
-    .thank-you p  { font-size: 15px; color: var(--slate-500); line-height: 1.65; position: relative; z-index: 1; }
-    .thank-you .hl { font-weight: 700; color: #1a202c; }
-    .ty-actions { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-top: 28px; position: relative; z-index: 1; }
+    .thank-you h3 {
+      font-family: 'Archivo', sans-serif; font-size: 22px; font-weight: 800;
+      color: var(--navy); margin-bottom: 10px; position: relative; z-index: 1;
+    }
+    .thank-you p { font-size: 14.5px; color: var(--text-mid); line-height: 1.65; position: relative; z-index: 1; }
+    .thank-you .hl { font-weight: 700; color: var(--navy); }
+    .ty-actions {
+      display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;
+      margin-top: 28px; position: relative; z-index: 1;
+    }
     .ty-btn {
       display: inline-flex; align-items: center; gap: 6px;
-      padding: 12px 22px; border-radius: 12px; font-size: 13.5px; font-weight: 700;
+      padding: 12px 22px; border-radius: var(--r-md); font-size: 13.5px; font-weight: 700;
       text-decoration: none; transition: all .18s;
     }
-    .ty-btn-sec { background: white; color: var(--slate-700); border: 1.5px solid var(--slate-200); box-shadow: 0 2px 8px rgba(0,0,0,.07); }
-    .ty-btn-sec:hover { background: var(--slate-50); box-shadow: 0 4px 14px rgba(0,0,0,.1); transform: translateY(-2px); }
-    .ty-btn-pri { background: var(--grad); color: white; border: none; box-shadow: 0 6px 18px rgba(79,110,247,.36); }
-    .ty-btn-pri:hover { box-shadow: 0 8px 26px rgba(79,110,247,.5); transform: translateY(-2px); }
+    .ty-btn-sec {
+      background: var(--paper); color: var(--text-mid);
+      border: 1.5px solid var(--border); box-shadow: var(--shadow-sm);
+    }
+    .ty-btn-sec:hover { background: var(--cream); box-shadow: var(--shadow-md); transform: translateY(-2px); }
+    .ty-btn-pri {
+      background: var(--navy); color: white; border: none;
+      box-shadow: 0 4px 16px rgba(29,48,72,.25);
+    }
+    .ty-btn-pri:hover { background: var(--navy-mid); box-shadow: 0 6px 22px rgba(29,48,72,.35); transform: translateY(-2px); }
 
     /* ── GENERAL DONATE ───────────────────────── */
-    .general-donate { background: white; border-radius: var(--r-card); box-shadow: var(--shadow); margin-top: 48px; overflow: hidden; border: 1px solid #fde68a; }
-    .general-donate-header {
-      padding: 30px 32px 26px; border-bottom: 1px solid #fde68a;
-      background: linear-gradient(135deg, #fffbeb, #fff7ed);
-      display: flex; align-items: flex-start; gap: 18px;
-      position: relative;
+    .general-donate {
+      background: var(--paper); border-radius: var(--r-lg);
+      box-shadow: var(--shadow-md); margin-top: 48px; overflow: hidden;
+      border: 1px solid var(--amber-border);
     }
-    .general-donate-header::after {
-      content: '🎁'; position: absolute; right: 28px; top: 50%; transform: translateY(-50%);
-      font-size: 64px; opacity: .1; pointer-events: none; user-select: none;
+    .general-donate-header {
+      padding: 32px 36px 28px; border-bottom: 1px solid var(--amber-border);
+      background: var(--amber-bg);
+      display: flex; align-items: flex-start; gap: 18px;
     }
     .gd-icon {
-      width: 56px; height: 56px; border-radius: 16px; background: #fef3c7; flex-shrink: 0;
-      display: flex; align-items: center; justify-content: center; font-size: 28px;
-      box-shadow: 0 3px 14px rgba(245,158,11,.2);
+      width: 52px; height: 52px; border-radius: var(--r-md);
+      background: white; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center; font-size: 26px;
+      border: 1px solid var(--amber-border);
     }
-    .general-donate-header h3 { font-family: 'Archivo', sans-serif; font-size: 19px; font-weight: 800; margin-bottom: 6px; letter-spacing: -.01em; }
-    .general-donate-header p  { font-size: 14px; color: var(--slate-500); line-height: 1.6; max-width: 420px; }
-    .general-donate-body { padding: 32px; background: var(--slate-50); }
+    .general-donate-header h3 {
+      font-family: 'Archivo', sans-serif; font-size: 18px; font-weight: 800;
+      margin-bottom: 6px; letter-spacing: -.01em; color: var(--navy);
+    }
+    .general-donate-header p { font-size: 14px; color: var(--text-mid); line-height: 1.6; max-width: 440px; }
+    .general-donate-body { padding: 36px; background: var(--cream); }
 
     /* ── FOOTER ───────────────────────────────── */
     footer {
-      background: var(--slate-900); color: rgba(255,255,255,.32);
-      text-align: center; padding: 36px 24px; font-size: 12px; margin-top: 72px;
+      background: var(--navy); color: rgba(255,255,255,.32);
+      text-align: center; padding: 40px 24px; font-size: 12px; margin-top: 80px;
       display: flex; flex-direction: column; gap: 10px; align-items: center;
     }
     .footer-brand {
       font-family: 'Archivo', sans-serif; font-size: 16px; font-weight: 800;
       color: rgba(255,255,255,.5); letter-spacing: -.02em; margin-bottom: 2px;
     }
-    .footer-brand span { color: var(--indigo); }
+    .footer-brand span { color: var(--amber); }
     .footer-trust {
-      display: flex; align-items: center; gap: 16px; flex-wrap: wrap; justify-content: center;
-      color: rgba(255,255,255,.22); font-size: 11px; margin-bottom: 2px;
+      display: flex; align-items: center; gap: 16px; flex-wrap: wrap;
+      justify-content: center; color: rgba(255,255,255,.22); font-size: 11px; margin-bottom: 2px;
     }
 
     /* ── RESPONSIVE ───────────────────────────── */
     @media (max-width: 768px) {
-      .stats-bar-inner         { padding: 0 24px; }
-      .stat-item               { padding: 20px 28px 20px 0; }
-      .project-body            { padding: 24px; }
-      .donate-toggle           { padding: 18px 24px; }
-      .donate-form-wrap        { padding: 24px; }
-      .main                    { padding-left: 24px; padding-right: 24px; }
-    }
-
-    @media (max-width: 480px) {
-      .project-header          { flex-wrap: wrap; }
-      .badge                   { margin-left: auto; margin-top: 8px; }
+      .hero                   { padding: 48px 24px 56px; }
+      .main                   { padding: 40px 24px 0; }
+      .project-body           { padding: 28px 24px; }
+      .donate-toggle          { padding: 18px 24px; }
+      .donate-form-wrap       { padding: 28px 24px; }
+      .status-notice          { padding: 20px 24px; }
+      .general-donate-header  { padding: 24px; }
+      .general-donate-body    { padding: 28px 24px; }
+      nav ul                  { padding: 0 12px; flex-direction: column; display: none; }
+      nav ul.nav-open         { display: flex; }
+      .nav-toggle             { display: block; }
     }
 
     @media (max-width: 640px) {
-      .topbar, .main           { padding-left: 20px; padding-right: 20px; }
-      .page-header             { padding: 52px 20px 78px; }
-      .stats-bar-inner         { padding: 0 20px; }
-      .stat-item               { padding: 18px 0; flex: 1 1 45%; }
-      .stat-item + .stat-item  { border-left: none; padding-left: 0; }
-      .project-body            { padding: 24px 20px 20px; }
-      .project-header          { gap: 14px; }
-      .project-icon            { width: 54px; height: 54px; font-size: 27px; }
-      .project-title           { font-size: 18px; }
-      .status-notice           { padding: 20px; }
-      .donate-toggle           { padding: 18px 20px; }
-      .donate-form-wrap        { padding: 24px 20px 20px; }
-      .thank-you               { padding: 36px 20px; }
-      .general-donate-body     { padding: 24px 20px; }
-      .general-donate-header   { padding: 24px 20px; }
-      .form-row { grid-template-columns: 1fr; }
-      nav ul { padding: 0 12px; flex-direction: column; display: none; }
-      nav ul.nav-open { display: flex; }
-      .nav-toggle { display: block; }
-      .header-trust { gap: 6px; }
-      .amt-btn { min-height: 56px; padding: 13px 14px; font-size: 18px; }
-      .stat-val { font-size: 24px; }
-      .campaign-inner { padding: 14px 20px; }
-      .campaign-stat  { display: none; }
+      .topbar                 { padding: 12px 20px; }
+      .cstat-grid             { grid-template-columns: repeat(2, 1fr); }
+      .cstat                  { padding: 18px 12px; }
+      .hero                   { padding: 40px 20px 48px; }
+      .hero h1                { font-size: 34px; }
+      .campaign-feature       { padding: 24px 20px; }
+      .campaign-feature-inner { flex-direction: column; gap: 20px; }
+      .main                   { padding: 36px 20px 0; }
+      .project-body           { padding: 24px 20px; }
+      .progress-collected     { font-size: 24px; }
+      .progress-pct           { font-size: 18px; }
+      .project-title          { font-size: 19px; }
+      .donate-toggle          { padding: 16px 20px; }
+      .donate-form-wrap       { padding: 24px 20px; }
+      .form-row               { grid-template-columns: 1fr; }
+      .amt-btn                { min-height: 56px; font-size: 17px; }
+      .thank-you              { padding: 36px 20px; }
+      .trust-sep              { display: none; }
+    }
+
+    /* ── FOCUS VISIBLE ────────────────────────── */
+    .amt-btn:focus-visible,
+    .opt-btn:focus-visible,
+    .donate-toggle:focus-visible,
+    .donate-submit:focus-visible,
+    .ty-btn:focus-visible,
+    .btn-primary:focus-visible,
+    nav ul li a:focus-visible,
+    .back-link:focus-visible,
+    .hero-link:focus-visible {
+      outline: 3px solid var(--amber);
+      outline-offset: 2px;
+    }
+
+    /* ── TOP 5 DONORS ────────────────────────── */
+    .top5-wrap {
+      margin: 22px auto 0; max-width: 420px;
+      background: rgba(255,255,255,.7); border-radius: var(--r-md);
+      padding: 16px 20px; text-align: left;
+      border: 1px solid var(--teal-border);
+      position: relative; z-index: 1;
+    }
+    .top5-title {
+      font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .10em;
+      color: var(--teal); margin-bottom: 12px;
+    }
+    .top5-row {
+      display: flex; align-items: center; gap: 10px;
+      padding: 7px 0; border-bottom: 1px solid rgba(27,94,78,.08);
+      font-size: 13.5px;
+    }
+    .top5-row:last-child { border-bottom: none; }
+    .top5-rank {
+      width: 22px; height: 22px; border-radius: 50%;
+      background: var(--teal); color: white;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 10px; font-weight: 800; flex-shrink: 0;
+    }
+    .top5-rank.is-you { background: var(--amber); animation: pop-in .4s cubic-bezier(.34,1.56,.64,1) both; }
+    .top5-name { flex: 1; font-weight: 600; color: var(--navy); }
+    .top5-name.is-you { color: var(--amber-deep); }
+    .top5-amount { font-weight: 700; color: var(--teal); font-family: 'Archivo', sans-serif; font-size: 13px; }
+    .top5-you-label {
+      font-size: 10px; font-weight: 700; background: var(--amber-bg);
+      color: var(--amber-deep); padding: 2px 7px; border-radius: 99px;
+      border: 1px solid var(--amber-border); letter-spacing: .04em; flex-shrink: 0;
+    }
+
+    /* ── REDUCED MOTION ───────────────────────── */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
     }
   </style>
 </head>
 <body>
 
-<div class="demo-bar">
-  <strong>🎯 4deklas Demo</strong> · Stap 1: <a href="/doneren">Doneer als ouder →</a> · Stap 2: <a href="/dashboard">Log in als directeur →</a>
+<div class="demo-bar" id="demo-bar">
+  <strong>4deklas Demo</strong> · Stap 1: <a href="/doneren">Doneer als ouder →</a> · Stap 2: <a href="/dashboard">Log in als directeur →</a>
 </div>
 
 <div class="topbar">
   <div class="topbar-left">
-    <div class="school-logo">🌈</div>
+    <div class="school-logo" aria-hidden="true">🏫</div>
     <div>
-      <div class="school-name">De Regenboogschool</div>
+      <div class="school-name">OBS De Springplank</div>
       <div class="school-sub">Donatiepagina</div>
     </div>
   </div>
@@ -654,40 +677,39 @@
   <button class="nav-toggle" id="nav-toggle" aria-label="Menu openen">☰</button>
   <ul id="nav-list">
     <li><a href="/">Home</a></li>
-    <li><a href="#">Over ons</a></li>
-    <li><a href="#">Onderwijs</a></li>
-    <li><a href="#">Nieuws</a></li>
     <li><a href="/verhaal">Ons verhaal</a></li>
     <li><a href="/kritisch">Kritisch bekeken</a></li>
+    <li><a href="/dashboard">Inlog school</a></li>
     <li class="cta active"><a href="/doneren">❤️ Doneren</a></li>
   </ul>
 </nav>
 
-<div class="page-header">
-  <div class="page-header-dots"></div>
-  <div class="page-header-inner">
-    <div class="school-tag"><span class="heart">❤️</span> Steun onze school</div>
-    <h1>Help ons onze doelen te bereiken</h1>
-    <p>Kies een project en doneer direct. Elke bijdrage is zichtbaar op de voortgangsbalk en gaat rechtstreeks naar de school.</p>
-    <a href="/verhaal" class="header-link">Nieuw hier? Lees waarom scholen hiervan profiteren →</a>
-    <div class="header-trust">
-      <span class="header-trust-chip">🔒 Veilig betalen</span>
-      <span class="header-trust-chip">💳 iDEAL</span>
-      <span class="header-trust-chip">🏫 Rechtstreeks naar school</span>
-      <span class="header-trust-chip">✓ Geen account nodig</span>
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-eyebrow">Schoolfonds OBS De Springplank</div>
+    <h1>Help ons onze<br>doelen te bereiken</h1>
+    <p class="hero-sub">Kies een project en doneer direct. Elke bijdrage is zichtbaar op de voortgangsbalk en gaat rechtstreeks naar de school.</p>
+    <div class="hero-trust">
+      <span class="trust-item">🔒 Veilig betalen</span>
+      <span class="trust-sep" aria-hidden="true">·</span>
+      <span class="trust-item">💳 iDEAL</span>
+      <span class="trust-sep" aria-hidden="true">·</span>
+      <span class="trust-item">🏫 Rechtstreeks naar school</span>
+      <span class="trust-sep" aria-hidden="true">·</span>
+      <span class="trust-item">✓ Geen account nodig</span>
+    </div>
+    <div class="hero-cta-row">
+      <a href="#projects" class="btn-primary">Bekijk projecten ↓</a>
+      <a href="/verhaal" class="hero-link">Nieuw hier? Lees waarom scholen hiervan profiteren →</a>
     </div>
   </div>
-</div>
+</section>
 
-<div class="stats-bar">
-  <div class="stats-bar-inner" id="stats-bar"></div>
-</div>
+<div class="campaign-feature" id="campaign-feature"></div>
 
-<div class="campaign-strip" id="campaign-strip"></div>
-
-<div class="main">
+<div class="main" id="projects">
   <div class="section-header">
-    <div class="section-eyebrow">📋 Actieve projecten</div>
+    <div class="section-eyebrow">Actieve projecten</div>
     <div class="section-title">Kies een project om te steunen</div>
     <div class="section-sub">Elke donatie gaat rechtstreeks naar de school. Klik op een project om uw bijdrage te doen.</div>
   </div>
@@ -695,7 +717,7 @@
 
   <div class="general-donate" id="general-donate-section">
     <div class="general-donate-header">
-      <div class="gd-icon">🎁</div>
+      <div class="gd-icon" aria-hidden="true">🎁</div>
       <div>
         <h3>Algemene bijdrage aan de school</h3>
         <p>Wilt u doneren zonder specifiek project te kiezen? Uw bijdrage gaat naar het fonds voor toekomstige projecten van de school.</p>
@@ -714,7 +736,7 @@
     <span>·</span>
     <span>🏫 OBS De Springplank</span>
   </div>
-  <p>Demo op 4deklas.nl · Geen echte betalingen · Data verdwijnt als u de browsercache wist</p>
+  <p>4deklas.nl · Geen echte betalingen · Data verdwijnt als u de browsercache wist</p>
 </footer>
 
 <script src="/sf-state.js"></script>
@@ -723,7 +745,6 @@
   const selectedVisibility = {};
   const selectedFrequency  = {};
 
-  /* ── Project emoji lookup ── */
   function projectEmoji(title) {
     const t = (title || '').toLowerCase();
     if (/laptop|computer|tablet|ipad|chromebook|digibord/.test(t)) return '💻';
@@ -738,62 +759,45 @@
     return '✨';
   }
 
-  /* ── Stats ── */
-  function renderStats() {
+  function renderCampaignFeature() {
     const s      = SF.get();
-    const active = s.projects.filter(p => p.status === 'active');
-    const total  = active.reduce((a, p) => a + p.collected, 0);
-    const goal   = active.reduce((a, p) => a + p.goal, 0);
-    document.getElementById('stats-bar').innerHTML = `
-      <div class="stat-item">
-        <div class="stat-icon blue">💰</div>
-        <div><div class="stat-val blue">${SF.euro(total)}</div><div class="stat-lbl">opgehaald (actieve projecten)</div></div>
-      </div>
-      <div class="stat-item">
-        <div class="stat-icon violet">🎯</div>
-        <div><div class="stat-val violet">${SF.euro(goal)}</div><div class="stat-lbl">totaaldoel</div></div>
-      </div>
-      <div class="stat-item">
-        <div class="stat-icon green">📈</div>
-        <div><div class="stat-val green">${SF.pct(total, goal || 1)}%</div><div class="stat-lbl">van het doel bereikt</div></div>
-      </div>
-      <div class="stat-item">
-        <div class="stat-icon amber">🚀</div>
-        <div><div class="stat-val amber">${active.length}</div><div class="stat-lbl">actieve projecten</div></div>
-      </div>
-    `;
-    renderCampaignStrip();
-  }
+    const total  = s.projects.reduce((a, p) => a + p.collected, 0);
+    const goal   = s.projects.reduce((a, p) => a + p.goal, 0);
+    const pct    = SF.pct(total, goal || 1);
+    const active = s.projects.filter(p => p.status === 'active').length;
+    const donors = s.donations ? s.donations.length : 0;
 
-  /* ── Campaign strip ── */
-  function renderCampaignStrip() {
-    const s     = SF.get();
-    const total = s.projects.reduce((a, p) => a + p.collected, 0);
-    const goal  = s.projects.reduce((a, p) => a + p.goal, 0);
-    const pct   = SF.pct(total, goal || 1);
-    const strip = document.getElementById('campaign-strip');
-    if (!strip) return;
-    strip.innerHTML = `
-      <div class="campaign-inner">
-        <div class="campaign-bar-group">
-          <div class="campaign-title-lbl">Totale campagnestand — alle projecten</div>
-          <div class="campaign-bar-track">
-            <div class="campaign-bar-fill" style="width:0%" data-target="${pct}"></div>
-          </div>
+    document.getElementById('campaign-feature').innerHTML = `
+      <div class="cstat-grid">
+        <div class="cstat">
+          <div class="cstat-val">${SF.euro(total)}</div>
+          <div class="cstat-lbl">opgehaald</div>
         </div>
-        <div class="campaign-stat">
-          <strong>${pct}%</strong>
-          <span>van ${SF.euro(goal)}</span>
+        <div class="cstat">
+          <div class="cstat-val">${SF.euro(goal)}</div>
+          <div class="cstat-lbl">totaaldoel</div>
+        </div>
+        <div class="cstat cstat-pct">
+          <div class="cstat-val">${pct}%</div>
+          <div class="cstat-lbl">bereikt</div>
+        </div>
+        <div class="cstat">
+          <div class="cstat-val">${active}</div>
+          <div class="cstat-lbl">actieve projecten${donors > 0 ? ` · ${donors} donaties` : ''}</div>
+        </div>
+      </div>
+      <div class="cstat-bar-wrap">
+        <div class="cstat-bar-track">
+          <div class="cstat-bar-fill" style="width:0%" data-target="${pct}"></div>
         </div>
       </div>
     `;
     setTimeout(() => {
-      const fill = strip.querySelector('.campaign-bar-fill');
-      if (fill) fill.style.width = pct + '%';
+      const fill = document.querySelector('.cstat-bar-fill[data-target]');
+      if (fill) fill.style.width = fill.dataset.target + '%';
     }, 120);
   }
 
-  /* ── Submit button updater ── */
   function updateSubmitBtn(pid) {
     const btn = document.getElementById(`btn-${pid}`);
     if (!btn) return;
@@ -803,17 +807,14 @@
     const freq   = selectedFrequency[pid] || 'once';
     const isGen  = btn.dataset.general === 'true';
     if (freq === 'monthly') {
-      btn.innerHTML = amount
-        ? `🔄 Doneer ${SF.euro(amount)} per maand`
-        : '🔄 Maandelijks doneren instellen';
+      btn.innerHTML = amount ? `Doneer ${SF.euro(amount * 100)} per maand` : 'Maandelijks doneren instellen';
     } else {
       btn.innerHTML = amount
-        ? `💳 ${SF.euro(amount)} doneren`
-        : (isGen ? '💳 Algemene donatie doen' : '💳 Doneer via iDEAL');
+        ? `${SF.euro(amount * 100)} doneren via iDEAL`
+        : (isGen ? 'Algemene donatie doen' : 'Doneer via iDEAL');
     }
   }
 
-  /* ── Visibility block ── */
   function visibilityBlock(pid) {
     const vis = selectedVisibility[pid] || 'named';
     return `
@@ -858,7 +859,6 @@
     updateSubmitBtn(pid);
   }
 
-  /* ── Donate form HTML ── */
   function donateForm(pid, isGeneral) {
     return `
       <div class="opt-group">
@@ -894,8 +894,9 @@
       </div>
 
       <button class="donate-submit" id="btn-${pid}" data-general="${isGeneral}" onclick="donate(${pid})">
-        💳 ${isGeneral ? 'Algemene donatie doen' : 'Doneer via iDEAL'}
+        ${isGeneral ? 'Algemene donatie doen' : 'Doneer via iDEAL'}
       </button>
+      <div id="err-${pid}" class="form-error" role="alert" style="display:none"></div>
       <div class="donate-disclaimer">
         <span class="donate-disclaimer-lock">🔒 Veilig</span>
         <span class="donate-disclaimer-sep">·</span>
@@ -910,7 +911,6 @@
     `;
   }
 
-  /* ── Render projects ── */
   function renderProjects() {
     const s = SF.get();
     document.getElementById('projects-container').innerHTML = s.projects.map((p, idx) => {
@@ -926,23 +926,23 @@
       let bottom = '';
       if (isAchieved) {
         bottom = `<div class="status-notice achieved">
-          <div class="status-icon">🎉</div>
+          <div class="status-icon" aria-hidden="true">🎉</div>
           <div><h4>Dit project is volledig gefinancierd!</h4><p>Dankzij alle donateurs is het doel bereikt. Scroll naar beneden voor een algemene donatie aan de school.</p></div>
         </div>`;
       } else if (isClosed) {
         bottom = `<div class="status-notice closed">
-          <div class="status-icon">🔒</div>
+          <div class="status-icon" aria-hidden="true">🔒</div>
           <div><h4>Dit project is gesloten</h4><p>De school heeft dit project afgesloten. U kunt een algemene donatie doen onderaan de pagina.</p></div>
         </div>`;
       } else {
         bottom = `
-          <div class="donate-toggle" onclick="toggleForm(${p.id})">
+          <button class="donate-toggle" id="toggle-${p.id}" aria-expanded="false" onclick="toggleForm(${p.id})">
             <div class="donate-toggle-left">
-              <div class="donate-toggle-text">❤ Ik wil doneren aan dit project</div>
+              <div class="donate-toggle-text">❤️ Doneer aan dit project</div>
               <div class="donate-toggle-hint">Bijdrage vanaf €5 · iDEAL · Geen account nodig</div>
             </div>
-            <div class="toggle-arrow" id="arrow-${p.id}">▼</div>
-          </div>
+            <div class="toggle-arrow" id="arrow-${p.id}" aria-hidden="true">▼</div>
+          </button>
           <div class="donate-form-wrap" id="form-${p.id}">
             ${donateForm(p.id, false)}
           </div>
@@ -951,32 +951,35 @@
       }
 
       const remainingLabel = (!isClosed && !isAchieved && remaining > 0)
-        ? ` · <span class="prog-remaining">nog ${SF.euro(remaining)} nodig</span>`
+        ? ` · <span class="progress-remaining">nog ${SF.euro(remaining)} nodig</span>`
         : '';
+      const fillClass = isAchieved ? 'progress-fill achieved' : 'progress-fill';
+      const pctClass  = isAchieved ? 'progress-pct achieved' : 'progress-pct';
 
       return `<div class="project-card status-${p.status}" id="card-${p.id}">
         <div class="project-body">
-          <div class="project-header">
-            <div class="project-icon-wrap">
-              <div class="project-icon">${projectEmoji(p.title)}</div>
-              <span class="project-num">${idx + 1}</span>
-            </div>
-            <div class="project-info">
-              <div class="project-title">${p.title}</div>
-              <div class="project-desc">${p.description}</div>
-            </div>
+          <div class="project-meta">
+            <span class="project-index">Project ${idx + 1}</span>
             ${badge}
           </div>
-          <div class="progress-track">
-            <div class="progress-fill" id="bar-${p.id}" style="width:0%" data-target="${pct}"></div>
+          <div class="project-headline">
+            <span class="project-icon" aria-hidden="true">${projectEmoji(p.title)}</span>
+            <h2 class="project-title">${p.title}</h2>
           </div>
-          <div class="progress-meta">
-            <div>
-              <div class="progress-collected" id="collected-${p.id}">${SF.euro(p.collected)}</div>
-              <div class="progress-goal">van ${SF.euro(p.goal)}${remainingLabel}</div>
+          <p class="project-desc">${p.description}</p>
+          <div class="progress-section">
+            <div class="progress-amounts">
+              <div>
+                <div class="progress-collected" id="collected-${p.id}">${SF.euro(p.collected)}</div>
+                <div class="progress-goal-text">van ${SF.euro(p.goal)}${remainingLabel}</div>
+              </div>
+              <div class="progress-right">
+                <div class="${pctClass}" id="pct-${p.id}">${pct}%</div>
+                <div class="progress-goal-text">van het doel</div>
+              </div>
             </div>
-            <div class="pct-ring" id="ring-${p.id}" style="--p:${pct * 3.6}deg">
-              <span id="pct-${p.id}">${pct}%</span>
+            <div class="progress-track">
+              <div class="${fillClass}" id="bar-${p.id}" style="width:0%" data-target="${pct}"></div>
             </div>
           </div>
         </div>
@@ -989,7 +992,6 @@
       document.getElementById('general-form-body').insertAdjacentHTML('beforeend', '<div id="thanks-0" style="display:none"></div>');
     }
 
-    /* Animate progress bars on scroll into view */
     const barObserver = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
@@ -1003,10 +1005,12 @@
   }
 
   function toggleForm(id) {
-    const form  = document.getElementById(`form-${id}`);
-    const arrow = document.getElementById(`arrow-${id}`);
+    const form   = document.getElementById(`form-${id}`);
+    const arrow  = document.getElementById(`arrow-${id}`);
+    const toggle = document.getElementById(`toggle-${id}`);
     const isOpen = form.classList.toggle('open');
     arrow.classList.toggle('open', isOpen);
+    if (toggle) toggle.setAttribute('aria-expanded', String(isOpen));
     if (isOpen) {
       setTimeout(() => form.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 50);
     }
@@ -1029,6 +1033,31 @@
   const spinStyle = document.createElement('style');
   spinStyle.textContent = '@keyframes spin { to { transform: rotate(360deg); } }';
   document.head.appendChild(spinStyle);
+
+  function renderTop5(projectId, justDonatedName) {
+    const s = SF.get();
+    const donations = projectId === 0
+      ? s.donations
+      : s.donations.filter(d => d.project_id === projectId);
+    const visible = donations
+      .filter(d => d.visibility !== 'hidden' && d.visibility !== 'anonymous')
+      .slice(0, 5);
+    if (visible.length === 0) return '';
+    const rows = visible.map((d, i) => {
+      const displayName = d.company_name || d.donor_name || '–';
+      const isYou = justDonatedName && displayName.toLowerCase() === justDonatedName.toLowerCase();
+      return `<div class="top5-row">
+        <div class="top5-rank${isYou ? ' is-you' : ''}">${i + 1}</div>
+        <div class="top5-name${isYou ? ' is-you' : ''}">${displayName}</div>
+        ${isYou ? '<span class="top5-you-label">JIJ</span>' : ''}
+        <div class="top5-amount">${SF.euro(d.amount)}</div>
+      </div>`;
+    }).join('');
+    return `<div class="top5-wrap">
+      <div class="top5-title">Recente gevers · Top ${visible.length}</div>
+      ${rows}
+    </div>`;
+  }
 
   function donate(projectId) {
     const custom = parseFloat(document.getElementById(`custom-${projectId}`).value);
@@ -1057,9 +1086,10 @@
 
       if (result.error) {
         const isGen = btn.dataset.general === 'true';
-        btn.innerHTML = freq === 'monthly' ? '🔄 Maandelijks doneren instellen' : (isGen ? '💳 Algemene donatie doen' : '💳 Doneer via iDEAL');
+        btn.innerHTML = freq === 'monthly' ? 'Maandelijks doneren instellen' : (isGen ? 'Algemene donatie doen' : 'Doneer via iDEAL');
         btn.disabled = false;
-        alert(result.error);
+        const errEl = document.getElementById(`err-${projectId}`);
+        if (errEl) { errEl.textContent = result.error; errEl.style.display = 'block'; }
         return;
       }
 
@@ -1067,8 +1097,29 @@
         document.getElementById('general-form-body').style.display = 'none';
       } else {
         document.getElementById(`form-${projectId}`).style.display = 'none';
-        const tog = document.querySelector(`#card-${projectId} .donate-toggle`);
-        if (tog) tog.style.display = 'none';
+        const tog = document.getElementById(`toggle-${projectId}`);
+        if (tog) {
+          const textEl = tog.querySelector('.donate-toggle-text');
+          const hintEl = tog.querySelector('.donate-toggle-hint');
+          const arrowEl = document.getElementById(`arrow-${projectId}`);
+          if (textEl) textEl.innerHTML = '↩ Nogmaals doneren';
+          if (hintEl) hintEl.textContent = 'Klik om opnieuw te doneren aan dit project';
+          if (arrowEl) { arrowEl.classList.remove('open'); }
+          tog.setAttribute('aria-expanded', 'false');
+          tog.onclick = () => {
+            document.getElementById(`thanks-${projectId}`).style.display = 'none';
+            const fw = document.getElementById(`form-${projectId}`);
+            fw.innerHTML = donateForm(projectId, false);
+            fw.style.display = 'block';
+            fw.classList.add('open');
+            if (textEl) textEl.innerHTML = '❤️ Doneer aan dit project';
+            if (hintEl) hintEl.textContent = 'Bijdrage vanaf €5 · iDEAL · Geen account nodig';
+            tog.setAttribute('aria-expanded', 'true');
+            tog.onclick = () => toggleForm(projectId);
+            setTimeout(() => fw.querySelectorAll('.amt-btn').forEach(b => { if (b.textContent.trim() === '€10') b.click(); }), 50);
+            setTimeout(() => fw.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 50);
+          };
+        }
       }
 
       if (result.project) {
@@ -1076,49 +1127,46 @@
         const pct = SF.pct(p.collected, p.goal);
         document.getElementById(`bar-${projectId}`).style.width = pct + '%';
         document.getElementById(`collected-${projectId}`).textContent = SF.euro(p.collected);
-        const ring = document.getElementById(`ring-${projectId}`);
-        if (ring) {
-          ring.style.setProperty('--p', `${pct * 3.6}deg`);
-          document.getElementById(`pct-${projectId}`).textContent = pct + '%';
-        }
+        const pctEl = document.getElementById(`pct-${projectId}`);
+        if (pctEl) pctEl.textContent = pct + '%';
       }
 
       const isMonthly = freq === 'monthly';
-
-      /* Confetti dots for one-time donations */
-      const confettiColors = ['#4f6ef7','#7c3aed','#16a34a','#f59e0b','#ec4899','#06b6d4','#f97316'];
+      const confettiColors = ['#b8722a','#1b5e4e','#1d3048','#e8a04a','#3a9a84','#f0d4a4'];
       const confettiHtml = isMonthly ? '' : `<div class="ty-confetti" aria-hidden="true">
         ${confettiColors.map((c, i) =>
-          `<div class="ty-dot" style="left:${6 + i * 14}%;animation-delay:${i * 0.11}s;animation-duration:${1.6 + i * 0.08}s;background:${c}"></div>`
+          `<div class="ty-dot" style="left:${6 + i * 15}%;animation-delay:${i * 0.11}s;animation-duration:${1.6 + i * 0.08}s;background:${c}"></div>`
         ).join('')}
       </div>`;
 
+      const justDonatedName = result.donation.company_name || result.donation.donor_name || '';
       const thanks = document.getElementById(`thanks-${projectId}`);
       thanks.style.display = 'block';
       thanks.innerHTML = `
         ${confettiHtml}
-        <div class="ty-icon">${isMonthly ? '🔄' : '🎉'}</div>
+        <div class="ty-icon" aria-hidden="true">${isMonthly ? '🔄' : '🎉'}</div>
         <h3>${isMonthly ? 'Maandelijkse donatie geregistreerd!' : 'Hartelijk dank!'}</h3>
         <p>Uw ${isMonthly ? 'maandelijkse ' : ''}${projectId === 0 ? 'algemene ' : ''}donatie van
           <span class="hl">${SF.euro(result.donation.amount)}${isMonthly ? ' per maand' : ''}</span>
           is ${isMonthly ? 'geregistreerd' : 'ontvangen'}.
         </p>
         <p style="margin-top:6px">De school ontvangt <strong>${SF.euro(result.donation.net_amount)}</strong>${isMonthly ? ' per maand' : ''}
-          <span style="color:var(--slate-400)">(na ${SF.euro(result.donation.platform_fee)} platformvergoeding)</span>.
+          <span style="color:var(--text-soft)">(na ${SF.euro(result.donation.platform_fee)} platformvergoeding)</span>.
         </p>
-        ${result.project ? `<p style="margin-top:12px;color:var(--indigo);font-weight:700">Project staat nu op ${SF.pct(result.project.collected, result.project.goal)}% 🙌</p>` : ''}
-        ${isMonthly ? '<p style="margin-top:8px;font-size:12px;color:var(--slate-400)">Elke maand wordt dit bedrag herhaald. Stopzetten kan altijd via uw bank of de school.</p>' : ''}
+        ${result.project ? `<p style="margin-top:12px;color:var(--teal);font-weight:700">Project staat nu op ${SF.pct(result.project.collected, result.project.goal)}% 🙌</p>` : ''}
+        ${isMonthly ? '<p style="margin-top:8px;font-size:12px;color:var(--text-soft)">Elke maand wordt dit bedrag herhaald. Stopzetten kan altijd via uw bank of de school.</p>' : ''}
+        ${renderTop5(projectId, justDonatedName)}
         <div class="ty-actions">
           <a href="/" class="ty-btn ty-btn-sec">← Terug naar schoolwebsite</a>
           <a href="/verhaal" class="ty-btn ty-btn-pri">Lees ons verhaal →</a>
         </div>
       `;
 
-      renderStats();
+      renderCampaignFeature();
     }, 800);
   }
 
-  renderStats();
+  renderCampaignFeature();
   renderProjects();
 
   setTimeout(() => {
@@ -1134,6 +1182,11 @@
     navToggle.textContent = open ? '✕' : '☰';
     navToggle.setAttribute('aria-label', open ? 'Menu sluiten' : 'Menu openen');
   });
+
+  if (new URLSearchParams(location.search).get('demo') === 'true') {
+    const bar = document.getElementById('demo-bar');
+    if (bar) bar.classList.add('visible');
+  }
 </script>
 </body>
 </html>

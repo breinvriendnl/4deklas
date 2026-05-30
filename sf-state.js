@@ -6,7 +6,7 @@ const SF = (() => {
   const KEY = 'sf_demo_v2';
 
   const INITIAL = {
-    school: { name: 'De Regenboogschool', location: 'Amsterdam-Noord' },
+    school: { name: 'OBS De Springplank', location: 'Amsterdam-Noord' },
     users: [
       { id: 1, name: 'Directeur', username: 'directeur', password: 'admin2025', role: 'director' }
     ],
