@@ -214,3 +214,17 @@ nav ul, nav ~ nav {
 
 /* ── Footer ────────────────────────────────── */
 footer { background: var(--t-footer); }
+
+/* ── Teruglink naar schoolwebsite in footer ── */
+.footer-school-link { text-align: center; padding: 8px 0 4px; }
+.footer-school-link a { font-size: 13px; color: rgba(255,255,255,0.5); text-decoration: none; }
+.footer-school-link a:hover { color: rgba(255,255,255,0.85); }
+
+/* ── Hero-tekst altijd wit (beide thema's donkere hero) ── */
+.theme-hero .hero-eyebrow              { color: rgba(255,255,255,0.75); }
+.theme-hero h1                         { color: #ffffff; }
+.theme-hero .hero-sub                  { color: rgba(255,255,255,0.85); }
+.theme-hero .trust-item,
+.theme-hero .trust-sep                 { color: rgba(255,255,255,0.70); }
+.theme-hero .hero-link                 { color: rgba(255,255,255,0.85); }
+.theme-hero .hero-link:hover           { color: #ffffff; }

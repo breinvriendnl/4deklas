@@ -995,20 +995,16 @@
     <div class="login-brand">4dek<span>las</span></div>
     <div class="login-sub">Welkom terug &mdash; voer uw wachtwoord in</div>
 
-    <div class="demo-creds" onclick="document.getElementById('login-pw').value='admin2025'">
-      <div class="demo-creds-title">⭐ Demo-inloggegevens</div>
-      <div class="demo-creds-row">
-        <div class="demo-creds-value">Directeur: <strong>admin2025</strong></div>
-        <div class="demo-creds-hint">Klik om in te vullen →</div>
-      </div>
-    </div>
-
     <label class="login-label">Wachtwoord</label>
     <input type="password" class="login-input" id="login-pw" placeholder="••••••••"
+           value="admin2025"
            onkeydown="if(event.key==='Enter') tryLogin()">
 
     <button class="login-btn" onclick="tryLogin()">Inloggen als directeur</button>
     <div class="login-error" id="login-error">Ongeldig wachtwoord — probeer opnieuw.</div>
+    <p style="font-style:italic; font-size:12px; color:#94a3b8; margin-top:12px; text-align:center;">
+      Demo: wachtwoord is <strong>admin2025</strong>
+    </p>
   </div>
 </div>
 
