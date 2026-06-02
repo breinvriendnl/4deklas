@@ -1,0 +1,216 @@
+/* ══════════════════════════════════════════════
+   4deklas · Theme system
+   Modern (warm amber/cream) = DEFAULT
+   Speels (cool blue/indigo) = data-theme="speels"
+   Laad dit bestand ALTIJD ná de inline <style>
+══════════════════════════════════════════════ */
+
+/* ── Tokens: Modern (warm) ─────────────────── */
+:root {
+  --t-bg:         #f7f3eb;
+  --t-surface:    #fefcf8;
+  --t-header:     #1d3048;
+  --t-nav:        #264062;
+  --t-footer:     #1d3048;
+  --t-text:       #1c2e3e;
+  --t-mid:        #4e6070;
+  --t-border:     #e2dbd0;
+  --t-focus:      #b8722a;
+  --t-accent:     #b8722a;
+  --t-accent-dk:  #8f5318;
+  --t-accent-bg:  #fdf0dc;
+  --t-accent-bd:  #f0d4a4;
+  --t-hero-bg:    linear-gradient(135deg, #1d3048 0%, #264062 60%, #1b5e4e 100%);
+  --t-cta-bg:     linear-gradient(135deg, #1d3048 0%, #264062 100%);
+
+  /* doneren.html variabelen (overschrijft de inline :root) */
+  --cream:        #f7f3eb;
+  --paper:        #fefcf8;
+  --navy:         #1d3048;
+  --navy-mid:     #264062;
+  --navy-soft:    #eef1f5;
+  --amber:        #b8722a;
+  --amber-deep:   #8f5318;
+  --amber-bg:     #fdf0dc;
+  --amber-border: #f0d4a4;
+  --teal:         #1b5e4e;
+  --teal-bg:      #e5f3ef;
+  --teal-border:  #b6dbd4;
+  --text:         #1c2e3e;
+  --text-mid:     #4e6070;
+  --text-soft:    #7a8fa0;
+  --border:       #e2dbd0;
+  --border-light: #edeae2;
+}
+
+/* ── Tokens: Speels (blauw) ────────────────── */
+:root[data-theme="speels"] {
+  --t-bg:         #f8fafc;
+  --t-surface:    #ffffff;
+  --t-header:     #1e3a8a;
+  --t-nav:        #1e40af;
+  --t-footer:     #0f172a;
+  --t-text:       #1a202c;
+  --t-mid:        #475569;
+  --t-border:     #e2e8f0;
+  --t-focus:      #6366f1;
+  --t-accent:     #6366f1;
+  --t-accent-dk:  #4338ca;
+  --t-accent-bg:  #eef2ff;
+  --t-accent-bd:  #c7d2fe;
+  --t-hero-bg:    linear-gradient(135deg, #1e3a8a 0%, #3730a3 60%, #4338ca 100%);
+  --t-cta-bg:     linear-gradient(135deg, #1e3a8a 0%, #3730a3 100%);
+
+  /* doneren.html variabelen */
+  --cream:        #f8fafc;
+  --paper:        #ffffff;
+  --navy:         #1e3a8a;
+  --navy-mid:     #1e40af;
+  --navy-soft:    #eef6ff;
+  --amber:        #6366f1;
+  --amber-deep:   #4338ca;
+  --amber-bg:     #eef2ff;
+  --amber-border: #c7d2fe;
+  --teal:         #0ea5e9;
+  --teal-bg:      #e0f2fe;
+  --teal-border:  #bae6fd;
+  --text:         #1a202c;
+  --text-mid:     #475569;
+  --text-soft:    #94a3b8;
+  --border:       #e2e8f0;
+  --border-light: #f1f5f9;
+}
+
+/* ── Globale structuur ─────────────────────── */
+body {
+  background-color: var(--t-bg);
+  color: var(--t-text);
+}
+a:focus-visible, button:focus-visible {
+  outline-color: var(--t-focus);
+}
+
+/* ── Header & nav ──────────────────────────── */
+header {
+  background: var(--t-header);
+}
+nav, .topbar {
+  background: var(--t-header);
+}
+nav ul, nav ~ nav {
+  background: var(--t-nav);
+}
+
+/* doneren.html gebruikt .topbar + <nav> apart */
+.topbar { background: var(--navy); }
+.topbar + nav, nav { background: var(--navy-mid); }
+
+/* ── Hero ──────────────────────────────────── */
+.theme-hero {
+  background: var(--t-hero-bg);
+}
+
+/* ── Scrollbalk bovenaan (verhaal) ─────────── */
+.scroll-progress {
+  background: linear-gradient(90deg, var(--t-accent), var(--t-nav), var(--t-accent));
+}
+
+/* ── Section labels ────────────────────────── */
+.section-label {
+  color: var(--t-accent);
+}
+
+/* ── Lead quote border ─────────────────────── */
+.lead {
+  border-left-color: var(--t-accent);
+}
+
+/* ── Statistieken ──────────────────────────── */
+.stat-value {
+  color: var(--t-header);
+}
+
+/* ── How-it-works box (verhaal) ────────────── */
+.how-box {
+  background: linear-gradient(135deg, var(--t-accent-bg) 0%, var(--t-surface) 100%);
+  border-color: var(--t-accent-bd);
+}
+.step-num {
+  background: linear-gradient(135deg, var(--t-header), var(--t-nav));
+  box-shadow: 0 4px 12px rgba(0,0,0,.22);
+}
+.step-arrow {
+  color: var(--t-accent-bd);
+}
+.example-tag {
+  border-color: var(--t-accent-bd);
+  color: var(--t-accent-dk);
+}
+.example-tag:hover {
+  background: var(--t-accent-bg);
+  border-color: var(--t-accent);
+}
+
+/* ── Q&A accordion (verhaal) ───────────────── */
+.qa-question { color: var(--t-header); }
+.qa-question:hover { background: var(--t-bg); }
+.qa-item.open { border-color: var(--t-accent-bd); }
+.qa-item.open .qa-chevron { color: var(--t-accent); }
+.qa-q-badge { background: linear-gradient(135deg, var(--t-header), var(--t-nav)); }
+
+/* ── Hero widget (verhaal) ─────────────────── */
+.badge-logo { background: var(--t-header); }
+.widget-school-badge { background: var(--t-accent-bg); color: var(--t-accent-dk); }
+.widget-progress-fill {
+  background: linear-gradient(90deg, var(--t-accent), var(--t-nav));
+}
+.amount-btn:hover, .amount-btn.selected {
+  background: var(--t-accent-bg);
+  border-color: var(--t-accent);
+  color: var(--t-accent-dk);
+}
+.widget-donate-btn {
+  background: linear-gradient(135deg, var(--t-header), var(--t-nav));
+  box-shadow: 0 4px 14px rgba(0,0,0,.28);
+  animation: none;
+}
+.widget-donate-btn:hover {
+  box-shadow: 0 8px 22px rgba(0,0,0,.38);
+}
+
+/* ── Hero CTA knop ─────────────────────────── */
+.hero-cta { color: var(--t-header); }
+.cta-btn  { color: var(--t-header); }
+
+/* ── CTA section ───────────────────────────── */
+.cta-section { background: var(--t-cta-bg); }
+
+/* ── Info cards (verhaal) ──────────────────── */
+.info-card:nth-child(1) { --accent: var(--t-accent); }
+.info-card:nth-child(2) { --accent: var(--t-nav); }
+.info-card:nth-child(3) { --accent: var(--t-accent-dk); }
+.info-card:nth-child(4) { --accent: var(--t-nav); }
+.info-card:nth-child(5) { --accent: #16a34a; }
+.info-card:nth-child(6) { --accent: var(--t-accent); }
+
+/* ── Expand-all knop (kritisch) ────────────── */
+.expand-all-btn:hover {
+  border-color: var(--t-accent);
+  color: var(--t-accent);
+  background: var(--t-accent-bg);
+}
+
+/* ── Progress counter (kritisch) ───────────── */
+.progress-counter {
+  background: var(--t-accent-bg);
+  color: var(--t-accent-dk);
+  border-color: var(--t-accent-bd);
+}
+.progress-track { background: var(--t-header); }
+
+/* ── Dashboard mockup bar (verhaal) ────────── */
+.mockup-bar { background: linear-gradient(90deg, var(--t-header), var(--t-nav)); }
+.mockup-fill { background: linear-gradient(90deg, var(--t-accent), var(--t-nav)); }
+
+/* ── Footer ────────────────────────────────── */
+footer { background: var(--t-footer); }
