@@ -859,6 +859,10 @@
       nav ul { padding: 0 16px; }
       header { padding: 12px 20px; }
     }
+    @media (max-width: 768px) {
+      .hero-widget    { max-width: 100%; }
+      .widget-amounts { grid-template-columns: repeat(2, 1fr); }
+    }
     @media (max-width: 540px) {
       .stats-inner { grid-template-columns: repeat(3, 1fr); padding: 0; }
       .stat-item { padding: 20px 10px; border-right: 1px solid #f1f5f9; }
