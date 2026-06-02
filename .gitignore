@@ -2,3 +2,10 @@ node_modules/
 .vercel/
 *.backup
 *.backup2
+*.backup3
+*.backup4
+*.backup5
+*.backup-review
+*.backup-pre-impeccable
+ai-review/
+playwright-review/

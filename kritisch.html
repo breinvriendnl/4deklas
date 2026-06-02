@@ -370,6 +370,10 @@
     footer strong { color: rgba(255,255,255,.7); }
 
     /* Responsive */
+    @media (max-width: 768px) {
+      .stats-bar-inner { flex-wrap: wrap; gap: 12px; }
+      .cta-section     { padding: 40px 28px; }
+    }
     @media (max-width: 640px) {
       header { padding: 12px 20px; }
       .header-phone { display: none; }
@@ -391,8 +395,11 @@
       .trust-item { font-size: 11px; padding: 5px 11px; }
     }
   </style>
+  <link rel="stylesheet" href="/theme.css">
+  <script>/* anti-flash */(()=>{const t=localStorage.getItem('4dk-theme');if(t==='speels')document.documentElement.dataset.theme='speels';})()</script>
 </head>
 <body>
+<script src="/theme-switcher.js"></script>
 
 <div class="demo-bar">
   <strong>🎯 4deklas Demo</strong> · Stap 1: <a href="/doneren">Doneer als ouder →</a> · Stap 2: <a href="/dashboard">Log in als directeur →</a>
@@ -400,9 +407,9 @@
 
 <header>
   <div class="header-left">
-    <div class="school-logo">🌈</div>
+    <div class="school-logo">🏫</div>
     <div>
-      <div class="school-name">De Regenboogschool</div>
+      <div class="school-name">OBS De Springplank</div>
       <div class="school-sub">Basisschool · Amsterdam-Noord</div>
     </div>
   </div>
@@ -411,17 +418,15 @@
 
 <nav>
   <ul>
-    <li><a href="/">Home</a></li>
-    <li><a href="#">Over ons</a></li>
-    <li><a href="#">Onderwijs</a></li>
-    <li><a href="#">Nieuws</a></li>
+    <li><a href="/doneren">Home</a></li>
     <li><a href="/verhaal">Ons verhaal</a></li>
     <li><a href="/kritisch" class="active">Kritisch bekeken</a></li>
+    <li><a href="/dashboard">Inlog school</a></li>
     <li class="cta"><a href="/doneren">❤️ Doneren</a></li>
   </ul>
 </nav>
 
-<div class="hero">
+<div class="hero theme-hero">
   <div class="hero-label">Eerlijk antwoord</div>
   <h1>We kennen de bezwaren.<br>Hier zijn onze antwoorden.</h1>
   <p>4deklas is geen perfect systeem. Maar we geloven dat transparantie over de nadelen meer vertrouwen geeft dan ze wegmoffelen.</p>
@@ -665,7 +670,8 @@
 </div>
 
 <footer>
-  <p>© 2025 <strong>De Regenboogschool</strong> · Donaties verwerkt via 4deklas · <em>Demo op 4deklas.nl — geen echte betalingen</em></p>
+  <p>© 2025 <strong>OBS De Springplank</strong> · Donaties verwerkt via 4deklas · <em>Demo op 4deklas.nl — geen echte betalingen</em></p>
+  <div class="footer-school-link"><a href="/">← Terug naar schoolwebsite (4deklas.nl)</a></div>
 </footer>
 
 <script>
